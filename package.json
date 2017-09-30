@@ -4,8 +4,7 @@
   "description": "An interactive platform for cooks and food lovers",
   "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon --watch server --exec babel-node  -- bin/www.js",
-    "webpack": "webpack"
+    "start:dev": "nodemon --watch server --exec babel-node  -- bin/www.js"
   },
   "repository": {
     "type": "git",
@@ -25,7 +24,8 @@
     "jsonfile": "^4.0.0",
     "morgan": "^1.9.0",
     "popper.js": "^1.12.5",
-    "sequelize": "^4.10.1"
+    "sequelize": "^4.10.1",
+    "uglifyjs-webpack-plugin": "^0.4.6"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",

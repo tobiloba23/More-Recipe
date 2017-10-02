@@ -6,7 +6,7 @@ This platform will allow users sign up, add recipes, view other users recipes, u
 
 ***Integrating Travis CI Badge***
 
-https://travis-ci.org/tobiloba23/More-Recipe.svg?branch=master
+[![Build Status](https://travis-ci.org/tobiloba23/More-Recipe.svg?branch=master)](https://travis-ci.org/tobiloba23/More-Recipe)
 
 ***Integrating Coveralls Badge***
 

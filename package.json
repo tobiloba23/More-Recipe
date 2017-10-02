@@ -4,7 +4,7 @@
   "description": "An interactive platform for cooks and food lovers",
   "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon --watch server --exec babel-node  -- bin/www.js"
+    "start:dev": "nodemon --watch server --exec babel-node  -- app.js"
   },
   "repository": {
     "type": "git",
@@ -23,8 +23,10 @@
     "jquery": "^3.2.1",
     "jsonfile": "^4.0.0",
     "morgan": "^1.9.0",
+    "pg": "^7.3.0",
+    "pg-hstore": "^2.3.2",
     "popper.js": "^1.12.5",
-    "sequelize": "^4.10.1",
+    "sequelize": "^4.13.2",
     "sync-exec": "^0.6.2",
     "uglifyjs-webpack-plugin": "^0.4.6",
     "webpack": "^3.6.0"
@@ -43,6 +45,7 @@
     "eslint-plugin-react": "^7.4.0",
     "nodemon": "^1.12.1",
     "react": "^15.6.1",
-    "react-dom": "^15.6.1"
+    "react-dom": "^15.6.1",
+    "sequelize-cli": "^3.0.0"
   }
 }

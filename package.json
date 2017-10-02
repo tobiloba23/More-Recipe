@@ -1,0 +1,48 @@
+{
+  "name": "more-recipe",
+  "version": "1.0.0",
+  "description": "An interactive platform for cooks and food lovers",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "nodemon --watch server --exec babel-node  -- bin/www.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tobiloba23/More-Recipe.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tobiloba23/More-Recipe/issues"
+  },
+  "homepage": "https://github.com/tobiloba23/More-Recipe#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.15.5",
+    "join-path": "^1.1.1",
+    "jquery": "^3.2.1",
+    "jsonfile": "^4.0.0",
+    "morgan": "^1.9.0",
+    "popper.js": "^1.12.5",
+    "sequelize": "^4.10.1",
+    "sync-exec": "^0.6.2",
+    "uglifyjs-webpack-plugin": "^0.4.6",
+    "webpack": "^3.6.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "eslint": "^4.7.2",
+    "eslint-config-airbnb": "^15.1.0",
+    "eslint-config-airbnb-base": "^12.0.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.4.0",
+    "nodemon": "^1.12.1",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1"
+  }
+}

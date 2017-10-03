@@ -2,13 +2,14 @@
 <html lang="en">
 
 <head>
+    <link href="https://fonts.googleapis.com/css?family=Cookie|Shadows+Into+Light" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
         crossorigin="anonymous">
     <!-- Material Design Bootstrap -->
-    <link href="../../template/css/mdb.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.2/css/mdb.min.css" />
     <link rel="stylesheet" href="../../template/css/shared.css">
 
 </head>
@@ -19,11 +20,11 @@
     <header>
 
         <!--Navbar-->
-        <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar">
+        <nav class="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar top-nav-collapse">
             <div class="container">
 
-                <!-- Navbar brand -->
-                <a class="navbar-brand" href="#"></a>
+                <!-- Navbar brand 
+                <a class="navbar-brand" href="#"></a>-->
 
                 <!-- Collapse button -->
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -57,8 +58,7 @@
                     <form class="form-inline">
                         <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
                     </form>
-                    <button type="button" class="btn btn-default">Sign-in<i class="fa fa-sign-in ml-2"></i></button>
-
+                    <a class="btn waves-effect waves-light" style="background:#04DCE4">Sign-in<i class="fa fa-sign-in ml-2"></i></a>
                 </div>
                 <!-- Collapsible content -->
 
@@ -67,37 +67,34 @@
         <!--/.Navbar-->
 
         <!--Mask-->
-        <div id="intro" class="view hm-black-strong">
+        <div id="intro" class="view hm-pink-light">
 
-            <div class="container-fluid d-flex align-items-center justify-content-center">
+            <div class="container-fluid full-bg-image d-flex align-items-center justify-content-center">
 
                 <div class="row d-flex justify-content-center">
 
                     <div class="col-md-10 text-center">
+                            <br>
+                            <br>
 
                         <!-- Heading -->
-                        <h1 class="centred" style="max-height:20%">
-                            <svg viewBox="0 0 500 500" opacity=".4" fill="white">
-                                <path id="curve" style="visibility: hidden" d="M73.2,148.6c4-6.1,65.5-96.8,178.6-95.6c111.3,1.2,170.8,90.3,175.1,97" />
-                                <text width="500" style="display: 0.5">
-                                    <textPath alignment-baseline="top" xlink:href="#curve" class="color: white; centre-piece-txt">
+                        <h1 class="justify-content-center" style="max-height:50%">
+                            <svg class="justify-content-center" height="250px" viewBox="0 0 500 200" opacity=".4" fill="white">
+                                <path class="justify-content-center" id="curve" style="visibility: hidden" d="M73.2,148.6c4-6.1,65.5-96.8,178.6-95.6c111.3,1.2,170.8,90.3,175.1,97"/>
+                                <text class="justify-content-center" style="display: 0.5">
+                                    <textPath item-width="100%" height="250px" alignment-baseline="top" xlink:href="#curve" class="color: white; centre-piece-txt">
                                         More Recipes!...
                                     </textPath>
                                 </text>
                             </svg>
                         </h1>
 
-                        <!-- Divider -->
-                        <br>
-
                         <!-- Description -->
-                        <div class="my-4 container-fluid col-md-12" style="font-family:'kurale', seif; min-width: 100vw; opacity: 0.8;
-                        margin-left: calc(-50vw + 50%); min-height:3em; font-size:2em; background-color:rgb(250, 164, 3); color:#FFFFFF">
-
+                        <div class="my-4 row display-4" style="font-family: cookie, cursive; opacity: 0.8;
+                        margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); background-color:rgb(250, 164, 3); color:#FFFFFF">
                             Welcome to the land of recipes where food enthusiasts come together to share ideas and connect.
-
                         </div>
-                        <button type="button" class="btn btn-outline-white" style="background-color:#04DCE4"><i class="fa fa-book ml-2">Catalogues</i></button>
+                        <a class="btn btn-outline-white btn-pc waves-effect waves-light" style="background-color:#04DCE4">Catalogues<i class="fa fa-book ml-1"></i></a>
                         <div class="row">
                             <div class="col-md-4">
                                 <a href="#"></i></a>
@@ -110,11 +107,10 @@
                                 <a href="#"><i class="fa fa-instagram" style="font-size:2em; color:#04DCE4"></i></a>
                                 <a href="#"><i class="fa fa-envelope" style="font-size:2em; color:#04DCE4"></i></a>
                             </div>
-                            <div class="icon-bar">
-                            </div>
-                            <div class="col-md-4">
-                                <a href="#"></i></a>
-                            </div>
+                            <br>
+                            <br>
+                            <br>
+                            <br>
 
                         </div>
 
@@ -251,7 +247,7 @@
                                 <h4 class="card-title">Vegetable soup</h4>
                                 <!--Text-->
                                 <p class="card-text">A short description of the recipe and an overview of the main ingredients.</p>
-                                <a href="#" class="btn btn-grey" style "align">Details</a>
+                                <a href="#" class="btn btn-orange justify-content-center">Details</a>
                             </div>
 
                         </div>
@@ -259,6 +255,64 @@
 
                     </div>
                     <!--Grid column-->
+                    <!--Grid column-->
+                    <div class="col-lg-4 col-md-6 mb-4">
+
+                        <!--Card-->
+                        <div class="card">
+
+                            <!--Card image-->
+                            <div class="view overlay hm-white-slight">
+                                <img src="../images/beans&dodo.jpeg" class="img-fluid" alt="">
+                                <a href="#">
+                                    <div class="mask"></div>
+                                </a>
+                            </div>
+
+                            <!--Card content-->
+                            <div class="card-body">
+                                <!--Title-->
+                                <h4 class="card-title">Beans & Dodo</h4>
+                                <!--Text-->
+                                <p class="card-text">A short description of the recipe and an overview of the main ingredients.</p>
+                                <a href="#" class="btn btn-orange">Details</a>
+                            </div>
+
+                        </div>
+                        <!--/.Card-->
+
+                    </div>
+                    <!--Grid column-->
+
+                    <!--Grid column-->
+                    <div class="col-lg-4 col-md-6 mb-4">
+
+                        <!--Card-->
+                        <div class="card">
+
+                            <!--Card image-->
+                            <div class="view overlay hm-white-slight">
+                                <img src="../images/pounded_yam.jpg" class="img-fluid" alt="">
+                                <a href="#">
+                                    <div class="mask"></div>
+                                </a>
+                            </div>
+
+                            <!--Card content-->
+                            <div class="card-body">
+                                <!--Title-->
+                                <h4 class="card-title">Pounded yam</h4>
+                                <!--Text-->
+                                <p class="card-text">A short description of the recipe and an overview of the main ingredients.</p>
+                                <a href="#" class="btn btn-orange">Details</a>
+                            </div>
+
+                        </div>
+                        <!--/.Card-->
+
+                    </div>
+                    <!--Grid column-->
+
                 </div>
                 <!--Grid row-->
 
@@ -273,7 +327,7 @@
 
                             <!--Card image-->
                             <div class="view overlay hm-white-slight">
-                                <img src="../images/ofada.jpeg" class="img-fluid" alt="">
+                                <img src="../images/moi-moi.jpg" class="img-fluid" alt="">
                                 <a href="#">
                                     <div class="mask"></div>
                                 </a>
@@ -282,7 +336,7 @@
                             <!--Card content-->
                             <div class="card-body">
                                 <!--Title-->
-                                <h4 class="card-title">Ofada delicacy</h4>
+                                <h4 class="card-title">Moi moi</h4>
                                 <!--Text-->
                                 <p class="card-text">A short description of the recipe and an overview of the main ingredients.</p>
                                 <a href="#" class="btn btn-danger">Details</a>
@@ -302,7 +356,7 @@
 
                             <!--Card image-->
                             <div class="view overlay hm-white-slight">
-                                <img src="../images/Nigerian salad 6.jpg" class="img-fluid" alt="">
+                                <img src="../images/fried rice.jpeg" class="img-fluid" alt="">
                                 <a href="#">
                                     <div class="mask"></div>
                                 </a>
@@ -311,7 +365,7 @@
                             <!--Card content-->
                             <div class="card-body">
                                 <!--Title-->
-                                <h4 class="card-title">Nigerian Salad</h4>
+                                <h4 class="card-title">Fried rice</h4>
                                 <!--Text-->
                                 <p class="card-text">A short description of the recipe and an overview of the main ingredients.</p>
                                 <a href="#" class="btn btn-danger">Details</a>
@@ -414,7 +468,86 @@
 
     </main>
 
+    <footer id="footer" class="page-footer center-on-small-only ">
 
+        <!--Footer Links-->
+        <div class="container-fluid">
+            <div class="row wow fadeIn" data-wow-delay="0.2s" style="animation-name: none; visibility: visible;">
+                <!--First column-->
+                <div class="col-md-3">
+                    <p class="column-title white-text"><strong>USEFUL LINKS</strong></p>
+                    <ul>
+                        <li><a id="footer-link-faq" href="https://mdbootstrap.com/faq/">Frequently Asked Questions</a></li>
+                        <li><a id="footer-link-browsers" href="https://mdbootstrap.com/browsers-and-devices/">Browsers and devices</a></li>
+                        <li><a id="footer-link-affiliate" href="https://mdbootstrap.com/mdb-affiliate-program/">MDB Affiliate Program</a></li>
+                        <li><a id="footer-link-students" href="https://mdbootstrap.com/mdb-academy/">Students and universities</a></li>
+                        <li><a id="footer-link-sponsorship" href="https://mdbootstrap.com/mdb-sponsorship/">Sponsorship</a></li>
+                        <li><a id="footer-link-team" href="https://mdbootstrap.com/our-team/">Our Team</a></li>
+                    </ul>
+                </div>
+                <!--/.First column-->
+                <hr class="w-100 clearfix d-md-none">
+                <!--Second column-->
+                <div class="col-md-3">
+                    <p class="column-title white-text"><strong>IMPORTANT PAGES</strong></p>
+                    <ul>
+                        <li><a id="footer-link-license" href="https://mdbootstrap.com/license/">License</a></li>
+                        <li><a id="footer-link-changelog" href="https://mdbootstrap.com/changelog/">ChangeLog</a></li>
+                        <li><a id="footer-link-policy" href="https://mdbootstrap.com/privacy-policy/">Privacy Policy</a></li>
+                        <li><a id="footer-link-refund" href="https://mdbootstrap.com/return-refund-policy/">Return/Refund policy</a></li>
+                        <li><a id="footer-link-contact" href="https://mdbootstrap.com/contact/">Contact</a></li>
+                    </ul>
+                </div>
+                <!--/.Second column-->
+                <hr class="w-100 clearfix d-md-none">
+                <!--Third column-->
+                <div class="col-md-3">
+                    <p class="column-title white-text"><strong>DOCUMENTATION</strong></p>
+                    <ul>
+                        <li><a id="footer-link-css" href="https://mdbootstrap.com/css/">CSS</a></li>
+                        <li><a id="footer-link-components" href="https://mdbootstrap.com/components/">Components</a></li>
+                        <li><a id="footer-link-javascript" href="https://mdbootstrap.com/javascript/">JavaScript</a></li>
+                        <li><a id="footer-link-sections" href="https://mdbootstrap.com/sections/">Sections</a></li>
+                        <li><a id="footer-link-freebies" href="https://mdbootstrap.com/freebies/">Freebies</a></li>
+                        <li><a id="footer-link-templates" href="https://mdbootstrap.com/templates/">Templates</a></li>
+                    </ul>
+
+                </div>
+                <!--/.Third column-->
+                <hr class="w-100 clearfix d-md-none">
+                <!--Fourth column-->
+                <div class="col-md-3 mb-1">
+                    <p class="column-title white-text"><strong>TUTORIALS</strong></p>
+                    <ul>
+                        <li><a id="footer-link-bootstrap" href="https://mdbootstrap.com/bootstrap-tutorial/">MDB with Bootstrap</a></li>
+                        <li><a id="footer-link-wordpress" href="https://mdbootstrap.com/wordpress-tutorial/">MDB with WordPress</a></li>
+                        <li><a id="footer-link-flexbox" href="https://mdbootstrap.com/flexbox-tutorial/">MDB with FlexBox</a></li>
+                        <li><a id="footer-link-migration" href="https://mdbootstrap.com/migration-4-3-0/">Migration</a></li>
+                    </ul>
+                </div>
+                <!--/.Fourth column-->
+
+            </div>
+        </div>
+        <!--/.Footer Links-->
+        <hr>
+        <!--Call to action-->
+        <div class="call-to-action wow fadeIn" data-wow-delay="0.2s" style="animation-name: none; visibility: visible;">
+            <ul>
+            </ul>
+        </div>
+        <!--/.Call to action-->
+        <hr>
+
+        <!--Copyright-->
+        <div class="footer-copyright wow fadeIn" data-wow-delay="0.2s" style="animation-name: none; visibility: visible;">
+            <div class="container-fluid">
+                © 2017 Copyright: <a href="https://toad-inc.com"> Toad-Inc.com </a>
+            </div>
+        </div>
+        <!--/.Copyright-->
+
+    </footer>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
@@ -423,6 +556,7 @@
         crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
         crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.2/js/mdb.min.js"></script>
 </body>
 
 </html>

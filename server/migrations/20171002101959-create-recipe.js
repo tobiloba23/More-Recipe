@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('Recipes', {
       id: {
@@ -17,14 +17,6 @@ export default {
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
-      },
-      catalogueId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Catalogues',
-          key: 'id',
-          as: 'catalogueId',
-        }
       },
       userId: {
         type: Sequelize.INTEGER,

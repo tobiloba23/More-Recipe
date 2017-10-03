@@ -2,8 +2,8 @@ import express from 'express';
 import Controller from '../../../controllers';
 
 const router = express.Router();
-const recipesController = Controller.recipesApi;
-const recipesReviewsController = Controller.recipeReviewsApi;
+const recipesController = Controller.recipesApiv1;
+const recipesReviewsController = Controller.recipeReviewsApiv1;
 // const usersController = Controller.usersApi;
 
 

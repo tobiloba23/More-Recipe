@@ -11,7 +11,7 @@ const app = express();
 // Log requests to the console.
 app.use(logger('dev'));
 
-const port = parseInt(process.env.PORT, 10) || 8000;
+const port = parseInt(process.env.PORT, 10) || 8080;
 
 app.set('Port', port);
 

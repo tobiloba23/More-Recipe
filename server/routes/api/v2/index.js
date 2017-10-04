@@ -1,4 +1,5 @@
 import express from 'express';
+import routeValidator from 'express-route-validator';
 import Controller from '../../../controllers';
 
 const router = express.Router();
@@ -27,7 +28,11 @@ const usersController = Controller.usersApiv2;
 // Authentication
 router.route('/users/register')
   .post(usersController.signup);
-router.route('/users/:Id/login')
+router.route('/users/:Id/login', routeValidator.validate({
+  params: {
+    Id: { isRequired: true, isUUID: true }
+  }
+}))
   .post(usersController.login);
 
 

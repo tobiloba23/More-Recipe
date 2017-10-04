@@ -1,10 +1,10 @@
-// import express from 'express';
-// import Controller from '../../../controllers';
+import express from 'express';
+import Controller from '../../../controllers';
 
-// const router = express.Router();
+const router = express.Router();
 // const recipesController = Controller.recipesApiv2;
 // const recipesReviewsController = Controller.recipeReviewsApiv2;
-// // const usersController = Controller.usersApi;
+const usersController = Controller.usersApiv2;
 
 
 // router.route('/recipes')
@@ -15,26 +15,26 @@
 //   .put(recipesController.update)
 //   .delete(recipesController.delete);
 
-// router.route('/recipes/:recipeId/reviews')
+// router.route('/recipes/:Id/reviews')
 //   // .get(recipesReviewsController.list)
 //   .post(recipesReviewsController.create);
-// // router.route('/recipes/:recipeId/reviews/:reviewId')
+// // router.route('/recipes/:Id/reviews/:reviewId')
 // //   .get(recipesReviewsController.listOne)
 // //   .put(recipesReviewsController.update)
 // //   .delete(recipesReviewsController.delete);
 
 
-// // Authentication
-// // router.route('/users/register')
-// //   .post(usersController.register);
-// // router.route('/users/login')
-// //   .post(usersController.login);
+// Authentication
+router.route('/users/register')
+  .post(usersController.signup);
+router.route('/users/:Id/login')
+  .post(usersController.login);
 
 
 // // For any other request method on todo items, we're going to return "Method Not Allowed"
-// router.route('/recipes/:recipeId/reviews').all((req, res) =>
+// router.route('/recipes/:Id/reviews').all((req, res) =>
 //   res.status(405).send({
 //     message: 'Method Not Allowed',
 //   }));
 
-// export default router;
+export default router;

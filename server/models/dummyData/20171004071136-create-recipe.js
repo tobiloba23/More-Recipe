@@ -5,16 +5,22 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       title: {
         type: Sequelize.STRING
       },
-      createdAt: {
+      description: {
+        type: Sequelize.STRING
+      },
+      instructions: {
+        type: Sequelize.TEXT
+      },
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
@@ -26,7 +32,16 @@ module.exports = {
           key: 'id',
           as: 'userId',
         }
-      }
+      },
+      catalogueId: {
+        type: Sequelize.INTEGER,
+        onDelete: 'CASCADE',
+        references: {
+          model: 'Catalogues',
+          key: 'id',
+          as: 'catalogueId',
+        }
+      },
     }),
   down: (queryInterface/* , Sequelize */) => {
     queryInterface.dropTable('Recipes');

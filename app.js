@@ -38,7 +38,7 @@ app.use('/', pageLoaderRoutes);
 // Call to server /routes/api/v1
 app.use('/api/v1', apiRoutesv1);
 // Call to server /routes/api/v2
-// app.use('/api/v2', apiRoutesv2);
+app.use('/api/v2', apiRoutesv2);
 
 const server = app.listen(app.get('Port'), () => {
   const portCheck = server.address().port;

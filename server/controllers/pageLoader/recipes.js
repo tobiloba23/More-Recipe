@@ -1,6 +1,6 @@
 import jsonfile from 'jsonfile';
 import path from 'path';
-import recipesData from '../../models/recipes-data.json';
+import recipesData from '../../models/dummyData/recipes-data.json';
 
 const dataDir = '../../model/recipes-data.json';
 

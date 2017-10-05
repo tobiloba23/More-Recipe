@@ -1,13 +1,23 @@
-import moment from 'moment';
-import jwt from 'jwt-simple';
+import jwt from 'jsonwebtoken';
 
-const encodeToken = (user) => {
-  const playload = {
-    exp: moment().add(14, 'days').unix(),
-    iat: moment().unix(),
-    sub: user.id
-  };
-  return jwt.encode(playload, process.env.TOKEN_SECRET);
+export default (req, res, next) => {
+  const token = req.body.token || req.query.token || req.headers['x-access-token'];
+  // decode token
+  if (token) {
+    // verifies secret and checks exp
+    jwt.verify(token, global.config.secret, (err, decoded) => {
+      if (err) {
+        return res.json({ error: true, message: 'Failed to authenticate token.' });
+      }
+      req.decoded = decoded;
+      next();
+    });
+  } else {
+    // if there is no token
+    // return an error
+    return res.status(403).send({
+      error: true,
+      message: 'No token provided.'
+    });
+  }
 };
-
-export default encodeToken;

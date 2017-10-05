@@ -26,6 +26,7 @@
     "join-path": "^1.1.1",
     "jquery": "^3.2.1",
     "jsonfile": "^4.0.0",
+    "jsonwebtoken": "^8.0.1",
     "jwt-simple": "^0.5.1",
     "moment": "^2.18.1",
     "morgan": "^1.9.0",

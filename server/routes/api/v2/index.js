@@ -1,15 +1,15 @@
 import express from 'express';
-import routeValidator from 'express-route-validator';
 import Controller from '../../../controllers';
 
 const router = express.Router();
-// const recipesController = Controller.recipesApiv2;
+const recipesController = Controller.recipesApiv2;
 // const recipesReviewsController = Controller.recipeReviewsApiv2;
 const usersController = Controller.usersApiv2;
+const userFavouritesController = Controller.userFavouritesApiv2;
 
 
-// router.route('/recipes')
-//   .get(recipesController.list)
+// Recipe actions
+router.route('/recipes').get(recipesController.list);
 //   .post(recipesController.create);
 // router.route('/recipes/:recipeId/')
 //   // .get(recipesController.listOne)
@@ -26,15 +26,13 @@ const usersController = Controller.usersApiv2;
 
 
 // Authentication
-router.route('/users/register')
-  .post(usersController.signup);
-router.route('/users/:Id/login', routeValidator.validate({
-  params: {
-    Id: { isRequired: true, isUUID: true }
-  }
-}))
-  .post(usersController.login);
+router.route('/users/register').post(usersController.signup);
+router.route('/users/login').post(usersController.login);
+router.route('/users').get(usersController.list);
 
+
+// User Favourites
+router.route('/userFavourites').get(userFavouritesController.list);
 
 // // For any other request method on todo items, we're going to return "Method Not Allowed"
 // router.route('/recipes/:Id/reviews').all((req, res) =>

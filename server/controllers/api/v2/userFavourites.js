@@ -1,70 +1,87 @@
 import models from '../../../models/';
 
-const { UserFavourite } = models;
+const { User, UserFavourite } = models;
 
 export default {
   list(req, res) {
-    // let returnData;
-    // let offset = 0;
-    // let count = 500;
+    return User
+      .find({
+        where: {
+          userId: req.params.userId,
+        },
+        include: [{
+          model: UserFavourite,
+          as: 'userFavourites',
+        }],
+      })
+      .then((user) => {
+        if (!user) {
+          return res.status(404).send({
+            message: 'User Not Found',
+          });
+        }
+        return res.status(200).send(user);
+      })
+      .catch(error => res.status(400).send(error));
+  },
 
-    // if (req.query && req.query.offset) {
-    //   offset = parseInt(req.query.offset, 10);
-    // }
-
-    // if (req.query && req.query.count) {
-    //   count = parseInt(req.query.count, 10);
-    // }
-
-    // if (UserFavourite) returnData = UserFavourite.slice(offset, offset + count);
-
-    // if (req.query && req.query.sort) {
-    //   if (req.query.order && req.query.order === 'asc') {
-    //     returnData.sort((a, b) => a.upvotes - b.upvotes);
-    //   } else if (req.query.order && req.query.order === 'desc') {
-    //     returnData.sort((a, b) => b.upvotes - a.upvotes);
-    //   } else {
-    //     res.status(404).send('Not Found: Order of sorting does not exist.');
-    //   }
-    // }
-
-
-    // return UserFavourite
-    //   .all({
-    //     include: [{
-    //       model: UserFavouriteReview,
-    //       as: 'UserFavouriteReviews',
-    //     }, {
-    //       model: UserFavourite,
-    //       as: 'UserFavourites',
-    //     }, {
-    //       model: UserFavouriteCatalogue,
-    //       as: 'UserFavouriteCatalogues',
-    //     }, {
-    //       model: CatalogueReview,
-    //       as: 'catalogueReviews',
-    //     }, {
-    //       model: UserFavouriteFavourites,
-    //       as: 'UserFavouriteFavourites',
-    //     }, {
-    //       model: UserFavouriteRoles,
-    //       as: 'UserFavouriteRoles',
-    //     }, {
-
-    //     }]
-    //   })
-
+  create(req, res) {
     return UserFavourite
-      // .all()
-      .sequelize.query('SELECT "userId", "recipeId", "created_at", "updated_at" FROM "UserFavourites" AS "UserFavourite";')
+      .create({
+        recipeId: req.body.recipeId,
+        userId: req.params.userId
+      })
+      .then(userFavourite => res.status(201).send(userFavourite))
+      .catch(error => res.status(400).send(error));
+  },
+
+  update(req, res) {
+    return UserFavourite
+      .find({
+        where: {
+          recipeId: req.params.recipeId,
+          userId: req.params.userId
+        },
+      })
       .then((userFavourite) => {
         if (!userFavourite) {
           return res.status(404).send({
-            message: 'UserFavourite Not Found',
+            message: 'User dos not have that recipe as a favourite',
           });
         }
-        return res.status(200).send(userFavourite);
+
+        return userFavourite
+          .update({
+            recipeId: req.params.recipeId
+          })
+          .then(updatedUserFavourite => res.status(200).send(updatedUserFavourite))
+          .catch(error => res.status(400).send(error));
       })
       .catch(error => res.status(400).send(error));
-  }
+  },
+
+  delete(req, res) {
+    return UserFavourite
+      .find({
+        where: {
+          recipeId: req.params.recipeId,
+          userId: req.params.userId
+        },
+      })
+      .then((userFavourite) => {
+        if (!userFavourite) {
+          return res.status(404).send({
+            message: 'User dos not have that recipe as a favourite',
+          });
+        }
+
+        return userFavourite
+          .delete()
+          .then(updatedUserFavourite => res.status(200).send(updatedUserFavourite))
+          .catch(error => res.status(400).send(error));
+      })
+      .catch(error => res.status(400).send(error));
+  },
+
 };
+

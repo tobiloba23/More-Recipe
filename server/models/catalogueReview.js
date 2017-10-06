@@ -1,16 +1,16 @@
 module.exports = (sequelize, DataTypes) => {
   const CatalogueReview = sequelize.define('CatalogueReview', {
-    id: {
+    catalogueReviewId: {
       type: DataTypes.UUID,
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false
     },
-    user_id: {
+    userId: {
       type: DataTypes.UUID,
       allowNull: false
     },
-    catalogue_id: {
+    catalogueId: {
       type: DataTypes.UUID,
       allowNull: false
     },
@@ -29,8 +29,8 @@ module.exports = (sequelize, DataTypes) => {
     //   values: ['approved', 'rejected', 'in review']
 
     // }
-  }, {
-    underscored: true
+  // }, {
+  //   underscored: true
   });
 
   CatalogueReview.associate = (models) => {

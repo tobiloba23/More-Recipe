@@ -1,7 +1,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('Catalogues', {
-      id: {
+      catalogueId: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID
@@ -15,11 +15,11 @@ module.exports = {
       downvotes: {
         type: Sequelize.INTEGER
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
@@ -28,7 +28,7 @@ module.exports = {
         onDelete: 'CASCADE',
         references: {
           model: 'Users',
-          key: 'id',
+          key: 'userId',
           as: 'userId',
         }
       },

@@ -1,7 +1,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('RecipeReviews', {
-      id: {
+      recipeReviewId: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID
@@ -12,11 +12,11 @@ module.exports = {
       vote: {
         type: Sequelize.BOOLEAN
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
@@ -25,7 +25,7 @@ module.exports = {
         onDelete: 'CASCADE',
         references: {
           model: 'Recipes',
-          key: 'id',
+          key: 'recipeId',
           as: 'recipeId',
         }
       },
@@ -34,7 +34,7 @@ module.exports = {
         onDelete: 'CASCADE',
         references: {
           model: 'Users',
-          key: 'id',
+          key: 'userId',
           as: 'userId',
         }
       }

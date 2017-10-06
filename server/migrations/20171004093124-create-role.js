@@ -1,7 +1,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) => {
     queryInterface.createTable('Roles', {
-      id: {
+      roleId: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID
@@ -9,11 +9,11 @@ module.exports = {
       title: {
         type: Sequelize.STRING
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }

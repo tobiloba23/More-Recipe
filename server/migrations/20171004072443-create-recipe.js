@@ -1,7 +1,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('Recipes', {
-      id: {
+      recipeId: {
         allowNull: false,
         primaryKey: true,
         type: Sequelize.UUID
@@ -21,11 +21,11 @@ module.exports = {
       downvotes: {
         type: Sequelize.INTEGER
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
@@ -34,7 +34,7 @@ module.exports = {
         onDelete: 'CASCADE',
         references: {
           model: 'Users',
-          key: 'id',
+          key: 'userId',
           as: 'userId',
         }
       },
@@ -43,7 +43,7 @@ module.exports = {
         onDelete: 'CASCADE',
         references: {
           model: 'Catalogues',
-          key: 'id',
+          key: 'catalogueId',
           as: 'catalogueId',
         }
       },

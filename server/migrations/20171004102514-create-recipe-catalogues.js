@@ -1,17 +1,22 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('RecipeCatalogues', {
+      recipeCatalogueId: {
+        allowNull: false,
+        primaryKey: true,
+        type: Sequelize.UUID
+      },
       catalogueId: {
         type: Sequelize.UUID
       },
       recipeId: {
         type: Sequelize.UUID
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }

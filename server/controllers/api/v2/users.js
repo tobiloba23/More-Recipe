@@ -57,10 +57,9 @@ export default {
     //   })
 
     return User
-    //   .all()
-      .sequelize.query('SELECT "id", "userName", "eMail", "password", "firstName", "lastName", "created_at", "updated_at" FROM "Users" AS "User" LIMIT 1;')
+      .all()
+      // .sequelize.query('SELECT "userId", "userName", "email", "password", "firstName", "lastName", "createdAt", "updatedAt" FROM "Users" AS "User" LIMIT 1;')
       .then((user) => {
-        user = user[0][0];
         if (!user) {
           return res.status(404).send({
             message: 'User Not Found',
@@ -75,51 +74,55 @@ export default {
     return User
       .create({
         userName: req.body.userName,
-        eMail: req.body.eMail,
+        email: req.body.email,
         password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8)),
         firstName: req.body.firstName,
         lastName: req.body.lastName,
       })
-      .then(user => res.status(201).send(user))
+      .then(user => res.status(201).send(user.userName))
       .catch(error => res.status(403).send(error));
   },
 
   login(req, res) {
     return User
-    //   .all()
-      .sequelize.query('SELECT "id", "userName", "eMail", "password", "firstName", "lastName", "created_at", "updated_at" FROM "Users" WHERE "userName" LIKE \''.concat(req.body.userName, '\''))
+      .findOne(req.params.userName)
+      // .sequelize.query('SELECT "userId", "userName", "email", "password", "firstName", "lastName", "createdAt", "updatedAt" FROM "Users" WHERE "userName" LIKE \''.concat(req.body.userName || req.query.userName, '\''))
       .then((user) => {
-        user = user[0][0];
         if (!user) {
           return res.status(404).send({
             message: 'User Not Found',
           });
         }
         // password check
-        if (!bcrypt.compareSync(req.body.password, user.password)) {
+        if (!bcrypt.compareSync(req.body.password || req.query.password, user.password)) {
           return res.status(401).json({ message: 'The username and password do not match our record.' });
         }
         // create a token with only our given payload
-        const token = jwt.sign({ email: user.eMail, fullName: user.fullName, id: user.id }, 'RESTFULAPIs', {
-          expiresIn: 100 // expires in 24 hours
-        });
+        const token = jwt.sign(
+          { email: user.email, fullName: user.fullName, userId: user.userId },
+          process.env.JWT_SEC_KEY,
+          {
+            expiresIn: 1440 // expires in 24 hours
+          }
+        );
 
-        req.token = token;
+        req.query.token = token;
+        req.body.token = token;
 
         // return the information including token as JSON
         res.json({
           success: true,
-          message: 'Enjoy your token!',
+          message: 'User authenticated',
           token
         });
 
-        return res.status(200).send(user);
+        return res.status(200).send({ user, token });
       });
   },
 
   update(req, res) {
     return User
-      .findById(req.params.Id)
+      .findById(req.params.userId)
       .then((user) => {
         if (!user) {
           return res.status(404).send({

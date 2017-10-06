@@ -1,12 +1,12 @@
 module.exports = (sequelize, DataTypes) => {
   const Catalogue = sequelize.define('Catalogue', {
-    id: {
+    catalogueId: {
       type: DataTypes.UUID,
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false
     },
-    user_id: {
+    userId: {
       type: DataTypes.UUID,
       allowNull: false
     },
@@ -32,8 +32,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 0,
     }
-  }, {
-    underscored: true
+  // }, {
+  //   underscored: true
   });
 
   Catalogue.associate = (models) => {

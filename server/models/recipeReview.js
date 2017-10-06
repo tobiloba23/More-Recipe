@@ -1,16 +1,16 @@
 module.exports = (sequelize, DataTypes) => {
   const RecipeReview = sequelize.define('RecipeReview', {
-    id: {
+    recipeReviewId: {
       type: DataTypes.UUID,
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
       allowNull: false
     },
-    user_id: {
+    userId: {
       type: DataTypes.UUID,
       allowNull: false
     },
-    recipe_id: {
+    recipeId: {
       type: DataTypes.UUID,
       allowNull: false
     },
@@ -19,18 +19,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     comment: {
       type: DataTypes.STRING
-    },
-    // commenter_email: {
-    //   type: DataTypes.STRING,
-    //   required: true
-    // },
-    // status: {
-    //   type: DataTypes.ENUM,
-    //   values: ['approved', 'rejected', 'in review']
-
-    // }
-  }, {
-    underscored: true
+    }
+  // }, {
+  //   underscored: true
   });
 
   RecipeReview.associate = (models) => {

@@ -1,5 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
   const UserRole = sequelize.define('UserRole', {
+    userRoleId: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false
+    },
     userId: {
       type: DataTypes.UUID,
       allowNull: false

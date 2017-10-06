@@ -1,5 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
   const RecipeCatalogue = sequelize.define('RecipeCatalogue', {
+    recipeCatalogueId: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false
+    },
     userId: {
       type: DataTypes.UUID,
       allowNull: false

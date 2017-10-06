@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Recipe = sequelize.define('Recipe', {
-    id: {
+    recipeId: {
       type: DataTypes.UUID,
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       required: true
     },
-    dscription: {
+    description: {
       type: DataTypes.TEXT,
       required: true
     },
@@ -28,8 +28,8 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       defaultValue: 0,
     }
-  }, {
-    underscored: true
+  // }, {
+  //   underscored: true
   });
 
   Recipe.associate = (models) => {

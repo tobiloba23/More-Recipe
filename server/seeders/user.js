@@ -1,7 +1,5 @@
 import bcrypt from 'bcrypt-nodejs';
-import dotenv from 'dotenv';
 
-dotenv.load();
 module.exports = {
   up(queryInterface/* , Sequelize */) {
     /*

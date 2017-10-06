@@ -5,7 +5,7 @@ export default (req, res, next) => {
   // decode token
   if (token) {
     // verifies secret and checks exp
-    jwt.verify(token, global.config.secret, (err, decoded) => {
+    jwt.verify(token, process.env.JWT_SEC_KEY, (err, decoded) => {
       if (err) {
         return res.json({ error: true, message: 'Failed to authenticate token.' });
       }

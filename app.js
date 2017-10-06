@@ -2,10 +2,14 @@ import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import path from 'path';
+import dotenv from 'dotenv';
+
 // import tokenValid from './server/auth/local';
 import apiRoutesv1 from './server/routes/api/v1';
 import apiRoutesv2 from './server/routes/api/v2';
 import pageLoaderRoutes from './server/routes/pageLoader';
+
+dotenv.config();
 
 const app = express();
 

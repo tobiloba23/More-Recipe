@@ -1,7 +1,7 @@
 module.exports = {
   up: (queryInterface, Sequelize) =>
     queryInterface.createTable('Users', {
-      id: {
+      userId: {
         allowNull: false,
         // autoIncrement: true,
         primaryKey: true,
@@ -11,7 +11,7 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true
       },
-      eMail: {
+      email: {
         type: Sequelize.STRING,
         unique: true
       },
@@ -27,11 +27,11 @@ module.exports = {
       phoneNo: {
         type: Sequelize.STRING
       },
-      created_at: {
+      createdAt: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updated_at: {
+      updatedAt: {
         allowNull: false,
         type: Sequelize.DATE
       }

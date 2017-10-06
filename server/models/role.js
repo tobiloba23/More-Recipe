@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Role = sequelize.define('Role', {
-    id: {
+    roleId: {
       type: DataTypes.UUID,
       primaryKey: true,
       defaultValue: DataTypes.UUIDV4,
@@ -10,8 +10,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       required: true
     }
-  }, {
-    underscored: true
   });
 
   Role.associate = (models) => {

@@ -81,9 +81,7 @@ export default {
           }
         );
 
-        req.query.token = token;
-        req.body.token = token;
-        req.header['x-access-token'] = token;
+        res.header['x-auth'] = token;
 
         // return the information including token as JSON
         res.json({

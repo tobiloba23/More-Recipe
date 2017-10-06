@@ -4,7 +4,7 @@
   "description": "An interactive platform for cooks and food lovers",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon ./dist/app.js",
+    "start": "npm run build && nodemon ./dist/app.js",
     "build": "babel ./server -d dist",
     "coverage": "nyc report -- report=text-lcov | coveralls",
     "start:dev": "nodemon --watch server --exec babel-node  -- app.js",

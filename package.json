@@ -4,7 +4,9 @@
   "description": "An interactive platform for cooks and food lovers",
   "main": "index.js",
   "scripts": {
-    "start:dev": "nodemon --watch server --exec babel-node  -- app.js"
+    "start:dev": "nodemon --watch server --exec babel-node  -- app.js",
+    "test": "mocha --compilers js:babel-core/register ./server/tests/ApiTests.js \"Apitests/**/*@(.js|.jsx)\"",
+    "sequelize:dev": "sequelize --compilers js:babel-core/register "
   },
   "repository": {
     "type": "git",
@@ -17,18 +19,28 @@
   },
   "homepage": "https://github.com/tobiloba23/More-Recipe#readme",
   "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
+    "chai": "^4.1.2",
+    "dotenv": "^4.0.0",
     "express": "^4.15.5",
+    "express-route-validator": "^0.2.5",
     "join-path": "^1.1.1",
     "jquery": "^3.2.1",
     "jsonfile": "^4.0.0",
+    "jsonwebtoken": "^8.0.1",
+    "moment": "^2.18.1",
     "morgan": "^1.9.0",
     "pg": "^7.3.0",
     "pg-hstore": "^2.3.2",
     "popper.js": "^1.12.5",
     "sequelize": "^4.13.2",
+    "should": "^13.1.0",
+    "supertest": "^3.0.0",
     "sync-exec": "^0.6.2",
     "uglifyjs-webpack-plugin": "^0.4.6",
+    "validatejs": "0.0.2",
     "webpack": "^3.6.0"
   },
   "devDependencies": {
@@ -43,6 +55,8 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.4.0",
+    "grunt-mocha-test": "^0.13.3",
+    "mocha": "^4.0.0",
     "nodemon": "^1.12.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",

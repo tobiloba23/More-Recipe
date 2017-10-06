@@ -1,14 +1,19 @@
-export default {
+module.exports = {
   up: (queryInterface, Sequelize) =>
-    queryInterface.createTable('Recipes', {
-      id: {
+    queryInterface.createTable('Catalogues', {
+      catalogueId: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.UUID
       },
       title: {
         type: Sequelize.STRING
+      },
+      upvotes: {
+        type: Sequelize.INTEGER
+      },
+      downvotes: {
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -18,25 +23,17 @@ export default {
         allowNull: false,
         type: Sequelize.DATE
       },
-      catalogueId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'Catalogues',
-          key: 'id',
-          as: 'catalogueId',
-        }
-      },
       userId: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.UUID,
         onDelete: 'CASCADE',
         references: {
           model: 'Users',
-          key: 'id',
+          key: 'userId',
           as: 'userId',
         }
-      }
+      },
     }),
   down: (queryInterface/* , Sequelize */) => {
-    queryInterface.dropTable('Recipes');
+    queryInterface.dropTable('Catalogues');
   }
 };

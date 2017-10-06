@@ -1,46 +1,56 @@
-/**
- * Defines a recipe item.
- */
-export default class Recipe {
-/**
- * @param {int} sequelize Defines an ORM link from the Recipe class to the PosgreSQL table.
- * @param {int} DataTypes Holds an array of Datatypes for all the fields in the db table.
- */
-  constructor(sequelize, DataTypes) {
-    sequelize.define(
-      'Recipe',
-      {
-        title: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
-        upvotes: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue: 0,
-        },
-        downvotes: {
-          type: DataTypes.INTEGER,
-          allowNull: false,
-          defaultValue: 0,
-        }
-      }
-    );
+module.exports = (sequelize, DataTypes) => {
+  const Recipe = sequelize.define('Recipe', {
+    recipeId: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false
+    },
+    title: {
+      type: DataTypes.TEXT,
+      required: true
+    },
+    description: {
+      type: DataTypes.TEXT,
+      required: true
+    },
+    instructions: {
+      type: DataTypes.TEXT,
+      required: true
+    },
+    upvotes: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    },
+    downvotes: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 0,
+    }
+  // }, {
+  //   underscored: true
+  });
 
-    this.associate = (models) => {
-      this.hasMany(models.RecipeReview, {
-        foreignKey: 'reviewId',
-        as: 'recipeReviews',
-      });
-      this.hasOne(models.User, {
-        foreignKey: 'userId',
-        as: 'author',
-        onDelete: 'CASCADE',
-      });
-      this.hasMany(models.Catalogue, {
-        foreignKey: 'catalogueId',
-        as: 'recipeCatalogues',
-      });
-    };
-  }
-}
+  Recipe.associate = (models) => {
+    Recipe.hasMany(models.RecipeReview, {
+      foreignKey: 'recipeId',
+      as: 'recipeReviews',
+    });
+    Recipe.hasMany(models.UserFavourite, {
+      foreignKey: 'recipeId',
+      as: 'userFavourites',
+    });
+    Recipe.hasMany(models.RecipeCatalogue, {
+      foreignKey: 'recipeId',
+      as: 'recipeCatalogues',
+    });
+
+    Recipe.belongsTo(models.User, {
+      foreignKey: 'recipeId',
+      onDelete: 'CASCADE',
+    });
+  };
+
+  return Recipe;
+};

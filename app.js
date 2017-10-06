@@ -2,16 +2,21 @@ import express from 'express';
 import logger from 'morgan';
 import bodyParser from 'body-parser';
 import path from 'path';
+import dotenv from 'dotenv';
+
+// import tokenValid from './server/auth/local';
 import apiRoutesv1 from './server/routes/api/v1';
 import apiRoutesv2 from './server/routes/api/v2';
 import pageLoaderRoutes from './server/routes/pageLoader';
+
+dotenv.config();
 
 const app = express();
 
 // Log requests to the console.
 app.use(logger('dev'));
 
-const port = parseInt(process.env.PORT, 10) || 8000;
+const port = parseInt(process.env.PORT, 10) || 8080;
 
 app.set('Port', port);
 
@@ -23,6 +28,9 @@ app.use((req, res, next) => {
 
 // middle-ware that sets public folder as the default directory
 app.use(express.static(path.join(__dirname, '/client')));
+
+// // middle-ware that
+// app.use(tokenValid);
 
 
 // Set other static directories before defining routes

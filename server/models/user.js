@@ -1,43 +1,59 @@
-/**
- * Defines a recipe item.
- */
-export default class User {
-/**
- * @param {int} sequelize Defines an ORM link from the Recipe class to the PosgreSQL table.
- * @param {int} DataTypes Holds an array of Datatypes for all the fields in the db table.
- */
-  constructor(sequelize, DataTypes) {
-    sequelize.define(
-      'Recipe',
-      {
-        userName: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
-        eMail: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        },
-        password: {
-          type: DataTypes.STRING,
-          allowNull: false,
-        }
-      }
-    );
+module.exports = (sequelize, DataTypes) => {
+  const User = sequelize.define('User', {
+    userId: {
+      type: DataTypes.UUID,
+      primaryKey: true,
+      defaultValue: DataTypes.UUIDV4,
+      allowNull: false
+    },
+    userName: {
+      type: DataTypes.STRING,
+      required: true
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    firstName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    }
+  });
 
-    this.associate = (models) => {
-      this.hasMany(models.RecipeReview, {
-        foreignKey: 'reviewId',
-        as: 'recipeReviews',
-      });
-      this.hasMany(models.Recipe, {
-        foreignKey: 'recipeId',
-        as: 'recipes',
-      });
-      this.hasMany(models.Catalogue, {
-        foreignKey: 'catalogueId',
-        as: 'recipeCatalogues',
-      });
-    };
-  }
-}
+  User.associate = (models) => {
+    User.hasMany(models.RecipeReview, {
+      foreignKey: 'userId',
+      as: 'recipeReviews',
+    });
+    User.hasMany(models.Recipe, {
+      foreignKey: 'userId',
+      as: 'recipes',
+    });
+    User.hasMany(models.Catalogue, {
+      foreignKey: 'userId',
+      as: 'recipeCatalogues',
+    });
+    User.hasMany(models.CatalogueReview, {
+      foreignKey: 'userId',
+      as: 'catalogueReviews',
+    });
+    User.hasMany(models.UserFavourite, {
+      foreignKey: 'userId',
+      as: 'userFavourites',
+    });
+    User.hasMany(models.UserRole, {
+      foreignKey: 'userId',
+      as: 'userRoles',
+    });
+  };
+
+  return User;
+};

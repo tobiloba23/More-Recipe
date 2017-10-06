@@ -33,6 +33,10 @@ export default {
   },
 
   create(req, res) {
+    if (!req.body.coomment && !req.body.vote) {
+      return res.status(400).json({ error: 'User must vote or leave a comment' });
+    }
+
     return RecipeReview
       .create({
         comment: req.body.comment,
@@ -45,6 +49,9 @@ export default {
   },
 
   update(req, res) {
+    if (!req.body.coomment && !req.body.vote) {
+      return res.status(400).json({ error: 'User must vote or leave a comment' });
+    }
     return RecipeReview
       .find({
         where: {
@@ -55,7 +62,7 @@ export default {
       .then((recipeReview) => {
         if (!recipeReview) {
           return res.status(404).send({
-            message: 'TodoItem Not Found',
+            message: 'Review Not Found',
           });
         }
 
@@ -81,7 +88,7 @@ export default {
       .then((recipeReview) => {
         if (!recipeReview) {
           return res.status(404).send({
-            message: 'TodoItem Not Found',
+            message: 'Review Not Found',
           });
         }
 

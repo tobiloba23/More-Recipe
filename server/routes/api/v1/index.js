@@ -31,7 +31,7 @@ router.route('/recipes/:recipeId/reviews')
 //   .post(usersController.login);
 
 
-// For any other request method on todo items, we're going to return "Method Not Allowed"
+// For any other request method on recipes, we're going to return "Method Not Allowed"
 router.route('/recipes/:recipeId/reviews').all((req, res) =>
   res.status(405).send({
     message: 'Method Not Allowed',

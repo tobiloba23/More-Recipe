@@ -1,3 +1,4 @@
+import validator from 'validatorjs';
 import models from '../../../models/';
 
 const { Recipe } = models;
@@ -10,7 +11,6 @@ export default {
 
     return Recipe
       .findAll()
-      // .sequelize.query('SELECT "id", "title", "description", "instructions", "upvotes", "downvotes", "createdAt", "updatedAt", "userId" FROM "Recipes";')
       .then((recipe) => {
         if (!recipe) {
           return res.status(404).send({
@@ -62,6 +62,15 @@ export default {
   },
 
   create(req, res) {
+    const rules = {
+      title: 'required|string'
+    };
+
+    const isValid = new validator(req.body, rules);
+    if (isValid.fails()) {
+      return res.json({ error: isValid.errors.all() });
+    }
+
     return Recipe
       .create({
         title: req.body.title,
@@ -73,9 +82,17 @@ export default {
   },
 
   update(req, res) {
+    const rules = {
+      title: 'required|string'
+    };
+
+    const isValid = new validator(req.body, rules);
+    if (isValid.fails()) {
+      return res.json({ error: isValid.errors.all() });
+    }
+
     return Recipe
       .findById(req.params.recipeId)
-      // .sequelize.query('SELECT "recipeId", "title", "description", "instructions", "upvotes", "downvotes", "createdAt", "updatedAt", "userId" FROM "Recipes" WHERE "id" LIKE \''.concat(req.params.recipeId, '\''))
       .then((recipe) => {
         if (!recipe) {
           return res.status(404).send({
@@ -85,7 +102,7 @@ export default {
 
         return recipe
           .update(req.body, { fields: Object.keys(req.body) })
-          .then(updatedTodoItem => res.status(200).send(updatedTodoItem))
+          .then(updatedRecipe => res.status(200).send(updatedRecipe))
           .catch(error => res.status(400).send(error));
       })
       .catch(error => res.status(400).send(error));
@@ -98,7 +115,6 @@ export default {
           recipeId: req.params.recipeId,
         }
       })
-      // .sequelize.query('SELECT "recipeId", "title", "description", "instructions", "upvotes", "downvotes", "createdAt", "updatedAt", "userId" FROM "Recipes" WHERE "recipeId" LIKE \''.concat(req.params.recipeId, '\''))
       .then((recipe) => {
         if (!recipe) {
           return res.status(404).send({
@@ -108,7 +124,7 @@ export default {
 
         return recipe
           .destroy()
-          .then(updatedTodoItem => res.status(200).send(updatedTodoItem))
+          .then(deletedRecipe => res.status(200).send('The recipe listed below has just been deleted'.concat(deletedRecipe)))
           .catch(error => res.status(400).send(error));
       })
       .catch(error => res.status(400).send(error));

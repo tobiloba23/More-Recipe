@@ -1,64 +1,14 @@
 import bcrypt from 'bcrypt-nodejs';
 import jwt from 'jsonwebtoken';
+import validator from 'validatorjs';
 import models from '../../../models/';
 
 const { User } = models;
 
 export default {
   list(req, res) {
-    // let returnData;
-    // let offset = 0;
-    // let count = 500;
-
-    // if (req.query && req.query.offset) {
-    //   offset = parseInt(req.query.offset, 10);
-    // }
-
-    // if (req.query && req.query.count) {
-    //   count = parseInt(req.query.count, 10);
-    // }
-
-    // if (User) returnData = User.slice(offset, offset + count);
-
-    // if (req.query && req.query.sort) {
-    //   if (req.query.order && req.query.order === 'asc') {
-    //     returnData.sort((a, b) => a.upvotes - b.upvotes);
-    //   } else if (req.query.order && req.query.order === 'desc') {
-    //     returnData.sort((a, b) => b.upvotes - a.upvotes);
-    //   } else {
-    //     res.status(404).send('Not Found: Order of sorting does not exist.');
-    //   }
-    // }
-
-
-    // return User
-    //   .all({
-    //     include: [{
-    //       model: RecipeReview,
-    //       as: 'recipeReviews',
-    //     }, {
-    //       model: Recipe,
-    //       as: 'recipes',
-    //     }, {
-    //       model: RecipeCatalogue,
-    //       as: 'recipeCatalogues',
-    //     }, {
-    //       model: CatalogueReview,
-    //       as: 'catalogueReviews',
-    //     }, {
-    //       model: UserFavourites,
-    //       as: 'userFavourites',
-    //     }, {
-    //       model: UserRoles,
-    //       as: 'userRoles',
-    //     }, {
-
-    //     }]
-    //   })
-
     return User
       .all()
-      // .sequelize.query('SELECT "userId", "userName", "email", "password", "firstName", "lastName", "createdAt", "updatedAt" FROM "Users" AS "User" LIMIT 1;')
       .then((user) => {
         if (!user) {
           return res.status(404).send({
@@ -71,6 +21,22 @@ export default {
   },
 
   signup(req, res) {
+    const rules = {
+      userName: 'required|string',
+      email: 'required|email',
+      /* Minimum 8 and maximum 16 characters, at least one uppercase letter,
+      one lowercase letter, one number and one special character */
+      password: 'required|alpha_dash',
+      passwordConfirmation: 'required|same:password',
+      firstName: 'required|string',
+      lastName: 'required|string',
+    };
+
+    const isValid = new validator(req.body, rules);
+    if (isValid.fails()) {
+      return res.json({ error: isValid.errors.all() });
+    }
+
     return User
       .create({
         userName: req.body.userName,
@@ -84,9 +50,18 @@ export default {
   },
 
   login(req, res) {
+    const rules = {
+      userName: 'required|string',
+      password: ['required', '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,16}'],
+    };
+
+    const isValid = new validator(req.body, rules);
+    if (isValid.fails()) {
+      return res.json({ error: isValid.errors.all() });
+    }
+
     return User
       .findOne(req.params.userName)
-      // .sequelize.query('SELECT "userId", "userName", "email", "password", "firstName", "lastName", "createdAt", "updatedAt" FROM "Users" WHERE "userName" LIKE \''.concat(req.body.userName || req.query.userName, '\''))
       .then((user) => {
         if (!user) {
           return res.status(404).send({
@@ -94,8 +69,8 @@ export default {
           });
         }
         // password check
-        if (!bcrypt.compareSync(req.body.password || req.query.password, user.password)) {
-          return res.status(401).json({ message: 'The username and password do not match our record.' });
+        if (!bcrypt.compareSync(req.body.password.trim() || req.query.password, user.password)) {
+          return res.status(401).json({ message: 'The username and password do not match our records.' });
         }
         // create a token with only our given payload
         const token = jwt.sign(
@@ -131,7 +106,7 @@ export default {
         }
         return user
           .update({ fields: Object.keys(req.body) })
-          .then(() => res.status(200).send(user)) // Send back the updated user.
+          .then(() => res.status(200).send(user))
           .catch(error => res.status(400).send(error));
       })
       .catch(error => res.status(400).send(error));

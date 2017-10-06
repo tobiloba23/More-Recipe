@@ -30,10 +30,10 @@ router.route('/recipes/:recipeId/')
   .delete(jwt, recipesController.delete);
 
 router.route('/recipes/:recipeId/reviews')
-  .get(jwt, recipesReviewsController.list)
+  .get(recipesReviewsController.list)
   .post(jwt, recipesReviewsController.create);
 router.route('/recipes/:id/reviews/:reviewId')
-  .get(jwt, recipesReviewsController.listOne)
+  .get(recipesReviewsController.listOne)
   .put(jwt, recipesReviewsController.update)
   .delete(jwt, recipesReviewsController.delete);
 
@@ -49,7 +49,7 @@ router.route('/users/:userId/recipes')
   .get(jwt, userFavouritesController.list)
   .post(jwt, userFavouritesController.create);
 
-// // For any other request method on todo items, we're going to return "Method Not Allowed"
+// // For any other request method on recipes, we're going to return "Method Not Allowed"
 // router.route('/recipes/:id/reviews').all((req, res) =>
 //   res.status(405).send({
 //     message: 'Method Not Allowed',

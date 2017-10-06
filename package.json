@@ -4,6 +4,9 @@
   "description": "An interactive platform for cooks and food lovers",
   "main": "index.js",
   "scripts": {
+    "start": "nodemon ./dist/app.js",
+    "build": "babel ./server -d dist",
+    "coverage": "nyc report -- report=text-lcov | coveralls",
     "start:dev": "nodemon --watch server --exec babel-node  -- app.js",
     "test": "mocha --compilers js:babel-core/register ./server/tests/ApiTests.js \"Apitests/**/*@(.js|.jsx)\"",
     "sequelize:dev": "sequelize --compilers js:babel-core/register "
@@ -23,7 +26,6 @@
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
     "chai": "^4.1.2",
-    "coveralls": "^3.0.0",
     "dotenv": "^4.0.0",
     "express": "^4.15.5",
     "express-route-validator": "^0.2.5",
@@ -33,7 +35,6 @@
     "jsonwebtoken": "^8.0.1",
     "moment": "^2.18.1",
     "morgan": "^1.9.0",
-    "nyc": "^11.2.1",
     "pg": "^7.3.0",
     "pg-hstore": "^2.3.2",
     "popper.js": "^1.12.5",

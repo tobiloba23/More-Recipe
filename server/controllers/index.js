@@ -1,8 +1,12 @@
-import recipes from './recipes';
-import recipeReviews from './recipeReviews';
+import recipesApi from './api/recipes';
+import recipeReviewsApi from './api/recipeReviews';
+import recipesPage from './pageLoader/recipes';
+import recipeReviewsPage from './pageLoader/recipeReviews';
 
 export default {
-  recipes,
-  recipeReviews
+  recipesApi,
+  recipeReviewsApi,
+  recipesPage,
+  recipeReviewsPage
 };
 

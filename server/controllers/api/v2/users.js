@@ -49,10 +49,10 @@ export default {
       .catch(error => res.status(403).send(error));
   },
 
-  login(req, res) {
+  signin(req, res) {
     const rules = {
       userName: 'required|string',
-      password: ['required', '^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,16}'],
+      password: 'required|alpha_dash',
     };
 
     const isValid = new validator(req.body, rules);
@@ -83,6 +83,7 @@ export default {
 
         req.query.token = token;
         req.body.token = token;
+        req.header['x-access-token'] = token;
 
         // return the information including token as JSON
         res.json({

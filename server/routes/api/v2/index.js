@@ -40,7 +40,7 @@ router.route('/recipes/:id/reviews/:reviewId')
 
 // Authentication
 router.route('/users/signup').post(usersController.signup);
-router.route('/users/signin').post(usersController.login);
+router.route('/users/signin').post(usersController.signin);
 router.route('/users').get(jwt, usersController.list);
 
 

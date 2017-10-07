@@ -12,14 +12,7 @@ let sequelize;
 console.log(process.env.HEROKU_POSTGRESQL_BRONZE_URL);
 
 if (configEnv.use_env_variable) {
-  const match = configEnv.use_env_variable.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);  
-  sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_BRONZE_URL, {
-    dialect: 'postgres',
-    protocol: 'postgres',
-    port: match[4],
-    host: match[3],
-    logging: true
-  });
+  sequelize = new Sequelize(process.env[config.use_env_variable]);
 } else {
   sequelize =
 new Sequelize(configEnv.database, configEnv.username, configEnv.password, configEnv);

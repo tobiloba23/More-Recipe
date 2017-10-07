@@ -8,7 +8,9 @@ const env = process.env.NODE_ENV || 'development';
 const configEnv = config[env];
 const db = {};
 let sequelize;
-
+console.log(configEnv);
+console.log(configEnv.use_env_variable);
+console.log(process.env.DATABASE_URL);
 if (configEnv.use_env_variable) {
   sequelize = new Sequelize(configEnv.use_env_variable);
 } else {

@@ -8,11 +8,18 @@ const env = process.env.NODE_ENV || 'development';
 const configEnv = config[env];
 const db = {};
 let sequelize;
-console.log(configEnv);
-console.log(configEnv.use_env_variable);
-console.log(process.env.DATABASE_URL);
+
+console.log(process.env.HEROKU_POSTGRESQL_BRONZE_URL);
+
 if (configEnv.use_env_variable) {
-  sequelize = new Sequelize(configEnv.use_env_variable);
+  const match = configEnv.use_env_variable.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);  
+  sequelize = new Sequelize(process.env.HEROKU_POSTGRESQL_BRONZE_URL, {
+    dialect: 'postgres',
+    protocol: 'postgres',
+    port: match[4],
+    host: match[3],
+    logging: true
+  });
 } else {
   sequelize =
 new Sequelize(configEnv.database, configEnv.username, configEnv.password, configEnv);

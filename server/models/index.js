@@ -10,7 +10,14 @@ const db = {};
 let sequelize;
 
 if (configEnv.use_env_variable) {
-  sequelize = new Sequelize(process.env[configEnv.use_env_variable], configEnv);
+  const match = process.env.use_env_variable.match(/postgres:\/\/([^:]+):([^@]+)@([^:]+):(\d+)\/(.+)/);
+  sequelize = new Sequelize(match[5], match[1], match[2], {
+    dialect: 'postgres',
+    protocol: 'postgres',
+    port: match[4],
+    host: match[3],
+    logging: true // false
+  });
 } else {
   sequelize =
 new Sequelize(configEnv.database, configEnv.username, configEnv.password, configEnv);

@@ -25,6 +25,16 @@ module.exports = (sequelize, DataTypes) => {
     lastName: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+  }, {
+    instanceMethods: {
+      toJSON: () => {
+        const values = Object.assign({}, this.get());
+        console.log(values);
+        delete values.password;
+        console.log(values);
+        return values;
+      }
     }
   });
 

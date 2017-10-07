@@ -1,5 +1,5 @@
 import express from 'express';
-import jwt from '../../../auth/local';
+import jwt from '../../../middleware/auth/local';
 import Controller from '../../../controllers';
 
 const router = express.Router();
@@ -32,7 +32,7 @@ router.route('/recipes/:recipeId/')
 router.route('/recipes/:recipeId/reviews')
   .get(recipesReviewsController.list)
   .post(jwt, recipesReviewsController.create);
-router.route('/recipes/:id/reviews/:reviewId')
+router.route('/recipes/:recipeId/reviews/:reviewId')
   .get(recipesReviewsController.listOne)
   .put(jwt, recipesReviewsController.update)
   .delete(jwt, recipesReviewsController.delete);
@@ -42,6 +42,7 @@ router.route('/recipes/:id/reviews/:reviewId')
 router.route('/users/signup').post(usersController.signup);
 router.route('/users/signin').post(usersController.signin);
 router.route('/users').get(jwt, usersController.list);
+router.route('/users/:userId').get(jwt, usersController.listOne);
 
 
 // User Favourites

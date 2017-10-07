@@ -13,7 +13,8 @@ export default {
       .findAll()
       .then((recipe) => {
         if (!recipe) {
-          return res.status(404).send({
+          return res.status(204).json({
+            statusCode: 204,
             message: 'No Recipe Found, please create one. Thank you.',
           });
         }
@@ -35,7 +36,10 @@ export default {
             } else if (req.query.order && req.query.order === 'desc') {
               returnData.sort((a, b) => b.upvotes - a.upvotes);
             } else {
-              res.status(404).send('Not Found: Order of sorting does not exist.');
+              res.status(204).json({
+                statusCode: 204,
+                message: 'Not Found: Order of sorting does not exist.'
+              });
             }
           }
           if (req.query.sort === 'downvotes') {
@@ -44,21 +48,36 @@ export default {
             } else if (req.query.order && req.query.order === 'desc') {
               returnData.sort((a, b) => b.downvotes - a.downvotes);
             } else {
-              res.status(404).send('Not Found: Order of sorting does not exist.');
+              res.status(404).json({
+                statusCode: 404,
+                message: 'Not Found: Order of sorting does not exist.'
+              });
             }
           }
         }
 
-        return res.status(200).send(returnData);
+        return res.status(200).json({
+          statusCode: 200,
+          returnData
+        });
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).json({
+        statusCode: 400,
+        error
+      }));
   },
 
   listOne(req, res) {
     return Recipe
       .findById(req.params.recipeId)
-      .then(user => res.status(201).send(user))
-      .catch(error => res.status(403).send(error));
+      .then(user => res.status(200).json({
+        statusCode: 200,
+        user
+      }))
+      .catch(error => res.status(400).json({
+        statusCode: 400,
+        error
+      }));
   },
 
   create(req, res) {
@@ -68,7 +87,10 @@ export default {
 
     const isValid = new validator(req.body, rules);
     if (isValid.fails()) {
-      return res.json({ error: isValid.errors.all() });
+      return res.json({
+        statusCode: 401,
+        error: isValid.errors.all()
+      });
     }
 
     return Recipe
@@ -76,9 +98,16 @@ export default {
         title: req.body.title,
         description: req.body.description,
         instructions: req.body.instructions,
+        userId: req.decoded.id,
       })
-      .then(user => res.status(201).send(user))
-      .catch(error => res.status(403).send(error));
+      .then(user => res.status(201).json({
+        statusCode: 201,
+        user
+      }))
+      .catch(error => res.status(400).json({
+        statusCode: 400,
+        error
+      }));
   },
 
   update(req, res) {
@@ -95,17 +124,29 @@ export default {
       .findById(req.params.recipeId)
       .then((recipe) => {
         if (!recipe) {
-          return res.status(404).send({
+          return res.status(404).json({
+            statusCode: 404,
             message: 'Recipe Not Found',
+          });
+        }
+        if (recipe.userId !== req.decoded.id) {
+          return res.status(401).json({
+            statusCode: 401,
+            message: 'You are not authorized to edit this recipe',
           });
         }
 
         return recipe
           .update(req.body, { fields: Object.keys(req.body) })
-          .then(updatedRecipe => res.status(200).send(updatedRecipe))
-          .catch(error => res.status(400).send(error));
+          .then(updatedRecipe => res.status(202).json({
+            statusCode: 202,
+            updatedRecipe
+          }));
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).json({
+        statusCode: 400,
+        error
+      }));
   },
 
   delete(req, res) {
@@ -117,16 +158,30 @@ export default {
       })
       .then((recipe) => {
         if (!recipe) {
-          return res.status(404).send({
+          return res.status(404).json({
+            statusCode: 404,
             message: 'Recipe Not Found',
           });
         }
+        if (recipe.userId !== req.decoded.id) {
+          return res.status(401).json({
+            statusCode: 401,
+            message: 'You are not authorized to delete this recipe',
+          });
+        }
+
+        const deletedRecipe = recipe;
 
         return recipe
           .destroy()
-          .then(deletedRecipe => res.status(200).send('The recipe listed below has just been deleted'.concat(deletedRecipe)))
-          .catch(error => res.status(400).send(error));
+          .then(() => res.status(200).json({
+            statusCode: 200,
+            message: 'The recipe listed below has just been deleted'.concat(deletedRecipe)
+          }));
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(404).json({
+        statusCode: 404,
+        error
+      }));
   }
 };

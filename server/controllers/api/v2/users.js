@@ -8,16 +8,46 @@ const { User } = models;
 export default {
   list(req, res) {
     return User
-      .all()
+      .find({
+        attributes: ['userId', 'userName'],
+      })
       .then((user) => {
         if (!user) {
-          return res.status(404).send({
+          return res.status(404).json({
+            statusCode: 404,
             message: 'User Not Found',
           });
         }
-        return res.status(200).send(user);
+        return res.status(200).json({
+          statusCode: 200,
+          user
+        });
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).json({
+        statusCode: 400,
+        error
+      }));
+  },
+
+  listOne(req, res) {
+    return User
+      .findById(req.params.userId)
+      .then((user) => {
+        if (user.userId !== req.decoded.id) {
+          return res.status(401).json({
+            statusCode: 401,
+            message: 'You do not have access to view other users detailed information.',
+          });
+        }
+        res.status(200).json({
+          statusCode: 200,
+          user
+        });
+      })
+      .catch(error => res.status(400).json({
+        statusCode: 400,
+        error
+      }));
   },
 
   signup(req, res) {
@@ -41,12 +71,18 @@ export default {
       .create({
         userName: req.body.userName,
         email: req.body.email,
-        password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(8)),
+        password: bcrypt.hashSync(req.body.password.trim(), bcrypt.genSaltSync(8)),
         firstName: req.body.firstName,
         lastName: req.body.lastName,
       })
-      .then(user => res.status(201).send(user.userName))
-      .catch(error => res.status(403).send(error));
+      .then(user => res.status(201).json({
+        statusCode: 201,
+        message: 'User '.concat(user.userName, ' has successfully been created.')
+      }))
+      .catch(error => res.status(400).json({
+        statusCode: 400,
+        error
+      }));
   },
 
   signin(req, res) {
@@ -61,37 +97,47 @@ export default {
     }
 
     return User
-      .findOne(req.params.userName)
+      .find({
+        where: {
+          userName: req.body.userName
+        }
+      })
       .then((user) => {
         if (!user) {
-          return res.status(404).send({
+          return res.status(404).json({
+            statusCode: 404,
             message: 'User Not Found',
           });
         }
         // password check
-        if (!bcrypt.compareSync(req.body.password.trim() || req.query.password, user.password)) {
-          return res.status(401).json({ message: 'The username and password do not match our records.' });
+        if (!bcrypt.compareSync(req.body.password.trim(), user.password)) {
+          return res.status(404).json({
+            statusCode: 404,
+            message: 'The username and password do not match our records.'
+          });
         }
         // create a token with only our given payload
         const token = jwt.sign(
-          { email: user.email, fullName: user.fullName, userId: user.userId },
+          { id: user.userId },
           process.env.JWT_SEC_KEY,
           {
             expiresIn: 1440 // expires in 24 hours
           }
         );
 
-        res.header['x-auth'] = token;
-
         // return the information including token as JSON
-        res.json({
+
+        return res.json({
+          statusCode: 200,
           success: true,
           message: 'User authenticated',
           token
-        });
-
-        return res.status(200).send({ user, token });
-      });
+        }).status(200);
+      })
+      .catch(error => res.status(400).json({
+        statusCode: 404,
+        error
+      }));
   },
 
   update(req, res) {
@@ -99,16 +145,28 @@ export default {
       .findById(req.params.userId)
       .then((user) => {
         if (!user) {
-          return res.status(404).send({
+          return res.status(404).json({
             message: 'User Not Found',
           });
         }
+        if (user.userId !== req.decoded.id) {
+          return res.status(403).json({
+            statusCode: 403,
+            message: 'You cannot alter records that do not belong to you.',
+          });
+        }
+
         return user
           .update({ fields: Object.keys(req.body) })
-          .then(() => res.status(200).send(user))
-          .catch(error => res.status(400).send(error));
+          .then(() => res.status(202).json({
+            statusCode: 202,
+            user
+          }));
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).json({
+        statusCode: 400,
+        error
+      }));
   }
 };
 

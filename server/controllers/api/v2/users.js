@@ -68,7 +68,11 @@ export default {
 
     const isValid = new validator(req.body, rules);
     if (isValid.fails()) {
-      return res.json({ error: isValid.errors.all() });
+      return res.status(400).json({
+        statusCode: 400,
+        error: true,
+        message: isValid.errors.all()
+      });
     }
 
     return User

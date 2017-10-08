@@ -1,6 +1,9 @@
 import chai from 'chai';
 import supertest from 'supertest';
 import should from 'should';
+import models from '../../../models/';
+
+const { User } = models;
 
 // const { expect } = chai;
 
@@ -14,9 +17,18 @@ const server = supertest.agent('http://localhost:8080/api/v2');
 // UNIT test begin
 
 describe('SAMPLE unit test', () => {
+
+  before((done) => {
+    // Reset user mode before tests
+    User.remove({}, (err) => {
+      console.log(err);
+      done();
+    });
+  });
+
   let token = '';
   const exstnRecipeId = 'e4bb33e4-8db3-4e22-aaf6-4200dced502c';
-  const register_details = {
+  const registerDetails = {
     firstName: 'Rexford',
     lastName: 'Rexford',
     fullName: 'Rexford',
@@ -24,7 +36,7 @@ describe('SAMPLE unit test', () => {
     userName: 'username',
     password: '123@abc',
   };
-  const login_details = {
+  const loginDetails = {
     email_or_username: 'email@email.com',
     password: '123@abc',
     confirmPassword: '123@abc'
@@ -116,9 +128,14 @@ describe('SAMPLE unit test', () => {
     server
       .post('/users/signup?'.concat(registerNoFirstName))
       .expect('Content-type', /json/)
-      .expect(401)
+      .expect(400)
       .end((err, res) => {
-        token = res.decoded;
+        // HTTP status should be 400
+        res.body.statusCode.should.equal(400);
+        // Error key should be false.
+        if (res.body.error) res.body.error.should.equal(true);
+        // No token should be supplied
+        should.not.exist(res.decoded);
         done();
       });
   });
@@ -127,8 +144,83 @@ describe('SAMPLE unit test', () => {
   it('register should fail on no last name supplied', (done) => {
     server
       .post('/users/signup?'.concat(registerNoLastName))
+      .expect('Content-type', /json/)
+      .expect(400)
       .end((err, res) => {
-        token = res.decoded;
+        // HTTP status should be 400
+        res.body.statusCode.should.equal(400);
+        // Error key should be false.
+        if (res.body.error) res.body.error.should.equal(true);
+        // No token should be supplied
+        should.not.exist(res.decoded);
+        done();
+      });
+  });
+
+  // #6 register should fail on no email supplied
+  it('register should fail on no email supplied', (done) => {
+    server
+      .post('/users/signup?'.concat(registerNoEmail))
+      .expect('Content-type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        // HTTP status should be 400
+        res.body.statusCode.should.equal(400);
+        // Error key should be false.
+        if (res.body.error) res.body.error.should.equal(true);
+        // No token should be supplied
+        should.not.exist(res.decoded);
+        done();
+      });
+  });
+
+  // #7 register should fail on no password supplied
+  it('register should fail on no password supplied', (done) => {
+    server
+      .post('/users/signup?'.concat(registerNoPassword))
+      .expect('Content-type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        // HTTP status should be 400
+        res.body.statusCode.should.equal(400);
+        // Error key should be false.
+        if (res.body.error) res.body.error.should.equal(true);
+        // No token should be supplied
+        should.not.exist(res.decoded);
+        done();
+      });
+  });
+
+  // #8 register should fail on not email supplied
+  it('register should fail on no last name supplied', (done) => {
+    server
+      .post('/users/signup?'.concat(registerNotEmail))
+      .expect('Content-type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        // HTTP status should be 400
+        res.body.statusCode.should.equal(400);
+        // Error key should be false.
+        if (res.body.error) res.body.error.should.equal(true);
+        // No token should be supplied
+        should.not.exist(res.decoded);
+        done();
+      });
+  });
+
+  // #9 register should fail on not password supplied
+  it('register should fail on no last name supplied', (done) => {
+    server
+      .post('/users/signup?'.concat(registerNotPassword))
+      .expect('Content-type', /json/)
+      .expect(400)
+      .end((err, res) => {
+        // HTTP status should be 400
+        res.body.statusCode.should.equal(400);
+        // Error key should be false.
+        if (res.body.error) res.body.error.should.equal(true);
+        // No token should be supplied
+        should.not.exist(res.decoded);
         done();
       });
   });
@@ -139,106 +231,14 @@ describe('SAMPLE unit test', () => {
     server
       .get('/recipes?token='.concat(token))
       .expect('Content-type', /json/)
-      .expect(200)
+      .expect(400)
       .end((err, res) => {
-        // HTTP status should be 200
-        res.body.statusCode.should.equal(200);
+        // HTTP status should be 400
+        res.body.statusCode.should.equal(400);
         // Error key should be false.
-        if (res.body.error) res.body.error.should.equal(false);
-        done();
-      });
-  });
-
-
-  // #2 should return home page
-  it('should return recipes', (done) => {
-    // calling home page api
-    server
-      .get('/recipes?token='.concat(token))
-      .expect('Content-type', /json/)
-      .expect(200)
-      .end((err, res) => {
-      // HTTP status should be 200
-        res.body.statusCode.should.equal(200);
-        // Error key should be false.
-        if (res.body.error) res.body.error.should.equal(false);
-        done();
-      });
-  });
-
-
-  // #1 should return home page
-  it('should return recipes', (done) => {
-    // calling home page api
-    server
-      .get('/recipes?token='.concat(token))
-      .expect('Content-type', /json/)
-      .expect(200)
-      .end((err, res) => {
-      // HTTP status should be 200
-        res.body.statusCode.should.equal(200);
-        // Error key should be false.
-        if (res.body.error) res.body.error.should.equal(false);
-        done();
-      });
-  });
-
-  // #2 sholud return 404
-  it('should return 404', (done) => {
-    server
-      .get('/random')
-      .expect(404)
-      .end((err, res) => {
-        res.status.should.equal(404);
-        res.body.should.c('Cannot GET /api/v2/random');
-        done();
-      });
-  });
-
-  // #1 should return home page
-  it('should return recipes', (done) => {
-    // calling home page api
-    server
-      .get('/recipes?token='.concat(token))
-      .expect('Content-type', /json/)
-      .expect(200)
-      .end((err, res) => {
-        // HTTP status should be 200
-        res.status.should.equal(200);
-        // HTTP status should be 200
-        res.body.statusCode.should.equal(200);
-        // Error key should be false.
-        if (res.body.error) res.body.error.should.equal(false);
-        done();
-      });
-  });
-
-  it('should add two number', (done) => {
-    // calling ADD api
-    server
-      .post('/add')
-      .send({ num1: 10, num2: 20 })
-      .expect('Content-type', /json/)
-      .expect(200)
-      .end((err, res) => {
-        res.status.should.equal(200);
-        res.body.error.should.equal(false);
-        res.body.data.should.equal(30);
-        done();
-      });
-  });
-
-  it('should add two number', (done) => {
-    // calling ADD api
-    server
-      .post('/add')
-      .send({ num1: 10, num2: 20 })
-      .expect('Content-type', /json/)
-      .expect(200)
-      .end((err, res) => {
-        res.status.should.equal(200);
-        res.body.error.should.equal(false);
-        res.body.data.should.equal(40);
+        if (res.body.error) res.body.error.should.equal(true);
+        // No token should be supplied
+        should.not.exist(res.decoded);
         done();
       });
   });

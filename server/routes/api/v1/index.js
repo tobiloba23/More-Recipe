@@ -34,6 +34,8 @@ router.route('/recipes/:recipeId/reviews')
 // For any other request method on recipes, we're going to return "Method Not Allowed"
 router.route('/recipes/:recipeId/reviews').all((req, res) =>
   res.status(405).send({
+    statusCode: 405,
+    error: true,
     message: 'Method Not Allowed',
   }));
 

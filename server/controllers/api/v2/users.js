@@ -15,12 +15,14 @@ export default {
         if (!user) {
           return res.status(404).json({
             statusCode: 404,
+            error: true,
             message: 'User Not Found',
           });
         }
         return res.status(200).json({
           statusCode: 200,
-          user
+          message: 'All users',
+          data: user
         });
       })
       .catch(error => res.status(400).json({
@@ -36,12 +38,14 @@ export default {
         if (user.userId !== req.decoded.id) {
           return res.status(401).json({
             statusCode: 401,
+            error: true,
             message: 'You do not have access to view other users detailed information.',
           });
         }
         res.status(200).json({
           statusCode: 200,
-          user
+          message: 'User',
+          data: user
         });
       })
       .catch(error => res.status(400).json({
@@ -75,10 +79,23 @@ export default {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
       })
-      .then(user => res.status(201).json({
-        statusCode: 201,
-        message: 'User '.concat(user.userName, ' has successfully been created.')
-      }))
+      .then((user) => {
+        // create a token with only our given payload
+        const token = jwt.sign(
+          { id: user.userId },
+          process.env.JWT_SEC_KEY,
+          {
+            expiresIn: 1440 // expires in 24 hours
+          }
+        );
+
+        res.status(201).json({
+          statusCode: 201,
+          message: 'User '.concat(user.userName, ' has successfully been created.'),
+          data: user,
+          token
+        });
+      })
       .catch(error => res.status(400).json({
         statusCode: 400,
         error
@@ -106,6 +123,7 @@ export default {
         if (!user) {
           return res.status(404).json({
             statusCode: 404,
+            error: true,
             message: 'User Not Found',
           });
         }
@@ -113,6 +131,7 @@ export default {
         if (!bcrypt.compareSync(req.body.password.trim(), user.password)) {
           return res.status(404).json({
             statusCode: 404,
+            error: true,
             message: 'The username and password do not match our records.'
           });
         }
@@ -146,12 +165,15 @@ export default {
       .then((user) => {
         if (!user) {
           return res.status(404).json({
+            statusCode: 404,
+            error: true,
             message: 'User Not Found',
           });
         }
         if (user.userId !== req.decoded.id) {
           return res.status(403).json({
             statusCode: 403,
+            error: true,
             message: 'You cannot alter records that do not belong to you.',
           });
         }
@@ -160,7 +182,8 @@ export default {
           .update({ fields: Object.keys(req.body) })
           .then(() => res.status(202).json({
             statusCode: 202,
-            user
+            message: user.userName.concat('\'s has successfully been updated.'),
+            data: user
           }));
       })
       .catch(error => res.status(400).json({

@@ -18,12 +18,13 @@ export default {
         if (!recipe) {
           return res.status(404).json({
             statusCode: 404,
+            error: true,
             message: 'Recipe Not Found',
           });
         }
         return res.status(200).json({
           statusCode: 200,
-          recipe
+          data: recipe
         });
       })
       .catch(error => res.status(400).json({
@@ -37,7 +38,7 @@ export default {
       .findById(req.params.recepeReviewId)
       .then(recipe => res.status(201).json({
         statusCode: 201,
-        recipe
+        data: recipe
       }))
       .catch(error => res.status(400).json({
         statusCode: 400,
@@ -49,7 +50,8 @@ export default {
     if (!req.body.comment && !req.body.vote) {
       return res.status(403).json({
         statusCode: 403,
-        error: 'User must vote or leave a comment'
+        error: true,
+        message: 'User must vote or leave a comment'
       });
     }
 
@@ -65,6 +67,7 @@ export default {
         if (recipeReview) {
           return res.status(403).json({
             statusCode: 403,
+            error: true,
             message: 'You have already upvoted this recipe',
             userId: recipeReview.userId
           });
@@ -83,6 +86,7 @@ export default {
         if (recipeReview) {
           return res.status(403).json({
             statusCode: 403,
+            error: true,
             message: 'You have already downvoted this recipe',
             userId: recipeReview.userId
           });
@@ -95,6 +99,7 @@ export default {
         if (!recipe) {
           return res.status(404).json({
             statusCode: 404,
+            error: true,
             message: 'Recipe Not Found',
           });
         }
@@ -102,6 +107,7 @@ export default {
           if (recipe.userId === req.decoded.id) {
             return res.status(403).json({
               statusCode: 403,
+              error: true,
               message: 'You are cannot vote on your own recipe',
               userId: recipe.userId
             });
@@ -124,7 +130,7 @@ export default {
       })
       .then(recipeReview => res.status(201).json({
         statusCode: 201,
-        recipeReview
+        data: recipeReview
       }))
       .catch(error => res.status(400).json({
         statusCode: 400,
@@ -136,7 +142,8 @@ export default {
     if (!req.body.coomment && !req.body.vote) {
       return res.status(403).json({
         statusCode: 403,
-        error: 'User must vote or leave a comment'
+        error: true,
+        message: 'User must vote or leave a comment'
       });
     }
 
@@ -146,6 +153,7 @@ export default {
         if (!recipe) {
           return res.status(404).json({
             statusCode: 404,
+            error: true,
             message: 'Recipe Not Found',
           });
         }
@@ -153,6 +161,7 @@ export default {
           if (recipe.userId === req.decoded.id) {
             return res.status(401).json({
               statusCode: 401,
+              error: true,
               message: 'You cannot vote on your own recipe',
             });
           }
@@ -176,12 +185,14 @@ export default {
         if (!recipeReview) {
           return res.status(404).json({
             statusCode: 404,
+            error: true,
             message: 'You are not authorized to edit this review',
           });
         }
         if (req.decoded.id !== recipeReview.userId) {
           return res.status(401).json({
             statusCode: 401,
+            error: true,
             message: 'Review Not Found',
           });
         }
@@ -193,7 +204,7 @@ export default {
           })
           .then(updatedRecipeReview => res.status(200).json({
             statusCode: 200,
-            updatedRecipeReview
+            data: updatedRecipeReview
           }));
       })
       .catch(error => res.status(400).json({
@@ -214,21 +225,24 @@ export default {
         if (!recipeReview) {
           return res.status(404).json({
             statusCode: 404,
+            error: true,
             message: 'Review Not Found',
           });
         }
         if (req.decoded.id !== recipeReview.userId) {
           return res.status(401).json({
             statusCode: 401,
+            error: true,
             message: 'You are not authorized to delete this review',
           });
         }
 
         return recipeReview
           .destroy()
-          .then(updatedRecipeReview => res.status(200).json({
+          .then(deletedRecipeReview => res.status(200).json({
             statusCode: 200,
-            updatedRecipeReview
+            message: 'The review listed below has just been deleted',
+            data: deletedRecipeReview
           }));
       })
       .catch(error => res.status(400).json({

@@ -16,7 +16,7 @@ router.route('/get-token').get((req, res) => {
       expiresIn: 100 // expires in 24 hours
     }
   );
-  res.send({ token });
+  res.json({ token });
 });
 
 
@@ -25,7 +25,7 @@ router.route('/recipes')
   .get(recipesController.list)
   .post(jwt, recipesController.create);
 router.route('/recipes/:recipeId/')
-  .get(recipesController.listOne)
+  .get(jwt, recipesController.listOne)
   .put(jwt, recipesController.update)
   .delete(jwt, recipesController.delete);
 
@@ -52,7 +52,9 @@ router.route('/users/:userId/recipes')
 
 // // For any other request method on recipes, we're going to return "Method Not Allowed"
 // router.route('/recipes/:id/reviews').all((req, res) =>
-//   res.status(405).send({
+//   res.status(405).json({
+// statusCode: 403,
+// error: true,
 //     message: 'Method Not Allowed',
 //   }));
 

@@ -20,17 +20,18 @@ export default {
       })
       .then((user) => {
         if (!user) {
-          return res.status(404).send({
+          return res.status(404).json({
             statusCode: 404,
+            error: true,
             message: 'User Not Found',
           });
         }
-        return res.status(200).send({
+        return res.status(200).json({
           statusCode: 200,
-          user
+          data: user
         });
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(400).json({
         statusCode: 400,
         error
       }));
@@ -42,11 +43,12 @@ export default {
         recipeId: req.body.recipeId,
         userId: req.decoded.id
       })
-      .then(userFavourite => res.status(201).send({
+      .then(userFavourite => res.status(201).json({
         statusCode: 201,
-        userFavourite
+        message: 'The recipe listed below has been added to your favourites',
+        data: userFavourite
       }))
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(400).json({
         statusCode: 400,
         error
       }));
@@ -56,6 +58,7 @@ export default {
     if (req.params.userId !== req.decoded.id) {
       return res.status(403).json({
         statusCode: 403,
+        error: true,
         message: 'You cannot alter records that do not belong to you.',
       });
     }
@@ -69,8 +72,9 @@ export default {
       })
       .then((userFavourite) => {
         if (!userFavourite) {
-          return res.status(404).send({
+          return res.status(404).json({
             statusCode: 404,
+            error: true,
             message: 'User does not have that recipe as a favourite',
           });
         }
@@ -79,12 +83,13 @@ export default {
           .update({
             recipeId: req.params.recipeId
           })
-          .then(updatedUserFavourite => res.status(200).send({
+          .then(updatedUserFavourite => res.status(200).json({
             statusCode: 200,
-            updatedUserFavourite
+            message: 'Your changes were accepted and your favourite recipe changed.',
+            data: updatedUserFavourite
           }));
       })
-      .catch(error => res.status(400).send({
+      .catch(error => res.status(400).json({
         statusCode: 400,
         error
       }));
@@ -94,6 +99,7 @@ export default {
     if (req.params.userId !== req.decoded.id) {
       return res.status(403).json({
         statusCode: 403,
+        error: true,
         message: 'You cannot alter records that do not belong to you.',
       });
     }
@@ -107,26 +113,32 @@ export default {
       })
       .then((userFavourite) => {
         if (!userFavourite) {
-          return res.status(404).send({
+          return res.status(404).json({
             statusCode: 404,
+            error: true,
             message: 'User does not have that recipe as a favourite',
           });
         }
         if (req.decoded.id !== userFavourite.userId) {
           return res.status(403).json({
             statusCode: 403,
+            error: true,
             message: 'You are not allowed to alter records that do not belong to you',
           });
         }
 
         return userFavourite
           .destroy()
-          .then(updatedUserFavourite => res.status(200).send({
+          .then(deletedUserFavourite => res.status(200).json({
             statusCode: 200,
-            updatedUserFavourite
+            message: 'The recipe listed below has been removed from your favourites',
+            data: deletedUserFavourite
           }));
       })
-      .catch(error => res.status(400).send(error));
+      .catch(error => res.status(400).json({
+        statusCode: 400,
+        error
+      }));
   },
 
 };

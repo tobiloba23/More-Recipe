@@ -6,3 +6,4 @@ server.pass.key
 server.key
 server.csr
 .create\ a\ .crt\ file.txt
+.server.crt

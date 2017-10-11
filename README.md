@@ -12,11 +12,11 @@ An interested observer should be able to view the recipes avalaibe on the site. 
 
 ***Integrating Travis CI Badge***
 
-[![Build Status](https://travis-ci.org/tobiloba23/More-Recipe.svg?branch=master)](https://travis-ci.org/tobiloba23/More-Recipe)
+[![Build Status](https://travis-ci.org/tobiloba23/More-Recipe.svg?branch=Development)](https://travis-ci.org/tobiloba23/More-Recipe)
 
 ***Integrating Coveralls Badge***
 
-[![Coverage Status](https://coveralls.io/repos/github/tobiloba23/More-Recipe/badge.svg?branch=master)](https://coveralls.io/github/tobiloba23/More-Recipe?branch=master)
+[![Coverage Status](https://coveralls.io/repos/github/tobiloba23/More-Recipe/badge.svg?branch=Development)](https://coveralls.io/github/tobiloba23/More-Recipe?branch=Development)
 
 ***Integrating Code Climate Badge***
 

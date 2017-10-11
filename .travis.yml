@@ -1,8 +1,9 @@
-sudo: true
 language: node_js
+node_js:
+- "stable"
 
-git:
-  submodules: false
+after_success:
+- npm run coveralls
 
 # node_js:
 #   - "0.12"

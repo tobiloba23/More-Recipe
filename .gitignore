@@ -2,8 +2,10 @@ node_modules
 .env
 .npm/_logs
 .vscode
+.coveralls.yml
+.nyc_output
 server.pass.key
 server.key
 server.csr
+server.crt
 .create\ a\ .crt\ file.txt
-.server.crt

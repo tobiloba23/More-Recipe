@@ -7,7 +7,11 @@ export default (req, res, next) => {
     // verifies secret and checks exp
     jwt.verify(token, process.env.JWT_SEC_KEY, (err, decoded) => {
       if (err) {
-        return res.json({ error: true, message: 'Failed to authenticate token.' });
+        return res.status(403).json({
+          statusCode: 403,
+          error: true,
+          message: 'Failed to authenticate token.'
+        });
       }
       req.decoded = decoded;
       next();
@@ -15,7 +19,8 @@ export default (req, res, next) => {
   } else {
     // if there is no token
     // return an error
-    return res.status(403).send({
+    return res.status(401).json({
+      statusCode: 401,
       error: true,
       message: 'No token provided.'
     });

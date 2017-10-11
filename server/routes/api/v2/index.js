@@ -1,5 +1,5 @@
 import express from 'express';
-import jwt from '../../../auth/local';
+import jwt from '../../../middleware/auth/local';
 import Controller from '../../../controllers';
 
 const router = express.Router();
@@ -16,7 +16,7 @@ router.route('/get-token').get((req, res) => {
       expiresIn: 100 // expires in 24 hours
     }
   );
-  res.send({ token });
+  res.json({ token });
 });
 
 
@@ -25,23 +25,24 @@ router.route('/recipes')
   .get(recipesController.list)
   .post(jwt, recipesController.create);
 router.route('/recipes/:recipeId/')
-  .get(recipesController.listOne)
+  .get(jwt, recipesController.listOne)
   .put(jwt, recipesController.update)
   .delete(jwt, recipesController.delete);
 
 router.route('/recipes/:recipeId/reviews')
-  .get(jwt, recipesReviewsController.list)
+  .get(recipesReviewsController.list)
   .post(jwt, recipesReviewsController.create);
-router.route('/recipes/:id/reviews/:reviewId')
-  .get(jwt, recipesReviewsController.listOne)
+router.route('/recipes/:recipeId/reviews/:reviewId')
+  .get(recipesReviewsController.listOne)
   .put(jwt, recipesReviewsController.update)
   .delete(jwt, recipesReviewsController.delete);
 
 
 // Authentication
 router.route('/users/signup').post(usersController.signup);
-router.route('/users/signin').post(usersController.login);
+router.route('/users/signin').post(usersController.signin);
 router.route('/users').get(jwt, usersController.list);
+router.route('/users/:userId').get(jwt, usersController.listOne);
 
 
 // User Favourites
@@ -49,9 +50,11 @@ router.route('/users/:userId/recipes')
   .get(jwt, userFavouritesController.list)
   .post(jwt, userFavouritesController.create);
 
-// // For any other request method on todo items, we're going to return "Method Not Allowed"
+// // For any other request method on recipes, we're going to return "Method Not Allowed"
 // router.route('/recipes/:id/reviews').all((req, res) =>
-//   res.status(405).send({
+//   res.status(405).json({
+// statusCode: 403,
+// error: true,
 //     message: 'Method Not Allowed',
 //   }));
 

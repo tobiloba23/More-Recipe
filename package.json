@@ -6,10 +6,8 @@
   "scripts": {
     "start": "nodemon --watch server --exec babel-node  -- app.js",
     "build": "babel ./server -d dist",
-    "coverage": "nyc report -- report=text-lcov | coveralls",
-    "start:dev": "nodemon --watch server --exec babel-node  -- app.js",
-    "test": "mocha --compilers js:babel-core/register ./server/tests/ApiTests.js \"Apitests/**/*@(.js|.jsx)\"",
-    "sequelize:dev": "sequelize --compilers js:babel-core/register "
+    "test": "cross-env NODE_ENV=test nyc mocha \"./server/tests/**/*@(.js|.jsx)\"",
+    "coveralls": "node ./node_modules/coveralls/bin/coveralls.js < coverage/lcov.info"
   },
   "repository": {
     "type": "git",
@@ -21,9 +19,19 @@
     "url": "https://github.com/tobiloba23/More-Recipe/issues"
   },
   "homepage": "https://github.com/tobiloba23/More-Recipe#readme",
+  "nyc": {
+    "require": [
+      "babel-register"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
+    "sourceMap": false,
+    "instrument": false
+  },
   "dependencies": {
     "Faker": "^0.7.2",
-    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
@@ -31,7 +39,6 @@
     "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
-    "chai": "^4.1.2",
     "dotenv": "^4.0.0",
     "express": "^4.15.5",
     "express-route-validator": "^0.2.5",
@@ -56,13 +63,23 @@
     "webpack": "^3.6.0"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-istanbul": "^4.1.5",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-register": "^6.26.0",
+    "chai": "^4.1.2",
+    "coveralls": "^3.0.0",
+    "cross-env": "^5.0.5",
     "eslint": "^4.8.0",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-config-airbnb-base": "^12.0.2",
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.4.0",
-    "mocha": "^4.0.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^4.0.1",
+    "mocha-lcov-reporter": "^1.3.0",
+    "nyc": "^11.2.1",
     "react": "^15.6.1",
     "react-dom": "^15.6.1"
   }

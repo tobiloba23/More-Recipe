@@ -96,198 +96,203 @@ describe('SAMPLE unit test', () => {
       .expect(404);
   });
 
-  // #2 should return home page
-  it('should return recipes', (done) => {
-    // calling home page api
-    server
-      .get('/recipes')
-      .expect('Content-type', /json/)
-      .expect(200)
-      .end((err, res) => {
-      // HTTP status should be 200
-        res.body.statusCode.should.equal(200);
-        // Error key should not exist.
-        should.not.exist(res.body.error);
-        done();
-      });
-  });
+  // // // #2 should return home page
+  // // it('should return recipes', (done) => {
+  // //   // calling home page api
+  // //   server
+  // //     .get('/recipes')
+  // //     .expect('Content-type', /json/)
+  // //     .expect(200)
+  // //     .end((err, res) => {
+  // //     // HTTP status should be 200
+  // //       res.body.statusCode.should.equal(200);
+  // //       // Error key should not exist.
+  // //       should.not.exist(res.body.error);
+  // //       done();
+  // //     });
+  // // });
 
-  // #3 should not grant access
-  it('should not grant access', (done) => {
-    // unauthorized user trying to access restricted content
-    server
-      .get('/recipes/'.concat(exstnRecipeId))
-      .expect('Content-type', /json/)
-      .expect(401)
-      .end((err, res) => {
-        // HTTP status should be 401
-        res.body.statusCode.should.equal(401);
-        // Error key should be false.
-        res.body.error.should.equal(true);
-        done();
-      });
-  });
+  // // // #3 should not grant access
+  // // it('should not grant access', (done) => {
+  // //   // unauthorized user trying to access restricted content
+  // //   server
+  // //     .get('/recipes/'.concat(exstnRecipeId))
+  // //     .expect('Content-type', /json/)
+  // //     .expect(401)
+  // //     .end((err, res) => {
+  // //       // HTTP status should be 401
+  // //       res.body.statusCode.should.equal(401);
+  // //       // Error key should be false.
+  // //       res.body.error.should.equal(true);
+  // //       done();
+  // //     });
+  // // });
 
-  // #4 should create account or return account already exists
-  // #4 register should fail on no first name supplied
-  it('register should fail on no first name supplied', (done) => {
-    server
-      .post('/users/signup')
-      .send(registerNoFirstName)
-      .expect('Content-type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        // HTTP status should be 400
-        res.body.statusCode.should.equal(400);
-        // Error key should be false.
-        res.body.error.should.equal(true);
-        // No token should be supplied
-        should.not.exist(res.decoded);
-        // validation error come in arrays
-        res.body.message.firstName.should.be.a('array');
-        done();
-      });
-  });
+  // // // #4 register should fail on no first name supplied
+  // // it('register should fail on no first name supplied', (done) => {
+  // //   server
+  // //     .post('/users/signup')
+  // //     .send(registerNoFirstName)
+  // //     .expect('Content-type', /json/)
+  // //     .expect(400)
+  // //     .end((err, res) => {
+  // //       // HTTP status should be 400
+  // //       res.body.statusCode.should.equal(400);
+  // //       // Error key should be false.
+  // //       res.body.error.should.equal(true);
+  // //       // No token should be supplied
+  // //       should.not.exist(res.decoded);
+  // //       // validation errors come in arrays
+  // //       res.body.message.firstName.should.be.a('array');
+  // //       done();
+  // //     });
+  // // });
 
-  // #5 register should fail on no last name supplied
-  it('register should fail on no last name supplied', (done) => {
-    server
-      .post('/users/signup')
-      .send(registerNoLastName)
-      .expect('Content-type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        // HTTP status should be 400
-        res.body.statusCode.should.equal(400);
-        // Error key should be false.
-        res.body.error.should.equal(true);
-        // No token should be supplied
-        should.not.exist(res.decoded);
-        // validation error come in arrays
-        res.body.message.lastName.should.be.a('array');
-        done();
-      });
-  });
+  // // // #5 register should fail on no last name supplied
+  // // it('register should fail on no last name supplied', (done) => {
+  // //   server
+  // //     .post('/users/signup')
+  // //     .send(registerNoLastName)
+  // //     .expect('Content-type', /json/)
+  // //     .expect(400)
+  // //     .end((err, res) => {
+  // //       // HTTP status should be 400
+  // //       res.body.statusCode.should.equal(400);
+  // //       // Error key should be false.
+  // //       res.body.error.should.equal(true);
+  // //       // No token should be supplied
+  // //       should.not.exist(res.decoded);
+  // //       // validation errors come in arrays
+  // //       res.body.message.lastName.should.be.a('array');
+  // //       done();
+  // //     });
+  // // });
 
-  // #6 register should fail on no email supplied
-  it('register should fail on no email supplied', (done) => {
-    server
-      .post('/users/signup')
-      .send(registerNoEmail)
-      .expect('Content-type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        // HTTP status should be 400
-        res.body.statusCode.should.equal(400);
-        // Error key should be false.
-        res.body.error.should.equal(true);
-        // No token should be supplied
-        should.not.exist(res.decoded);
-        // validation error come in arrays
-        res.body.message.email.should.be.a('array');
-        done();
-      });
-  });
+  // // // #6 register should fail on no email supplied
+  // // it('register should fail on no email supplied', (done) => {
+  // //   server
+  // //     .post('/users/signup')
+  // //     .send(registerNoEmail)
+  // //     .expect('Content-type', /json/)
+  // //     .expect(400)
+  // //     .end((err, res) => {
+  // //       // HTTP status should be 400
+  // //       res.body.statusCode.should.equal(400);
+  // //       // Error key should be false.
+  // //       res.body.error.should.equal(true);
+  // //       // No token should be supplied
+  // //       should.not.exist(res.decoded);
+  // //       // validation errors come in arrays
+  // //       res.body.message.email.should.be.a('array');
+  // //       done();
+  // //     });
+  // // });
 
-  // #7 register should fail on no password supplied
-  it('register should fail on no password supplied', (done) => {
-    server
-      .post('/users/signup')
-      .send(registerNoPassword)
-      .expect('Content-type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        // HTTP status should be 400
-        res.body.statusCode.should.equal(400);
-        // Error key should be false.
-        res.body.error.should.equal(true);
-        // No token should be supplied
-        should.not.exist(res.decoded);
-        // validation error come in arrays
-        res.body.message.password.should.be.a('array');
-        done();
-      });
-  });
+  // // // #7 register should fail on no password supplied
+  // // it('register should fail on no password supplied', (done) => {
+  // //   server
+  // //     .post('/users/signup')
+  // //     .send(registerNoPassword)
+  // //     .expect('Content-type', /json/)
+  // //     .expect(400)
+  // //     .end((err, res) => {
+  // //       // HTTP status should be 400
+  // //       res.body.statusCode.should.equal(400);
+  // //       // Error key should be false.
+  // //       res.body.error.should.equal(true);
+  // //       // No token should be supplied
+  // //       should.not.exist(res.decoded);
+  // //       // validation errors come in arrays
+  // //       res.body.message.password.should.be.a('array');
+  // //       done();
+  // //     });
+  // // });
 
-  // #8 register should fail on invalid email supplied
-  it('register should fail on no invalid email supplied', (done) => {
-    server
-      .post('/users/signup')
-      .send(registerNotEmail)
-      .expect('Content-type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        // HTTP status should be 400
-        res.body.statusCode.should.equal(400);
-        // Error key should be false.
-        res.body.error.should.equal(true);
-        // No token should be supplied
-        should.not.exist(res.decoded);
-        // validation error come in arrays
-        res.body.message.email.should.be.a('array');
-        done();
-      });
-  });
+  // // // #8 register should fail on invalid email supplied
+  // // it('register should fail on no invalid email supplied', (done) => {
+  // //   server
+  // //     .post('/users/signup')
+  // //     .send(registerNotEmail)
+  // //     .expect('Content-type', /json/)
+  // //     .expect(400)
+  // //     .end((err, res) => {
+  // //       // HTTP status should be 400
+  // //       res.body.statusCode.should.equal(400);
+  // //       // Error key should be false.
+  // //       res.body.error.should.equal(true);
+  // //       // No token should be supplied
+  // //       should.not.exist(res.decoded);
+  // //       // validation errors come in arrays
+  // //       res.body.message.email.should.be.a('array');
+  // //       done();
+  // //     });
+  // // });
 
-  // #9 register should fail on invalid password supplied
-  // The password field may only contain alpha-numeric characters,
-  // as well as dashes and underscores.
-  it('register should fail on invalid password supplied', (done) => {
-    server
-      .post('/users/signup')
-      .send(registerNotPassword)
-      .expect('Content-type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        // HTTP status should be 400
-        res.body.statusCode.should.equal(400);
-        // Error key should be false.
-        res.body.error.should.equal(true);
-        // No token should be supplied
-        should.not.exist(res.decoded);
-        // validation error come in arrays
-        res.body.message.password.should.be.a('array');
-        done();
-      });
-  });
+  // // // #9 register should fail on invalid password supplied
+  // // // The password field may only contain alpha-numeric characters,
+  // // // as well as dashes and underscores.
+  // // it('register should fail on invalid password supplied', (done) => {
+  // //   server
+  // //     .post('/users/signup')
+  // //     .send(registerNotPassword)
+  // //     .expect('Content-type', /json/)
+  // //     .expect(400)
+  // //     .end((err, res) => {
+  // //       // HTTP status should be 400
+  // //       res.body.statusCode.should.equal(400);
+  // //       // Error key should be false.
+  // //       res.body.error.should.equal(true);
+  // //       // No token should be supplied
+  // //       should.not.exist(res.decoded);
+  // //       // validation errors come in arrays
+  // //       res.body.message.password.should.be.a('array');
+  // //       done();
+  // //     });
+  // // });
 
-  // #10 register should fail on no password confirmation supplied
-  it('register should fail on no password confirmation supplied', (done) => {
-    server
-      .post('/users/signup')
-      .send(registerNoPasswordConfirmation)
-      .expect('Content-type', /json/)
-      .expect(400)
-      .end((err, res) => {
-        // HTTP status should be 400
-        res.body.statusCode.should.equal(400);
-        // Error key should be false.
-        res.body.error.should.equal(true);
-        // No token should be supplied
-        should.not.exist(res.decoded);
-        // validation error come in arrays
-        res.body.message.passwordConfirmation.should.be.a('array');
-        done();
-      });
-  });
+  // // // #10 register should fail on no password confirmation supplied
+  // // it('register should fail on no password confirmation supplied', (done) => {
+  // //   server
+  // //     .post('/users/signup')
+  // //     .send(registerNoPasswordConfirmation)
+  // //     .expect('Content-type', /json/)
+  // //     .expect(400)
+  // //     .end((err, res) => {
+  // //       // HTTP status should be 400
+  // //       res.body.statusCode.should.equal(400);
+  // //       // Error key should be false.
+  // //       res.body.error.should.equal(true);
+  // //       // No token should be supplied
+  // //       should.not.exist(res.decoded);
+  // //       // validation errors come in arrays
+  // //       res.body.message.passwordConfirmation.should.be.a('array');
+  // //       done();
+  // //     });
+  // });
 
-  // #10 should allow a new user register and be automatically logged in
-  it('should allow a user sign up and sign in', (done) => {
-    // calling home page api
-    server
-      .post('/users/signup')
-      .send(registerDetails)
-      .expect('Content-type', /json/)
-      .expect(201)
-      .end((err, res) => {
-        // HTTP status should be 201
-        res.body.statusCode.should.equal(201);
-        // Error key should not exist.
-        should.not.exist(res.body.error);
-        // No token should be supplied
-        should.exist(res.body.token);
-        token1 = res.body.token;
-        done();
-      });
-  });
+  // // #10 should create account or return account already exists
+  // /*
+  // There should be a check for already created ccounts in the test
+
+
+  // */
+  // // #10 should allow a new user register and be automatically logged in
+  // it('should allow a user sign up and sign in', (done) => {
+  //   // calling home page api
+  //   server
+  //     .post('/users/signup')
+  //     .send(registerDetails)
+  //     .expect('Content-type', /json/)
+  //     .expect(201)
+  //     .end((err, res) => {
+  //       // HTTP status should be 201
+  //       res.body.statusCode.should.equal(201);
+  //       // Error key should not exist.
+  //       should.not.exist(res.body.error);
+  //       // No token should be supplied
+  //       should.exist(res.body.token);
+  //       token1 = res.body.token;
+  //       done();
+  //     });
+  // });
 });

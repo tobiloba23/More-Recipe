@@ -128,7 +128,6 @@ describe('SAMPLE unit test', () => {
       });
   });
 
-  // #4 should create account or return account already exists
   // #4 register should fail on no first name supplied
   it('register should fail on no first name supplied', (done) => {
     server
@@ -143,7 +142,7 @@ describe('SAMPLE unit test', () => {
         res.body.error.should.equal(true);
         // No token should be supplied
         should.not.exist(res.decoded);
-        // validation error come in arrays
+        // validation errors come in arrays
         res.body.message.firstName.should.be.a('array');
         done();
       });
@@ -163,7 +162,7 @@ describe('SAMPLE unit test', () => {
         res.body.error.should.equal(true);
         // No token should be supplied
         should.not.exist(res.decoded);
-        // validation error come in arrays
+        // validation errors come in arrays
         res.body.message.lastName.should.be.a('array');
         done();
       });
@@ -183,7 +182,7 @@ describe('SAMPLE unit test', () => {
         res.body.error.should.equal(true);
         // No token should be supplied
         should.not.exist(res.decoded);
-        // validation error come in arrays
+        // validation errors come in arrays
         res.body.message.email.should.be.a('array');
         done();
       });
@@ -203,7 +202,7 @@ describe('SAMPLE unit test', () => {
         res.body.error.should.equal(true);
         // No token should be supplied
         should.not.exist(res.decoded);
-        // validation error come in arrays
+        // validation errors come in arrays
         res.body.message.password.should.be.a('array');
         done();
       });
@@ -223,7 +222,7 @@ describe('SAMPLE unit test', () => {
         res.body.error.should.equal(true);
         // No token should be supplied
         should.not.exist(res.decoded);
-        // validation error come in arrays
+        // validation errors come in arrays
         res.body.message.email.should.be.a('array');
         done();
       });
@@ -245,7 +244,7 @@ describe('SAMPLE unit test', () => {
         res.body.error.should.equal(true);
         // No token should be supplied
         should.not.exist(res.decoded);
-        // validation error come in arrays
+        // validation errors come in arrays
         res.body.message.password.should.be.a('array');
         done();
       });
@@ -265,12 +264,18 @@ describe('SAMPLE unit test', () => {
         res.body.error.should.equal(true);
         // No token should be supplied
         should.not.exist(res.decoded);
-        // validation error come in arrays
+        // validation errors come in arrays
         res.body.message.passwordConfirmation.should.be.a('array');
         done();
       });
   });
 
+  // #10 should create account or return account already exists
+  /*
+  There should be a check for already created ccounts in the test
+
+
+  */
   // #10 should allow a new user register and be automatically logged in
   it('should allow a user sign up and sign in', (done) => {
     // calling home page api

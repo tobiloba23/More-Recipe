@@ -6,11 +6,8 @@
   "scripts": {
     "start": "nodemon --watch server --exec babel-node  -- app.js",
     "build": "babel ./server -d dist",
-    "cover": "babel-istanbul cover mocha ./server/tests/ApiTests.js \"Apitests/**/*@(.js|.jsx)\"",
-    "coveralls": "npm run cover -- --report lcovonly && cat ./coverage/lcov.info | coveralls",
-    "start:dev": "nodemon --watch server --exec babel-node  -- app.js",
-    "test": "cross-env NODE_ENV=test nyc mocha ./server/tests/ApiTests.js \"Apitests/**/*@(.js|.jsx)\"",
-    "sequelize:dev": "sequelize --compilers js:babel-core/register "
+    "test": "cross-env NODE_ENV=test nyc mocha \"./server/tests/**/*@(.js|.jsx)\"",
+    "coveralls": "node ./node_modules/coveralls/bin/coveralls.js < coverage/lcov.info"
   },
   "repository": {
     "type": "git",
@@ -79,6 +76,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.4.0",
+    "grunt-coveralls": "^1.0.1",
     "istanbul": "^0.4.5",
     "mocha": "^4.0.1",
     "mocha-lcov-reporter": "^1.3.0",

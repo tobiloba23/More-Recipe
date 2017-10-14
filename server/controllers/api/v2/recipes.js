@@ -185,8 +185,8 @@ export default {
             data: deletedRecipe
           }));
       })
-      .catch(error => res.status(404).json({
-        statusCode: 404,
+      .catch(error => res.status(400).json({
+        statusCode: 400,
         error
       }));
   }

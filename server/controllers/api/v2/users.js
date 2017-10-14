@@ -54,7 +54,7 @@ export default {
       }));
   },
 
-  signup(req, res) {
+  async signup(req, res) {
     const rules = {
       userName: 'required|string',
       email: 'required|email',
@@ -76,6 +76,41 @@ export default {
       });
     }
 
+    let response;
+    await User
+      .find({
+        where: {
+          userName: req.body.userName
+        }
+      })
+      .then((user) => {
+        if (user) {
+          response = {
+            statusCode: 409,
+            error: true,
+            message: user.userName.concat(' has already been taken'),
+          };
+        }
+      });
+    if (response) return res.status(response.statusCode).json(response);
+
+    await User
+      .find({
+        where: {
+          email: req.body.email
+        }
+      })
+      .then((user) => {
+        if (user) {
+          response = {
+            statusCode: 409,
+            error: true,
+            message: 'An account has already been created for '.concat(user.email),
+          };
+        }
+      });
+    if (response) return res.status(response.statusCode).json(response);
+
     return User
       .create({
         userName: req.body.userName,
@@ -96,7 +131,7 @@ export default {
 
         res.status(201).json({
           statusCode: 201,
-          message: 'User '.concat(user.userName, ' has successfully been created.'),
+          message: 'User '.concat(user.userName, '\' account has successfully been created.'),
           data: user,
           token
         });
@@ -159,7 +194,8 @@ export default {
         }).status(200);
       })
       .catch(error => res.status(400).json({
-        statusCode: 404,
+        statusCode: 400,
+        chk: process.env.JWT_SEC_KEY,
         error
       }));
   },
@@ -187,7 +223,7 @@ export default {
           .update({ fields: Object.keys(req.body) })
           .then(() => res.status(202).json({
             statusCode: 202,
-            message: user.userName.concat('\'s has successfully been updated.'),
+            message: user.userName.concat('\'s account has successfully been updated.'),
             data: user
           }));
       })

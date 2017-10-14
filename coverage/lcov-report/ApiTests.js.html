@@ -20,14 +20,14 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">90.91% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>85/85</span>
+        <span class='fraction'>80/88</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">75% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/0</span>
+        <span class='fraction'>3/4</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -35,9 +35,9 @@
         <span class='fraction'>23/23</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">100% </span>
+        <span class="strong">90.91% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>85/85</span>
+        <span class='fraction'>80/88</span>
       </div>
     </div>
   </div>
@@ -341,7 +341,11 @@
 296
 297
 298
-299</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+299
+300
+301
+302
+303</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -542,12 +546,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -623,8 +627,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -632,10 +634,16 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -763,7 +771,7 @@ describe('SAMPLE unit test', () =&gt; {
       .end((err, res) =&gt; {
         // HTTP status should be 401
         res.body.statusCode.should.equal(401);
-        // Error key should be false.
+        // Error key should be true.
         res.body.error.should.equal(true);
         done();
       });
@@ -779,7 +787,7 @@ describe('SAMPLE unit test', () =&gt; {
       .end((err, res) =&gt; {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
-        // Error key should be false.
+        // Error key should be true.
         res.body.error.should.equal(true);
         // No token should be supplied
         should.not.exist(res.decoded);
@@ -799,7 +807,7 @@ describe('SAMPLE unit test', () =&gt; {
       .end((err, res) =&gt; {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
-        // Error key should be false.
+        // Error key should be true.
         res.body.error.should.equal(true);
         // No token should be supplied
         should.not.exist(res.decoded);
@@ -819,7 +827,7 @@ describe('SAMPLE unit test', () =&gt; {
       .end((err, res) =&gt; {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
-        // Error key should be false.
+        // Error key should be true.
         res.body.error.should.equal(true);
         // No token should be supplied
         should.not.exist(res.decoded);
@@ -833,19 +841,19 @@ describe('SAMPLE unit test', () =&gt; {
   it('register should fail on no password supplied', (done) =&gt; {
     server
       .post('/users/signup')
-      .send(registerNoPassword)
+      .send(registerDetails)
       .expect('Content-type', /json/)
       .expect(400)
       .end((err, res) =&gt; {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
-        // Error key should be false.
-        res.body.error.should.equal(true);
+        // Error key should be true.
+<span class="cstat-no" title="statement not covered" >        res.body.error.should.equal(true);</span>
         // No token should be supplied
-        should.not.exist(res.decoded);
+<span class="cstat-no" title="statement not covered" >        should.not.exist(res.decoded);</span>
         // validation errors come in arrays
-        res.body.message.password.should.be.a('array');
-        done();
+<span class="cstat-no" title="statement not covered" >        res.body.message.password.should.be.a('array');</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
       });
   });
 &nbsp;
@@ -859,7 +867,7 @@ describe('SAMPLE unit test', () =&gt; {
       .end((err, res) =&gt; {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
-        // Error key should be false.
+        // Error key should be true.
         res.body.error.should.equal(true);
         // No token should be supplied
         should.not.exist(res.decoded);
@@ -881,7 +889,7 @@ describe('SAMPLE unit test', () =&gt; {
       .end((err, res) =&gt; {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
-        // Error key should be false.
+        // Error key should be true.
         res.body.error.should.equal(true);
         // No token should be supplied
         should.not.exist(res.decoded);
@@ -901,7 +909,7 @@ describe('SAMPLE unit test', () =&gt; {
       .end((err, res) =&gt; {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
-        // Error key should be false.
+        // Error key should be true.
         res.body.error.should.equal(true);
         // No token should be supplied
         should.not.exist(res.decoded);
@@ -911,29 +919,33 @@ describe('SAMPLE unit test', () =&gt; {
       });
   });
 &nbsp;
-  // #10 should create account or return account already exists
+  // #11 should create account or return account already exists
   /*
   There should be a check for already created ccounts in the test
 &nbsp;
 &nbsp;
   */
-  // #10 should allow a new user register and be automatically logged in
+  // #11 should allow a new user register and be automatically logged in
   it('should allow a user sign up and sign in', (done) =&gt; {
     // calling home page api
     server
       .post('/users/signup')
       .send(registerDetails)
       .expect('Content-type', /json/)
-      .expect(201)
       .end((err, res) =&gt; {
+        <span class="missing-if-branch" title="else path not taken" >E</span>if (res.body.statusCode === 409 &amp;&amp; res.body.message.includes('has already been')) {
+          // Error key should be true.
+          res.body.error.should.equal(true);
+          done();
+        }
         // HTTP status should be 201
         res.body.statusCode.should.equal(201);
         // Error key should not exist.
-        should.not.exist(res.body.error);
+<span class="cstat-no" title="statement not covered" >        should.not.exist(res.body.error);</span>
         // No token should be supplied
-        should.exist(res.body.token);
-        token1 = res.body.token;
-        done();
+<span class="cstat-no" title="statement not covered" >        should.exist(res.body.token);</span>
+<span class="cstat-no" title="statement not covered" >        token1 = res.body.token;</span>
+<span class="cstat-no" title="statement not covered" >        done();</span>
       });
   });
 });
@@ -943,7 +955,7 @@ describe('SAMPLE unit test', () =&gt; {
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Fri Oct 13 2017 05:11:47 GMT+0100 (WAT)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sat Oct 14 2017 04:19:04 GMT+0100 (WAT)
 </div>
 </div>
 <script src="prettify.js"></script>

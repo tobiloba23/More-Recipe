@@ -7,7 +7,7 @@ const should = chai.should();
 // const { expect } = chai;
 
 // During the test the env variable is set to test
-process.env.NODE_ENV = 'test';
+// process.env.NODE_ENV = 'test';
 
 // This agent refers to PORT where program is runninng.
 

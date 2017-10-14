@@ -9,9 +9,8 @@ export default {
   },
   test: {
     username: 'postgres',
-    password: 'blabla',
+    password: process.env.SEQUELIZE_POSTGRES_PASSWORD,
     database: 'more_recipes_test',
-    host: 'localhost',
     port: 5432,
     dialect: 'postgres'
   },

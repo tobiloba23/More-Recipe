@@ -4,6 +4,7 @@ import validator from 'validatorjs';
 import models from '../../../models/';
 
 const { User } = models;
+let token;
 
 export default {
   list(req, res) {
@@ -121,7 +122,7 @@ export default {
       })
       .then((user) => {
         // create a token with only our given payload
-        const token = jwt.sign(
+        token = jwt.sign(
           { id: user.userId },
           process.env.JWT_SEC_KEY,
           {
@@ -176,7 +177,7 @@ export default {
           });
         }
         // create a token with only our given payload
-        const token = jwt.sign(
+        token = jwt.sign(
           { id: user.userId },
           process.env.JWT_SEC_KEY,
           {
@@ -195,7 +196,8 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        chk: process.env.JWT_SEC_KEY,
+        chk: 500,
+        token,
         error
       }));
   },

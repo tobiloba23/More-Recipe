@@ -1,7 +1,7 @@
 export default {
   development: {
     username: 'TOBI',
-    password: null,
+    password: process.env.DB_DEV_PASSWORD,
     database: 'more_recipes_dev',
     host: '127.0.0.1',
     port: 5432,
@@ -9,7 +9,7 @@ export default {
   },
   test: {
     username: 'TOBI',
-    password: null,
+    password: process.env.DB_TEST_PASSWORD,
     database: 'more_recipes_dev',
     host: '127.0.0.1',
     port: 5432,

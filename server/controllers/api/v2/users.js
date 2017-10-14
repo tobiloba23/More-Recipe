@@ -177,13 +177,13 @@ export default {
           });
         }
         // create a token with only our given payload
-        // token = jwt.sign(
-        //   { id: user.userId },
-        //   process.env.JWT_SEC_KEY,
-        //   {
-        //     expiresIn: 1440 // expires in 24 hours
-        //   }
-        // );
+        token = jwt.sign(
+          { id: user.userId },
+          'process.env.JWT_SEC_KEY',
+          {
+            expiresIn: 1440 // expires in 24 hours
+          }
+        );
 
         // return the information including token as JSON
 
@@ -191,6 +191,7 @@ export default {
           statusCode: 200,
           success: true,
           message: 'User authenticated',
+          token
         }).status(200);
       })
       .catch(error => res.status(400).json({

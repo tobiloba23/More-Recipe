@@ -1,5 +1,5 @@
 import chai from 'chai';
-import supertest from 'supertest';
+import supertest from 'supertest-as-promised';
 import Faker from 'Faker';
 
 const should = chai.should();
@@ -7,7 +7,7 @@ const should = chai.should();
 // const { expect } = chai;
 
 // During the test the env variable is set to test
-process.env.NODE_ENV = 'test';
+// process.env.NODE_ENV = 'test';
 
 // This agent refers to PORT where program is runninng.
 
@@ -97,45 +97,49 @@ describe('SAMPLE unit test', () => {
   });
 
   // #2 should return home page
-  it('should return recipes', (done) => {
+  it('should return recipes', () => {
     // calling home page api
     server
       .get('/recipes')
       .expect('Content-type', /json/)
       .expect(200)
-      .end((err, res) => {
-      // HTTP status should be 200
-        res.body.statusCode.should.equal(200);
+      .then((err, res) => {
         // Error key should not exist.
         should.not.exist(res.body.error);
-        done();
+        // HTTP status should be 200
+        res.body.statusCode.should.equal(200);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   });
 
   // #3 should not grant access
-  it('should not grant access', (done) => {
+  it('should not grant access', () => {
     // unauthorized user trying to access restricted content
     server
       .get('/recipes/'.concat(exstnRecipeId))
       .expect('Content-type', /json/)
       .expect(401)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 401
         res.body.statusCode.should.equal(401);
         // Error key should be true.
         res.body.error.should.equal(true);
-        done();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   });
 
   // #4 register should fail on no first name supplied
-  it('register should fail on no first name supplied', (done) => {
+  it('register should fail on no first name supplied', () => {
     server
       .post('/users/signup')
       .send(registerNoFirstName)
       .expect('Content-type', /json/)
       .expect(400)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
         // Error key should be true.
@@ -144,18 +148,20 @@ describe('SAMPLE unit test', () => {
         should.not.exist(res.decoded);
         // validation errors come in arrays
         res.body.message.firstName.should.be.a('array');
-        done();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   });
 
   // #5 register should fail on no last name supplied
-  it('register should fail on no last name supplied', (done) => {
+  it('register should fail on no last name supplied', () => {
     server
       .post('/users/signup')
       .send(registerNoLastName)
       .expect('Content-type', /json/)
       .expect(400)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
         // Error key should be true.
@@ -164,18 +170,20 @@ describe('SAMPLE unit test', () => {
         should.not.exist(res.decoded);
         // validation errors come in arrays
         res.body.message.lastName.should.be.a('array');
-        done();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   });
 
   // #6 register should fail on no email supplied
-  it('register should fail on no email supplied', (done) => {
+  it('register should fail on no email supplied', () => {
     server
       .post('/users/signup')
       .send(registerNoEmail)
       .expect('Content-type', /json/)
       .expect(400)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
         // Error key should be true.
@@ -184,18 +192,20 @@ describe('SAMPLE unit test', () => {
         should.not.exist(res.decoded);
         // validation errors come in arrays
         res.body.message.email.should.be.a('array');
-        done();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   });
 
   // #7 register should fail on no password supplied
-  it('register should fail on no password supplied', (done) => {
+  it('register should fail on no password supplied', () => {
     server
       .post('/users/signup')
       .send(registerNoPassword)
       .expect('Content-type', /json/)
       .expect(400)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
         // Error key should be true.
@@ -204,18 +214,20 @@ describe('SAMPLE unit test', () => {
         should.not.exist(res.decoded);
         // validation errors come in arrays
         res.body.message.password.should.be.a('array');
-        done();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   });
 
   // #8 register should fail on invalid email supplied
-  it('register should fail on no invalid email supplied', (done) => {
+  it('register should fail on no invalid email supplied', () => {
     server
       .post('/users/signup')
       .send(registerNotEmail)
       .expect('Content-type', /json/)
       .expect(400)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
         // Error key should be true.
@@ -224,20 +236,22 @@ describe('SAMPLE unit test', () => {
         should.not.exist(res.decoded);
         // validation errors come in arrays
         res.body.message.email.should.be.a('array');
-        done();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   });
 
   // #9 register should fail on invalid password supplied
   // The password field may only contain alpha-numeric characters,
   // as well as dashes and underscores.
-  it('register should fail on invalid password supplied', (done) => {
+  it('register should fail on invalid password supplied', () => {
     server
       .post('/users/signup')
       .send(registerNotPassword)
       .expect('Content-type', /json/)
       .expect(400)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
         // Error key should be true.
@@ -246,18 +260,20 @@ describe('SAMPLE unit test', () => {
         should.not.exist(res.decoded);
         // validation errors come in arrays
         res.body.message.password.should.be.a('array');
-        done();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   });
 
   // #10 register should fail on no password confirmation supplied
-  it('register should fail on no password confirmation supplied', (done) => {
+  it('register should fail on no password confirmation supplied', () => {
     server
       .post('/users/signup')
       .send(registerNoPasswordConfirmation)
       .expect('Content-type', /json/)
       .expect(400)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
         // Error key should be true.
@@ -266,7 +282,9 @@ describe('SAMPLE unit test', () => {
         should.not.exist(res.decoded);
         // validation errors come in arrays
         res.body.message.passwordConfirmation.should.be.a('array');
-        done();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   });
 
@@ -277,17 +295,16 @@ describe('SAMPLE unit test', () => {
 
   */
   // #11 should allow a new user register and be automatically logged in
-  it('should allow a user sign up and sign in', (done) => {
+  it('should allow a user sign up and sign in', () => {
     // calling home page api
     server
       .post('/users/signup')
       .send(registerDetails)
       .expect('Content-type', /json/)
-      .end((err, res) => {
+      .then((err, res) => {
         if (res.body.statusCode === 409 && res.body.message.includes('has already been')) {
           // Error key should be true.
           res.body.error.should.equal(true);
-          done();
         }
         // HTTP status should be 201
         res.body.statusCode.should.equal(201);
@@ -296,7 +313,9 @@ describe('SAMPLE unit test', () => {
         // No token should be supplied
         should.exist(res.body.token);
         token1 = res.body.token;
-        done();
+      })
+      .catch((err) => {
+        console.log(err);
       });
   });
 });

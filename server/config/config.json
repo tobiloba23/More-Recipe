@@ -11,6 +11,8 @@
       "username": "postgres",
       "password": null,
       "database": "more_recipes_test",
+      "host": "localhost",
+      "port": 5432,
       "dialect": "postgres"
     },
     "production": {

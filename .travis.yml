@@ -4,3 +4,7 @@ node_js:
 
 after_success:
 - npm run coveralls
+
+notification:
+  email:
+    on_failure: change

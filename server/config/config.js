@@ -10,7 +10,7 @@ export default {
   test: {
     username: 'postgres',
     password: process.env.DB_TEST_PASSWORD,
-    database: 'more_recipes_dev',
+    database: 'more_recipes_test',
     host: '127.0.0.1',
     port: 5432,
     dialect: 'postgres'

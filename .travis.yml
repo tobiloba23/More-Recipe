@@ -3,7 +3,7 @@ node_js:
 - "stable"
 
 before_script:
-- psql -c 'create database travis_ci_test;' -U postgres
+- psql -c 'create database more_recipes_test;' -U postgres
 - cross-env NODE_ENV=test sequelize db:migrate
 
 after_success:

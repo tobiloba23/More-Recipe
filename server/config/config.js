@@ -8,8 +8,8 @@ export default {
     dialect: 'postgres'
   },
   test: {
-    username: 'postgres',
-    password: process.env.SEQUELIZE_POSTGRES_PASSWORD,
+    username: 'TOBI',
+    password: 'password',
     database: 'more_recipes_test',
     port: 5432,
     dialect: 'postgres'

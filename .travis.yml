@@ -17,6 +17,7 @@ before_script:
 - psql -c '\du' -d more_recipes_test -U tobi
 - psql -c '\dt' -U tobi -d more_recipes_test
 - psql -c "INSERT INTO public.\"Users\" (\"userId\", \"userName\", \"email\", \"password\", \"firstName\", \"lastName\", \"phoneNo\", \"createdAt\", \"updatedAt\") VALUES('63763de9-6304-4078-8fb1-bf85394fb033', 'tobiloba', 'tobiloba@andela.com', '$2a$08$wEBnEZvf37nZ7cGs7qiIvejSkpo/gCBh.xV75dWkpLhfOimR8GR52', 'tobiloba', 'Ace', NULL, '2017-10-07 20:14:33.779', '2017-10-07 20:14:33.779');" -U tobi -d more_recipes_test
+- psql -c "SELECT * FROM public.\"Users\"" -U tobi -d more_recipes_test
 
 after_success:
 - npm run coveralls

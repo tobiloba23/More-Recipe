@@ -9,7 +9,7 @@ let token;
 export default {
   list(req, res) {
     return User
-      .find({
+      .findAll({
         attributes: ['userId', 'userName'],
       })
       .then((user) => {

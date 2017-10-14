@@ -13,8 +13,8 @@ before_script:
 - psql -c "CREATE ROLE TOBI WITH LOGIN PASSWORD 'password';" -U postgres
 - psql -c 'GRANT ALL PRIVILEGES ON DATABASE more_recipes_test TO TOBI;' -U postgres
 - cross-env NODE_ENV=test sequelize db:migrate
-- psql -c '\list' -U tobi
-- psql -c '\du' -U tobi
+- psql -c '\list' -d more_recipes_test -U tobi
+- psql -c '\du' -d more_recipes_test -U tobi
 - psql -c '\dt' -U tobi -d more_recipes_test
 
 after_success:

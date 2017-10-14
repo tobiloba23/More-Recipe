@@ -15,9 +15,6 @@ before_script:
 - psql -c '\list' -U postgres
 - psql -c '\du' -U postgres
 - cross-env NODE_ENV=test sequelize db:migrate
-- psql more_recipes_test
-- \dt
-- \q
 
 after_success:
 - npm run coveralls

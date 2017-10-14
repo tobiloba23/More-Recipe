@@ -9,7 +9,7 @@ export default {
   },
   test: {
     username: 'tobi',
-    password: 'password',
+    password: 'pasord',
     database: 'more_recipes_test',
     port: 5432,
     dialect: 'postgres'

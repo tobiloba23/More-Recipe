@@ -3,7 +3,7 @@ node_js:
 - "stable"
 
 before_script:
-- psql -c 'create database travis_ci_test;' -U TOBI
+- psql -c 'create database travis_ci_test;' -U postgres
 - sequelize db:migrate
 
 after_success:

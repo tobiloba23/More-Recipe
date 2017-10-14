@@ -9,7 +9,7 @@
     },
     "test": {
       "username": "postgres",
-      "password": null,
+      "password": "blabla",
       "database": "more_recipes_test",
       "host": "localhost",
       "port": 5432,

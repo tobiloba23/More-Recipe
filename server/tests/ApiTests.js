@@ -1,6 +1,7 @@
 import chai from 'chai';
 import supertest from 'supertest-as-promised';
 import Faker from 'Faker';
+import app from '../../app';
 
 const should = chai.should();
 
@@ -11,7 +12,7 @@ const should = chai.should();
 
 // This agent refers to PORT where program is runninng.
 
-const server = supertest.agent('http://localhost:8080/api/v2');
+const server = supertest(app);
 let token1 = '';
 
 // UNIT test begin

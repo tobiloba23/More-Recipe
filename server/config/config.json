@@ -9,7 +9,7 @@
     },
     "test": {
       "username": "tobi",
-      "password": "password",
+      "password": "psword",
       "database": "more_recipes_test",
       "port": 5432,
       "dialect": "postgres"

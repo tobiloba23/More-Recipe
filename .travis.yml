@@ -2,12 +2,12 @@ language: node_js
 node_js:
 - "stable"
 
+before_script:
+- psql -c 'create database travis_ci_test;' -U TOBI -P password
+
 after_success:
 - npm run coveralls
 
 notifications:
   email:
     on_failure: change
-
-before_script:
-  - psql -c 'create database travis_ci_test;' -U postgres

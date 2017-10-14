@@ -13,6 +13,7 @@ let sequelize;
 if (configEnv.use_env_variable) {
   sequelize = new Sequelize(process.env.DATABASE_URL);
 } else {
+  console.log(configEnv.database, configEnv.username, configEnv.password);
   sequelize =
 new Sequelize(configEnv.database, configEnv.username, configEnv.password, configEnv);
 }

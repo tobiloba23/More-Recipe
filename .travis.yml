@@ -9,7 +9,8 @@ services:
 - postgresql
 
 before_script:
-- psql -c 'create database more_recipes_test;' -U postgres -W password
+- psql -c 'create database more_recipes_test;' -U postgres
+- psql -c 'CREATE USER TOBI WITH PASSWORD \'password\';' -U postgres
 - cross-env NODE_ENV=test sequelize db:migrate
 
 after_success:

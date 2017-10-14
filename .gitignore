@@ -4,7 +4,6 @@ node_modules
 .vscode
 .coveralls.yml
 .nyc_output
-server/config
 server.pass.key
 server.key
 server.csr

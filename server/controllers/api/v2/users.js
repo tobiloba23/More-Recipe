@@ -179,7 +179,7 @@ export default {
         // create a token with only our given payload
         token = jwt.sign(
           { id: user.userId },
-          'process.env.JWT_SEC_KEY',
+          process.env.JWT_SEC_KEY,
           {
             expiresIn: 1440 // expires in 24 hours
           }

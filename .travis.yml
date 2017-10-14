@@ -13,9 +13,9 @@ before_script:
 - psql -c "CREATE ROLE TOBI WITH LOGIN PASSWORD 'password';" -U postgres
 - psql -c 'GRANT ALL PRIVILEGES ON DATABASE more_recipes_test TO TOBI;' -U postgres
 - cross-env NODE_ENV=test sequelize db:migrate
-- psql -c '\list' -d postgres -U tobi
-- psql -c '\du' -d postgres -U tobi
-- psql -c '\dt' -U tobi -d postgres
+- psql -c '\list' -d postgres
+- psql -c '\du' -d postgres
+- psql -c '\dt' -d postgres
 - psql -c "INSERT INTO public.\"Users\" (\"userId\", \"userName\", \"email\", \"password\", \"firstName\", \"lastName\", \"phoneNo\", \"createdAt\", \"updatedAt\") VALUES('63763de9-6304-4078-8fb1-bf85394fb033', 'tobiloba', 'tobiloba@andela.com', '$2a$08$wEBnEZvf37nZ7cGs7qiIvejSkpo/gCBh.xV75dWkpLhfOimR8GR52', 'tobiloba', 'Ace', NULL, '2017-10-07 20:14:33.779', '2017-10-07 20:14:33.779');" -U tobi -d more_recipes_test
 - psql -c "SELECT * FROM public.\"Users\"" -U tobi -d more_recipes_test
 

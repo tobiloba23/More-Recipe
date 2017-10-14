@@ -3,7 +3,8 @@ node_js:
 - "stable"
 
 before_script:
-- psql -c 'create database travis_ci_test;' -U TOBI -p password
+- psql -c 'create database travis_ci_test;' -U TOBI
+- sequelize db:migrate
 
 after_success:
 - npm run coveralls

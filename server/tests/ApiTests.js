@@ -97,34 +97,38 @@ describe('SAMPLE unit test', () => {
   });
 
   // #2 should return home page
-  it('should return recipes', (done) => {
+  it('should return recipes', () => {
     // calling home page api
     server
       .get('/recipes')
       .expect('Content-type', /json/)
       .expect(200)
-      .end((err, res) => {
-      // HTTP status should be 200
-        res.body.statusCode.should.equal(200);
+      .then((err, res) => {
         // Error key should not exist.
         should.not.exist(res.body.error);
-        done();
+        // HTTP status should be 200
+        res.body.statusCode.should.equal(200);
+      })
+      .catch((err) => {
+        console.log(err.response.text);
       });
   });
 
   // #3 should not grant access
-  it('should not grant access', (done) => {
+  it('should not grant access', () => {
     // unauthorized user trying to access restricted content
     server
       .get('/recipes/'.concat(exstnRecipeId))
       .expect('Content-type', /json/)
       .expect(401)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 401
         res.body.statusCode.should.equal(401);
         // Error key should be true.
         res.body.error.should.equal(true);
-        done();
+      })
+      .catch((err) => {
+        console.log(err.response.text);
       });
   });
 
@@ -132,10 +136,10 @@ describe('SAMPLE unit test', () => {
   it('register should fail on no first name supplied', (done) => {
     server
       .post('/users/signup')
-      .send(registerNoFirstName)
+      .sthen(registerNoFirstName)
       .expect('Content-type', /json/)
       .expect(400)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
         // Error key should be true.
@@ -152,10 +156,10 @@ describe('SAMPLE unit test', () => {
   it('register should fail on no last name supplied', (done) => {
     server
       .post('/users/signup')
-      .send(registerNoLastName)
+      .sthen(registerNoLastName)
       .expect('Content-type', /json/)
       .expect(400)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
         // Error key should be true.
@@ -172,10 +176,10 @@ describe('SAMPLE unit test', () => {
   it('register should fail on no email supplied', (done) => {
     server
       .post('/users/signup')
-      .send(registerNoEmail)
+      .sthen(registerNoEmail)
       .expect('Content-type', /json/)
       .expect(400)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
         // Error key should be true.
@@ -192,10 +196,10 @@ describe('SAMPLE unit test', () => {
   it('register should fail on no password supplied', (done) => {
     server
       .post('/users/signup')
-      .send(registerNoPassword)
+      .sthen(registerNoPassword)
       .expect('Content-type', /json/)
       .expect(400)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
         // Error key should be true.
@@ -212,10 +216,10 @@ describe('SAMPLE unit test', () => {
   it('register should fail on no invalid email supplied', (done) => {
     server
       .post('/users/signup')
-      .send(registerNotEmail)
+      .sthen(registerNotEmail)
       .expect('Content-type', /json/)
       .expect(400)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
         // Error key should be true.
@@ -234,10 +238,10 @@ describe('SAMPLE unit test', () => {
   it('register should fail on invalid password supplied', (done) => {
     server
       .post('/users/signup')
-      .send(registerNotPassword)
+      .sthen(registerNotPassword)
       .expect('Content-type', /json/)
       .expect(400)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
         // Error key should be true.
@@ -254,10 +258,10 @@ describe('SAMPLE unit test', () => {
   it('register should fail on no password confirmation supplied', (done) => {
     server
       .post('/users/signup')
-      .send(registerNoPasswordConfirmation)
+      .sthen(registerNoPasswordConfirmation)
       .expect('Content-type', /json/)
       .expect(400)
-      .end((err, res) => {
+      .then((err, res) => {
         // HTTP status should be 400
         res.body.statusCode.should.equal(400);
         // Error key should be true.
@@ -281,9 +285,9 @@ describe('SAMPLE unit test', () => {
     // calling home page api
     server
       .post('/users/signup')
-      .send(registerDetails)
+      .sthen(registerDetails)
       .expect('Content-type', /json/)
-      .end((err, res) => {
+      .then((err, res) => {
         if (res.body.statusCode === 409 && res.body.message.includes('has already been')) {
           // Error key should be true.
           res.body.error.should.equal(true);

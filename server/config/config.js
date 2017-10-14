@@ -8,8 +8,8 @@ export default {
     dialect: 'postgres'
   },
   test: {
-    username: 'TOBI',
-    password: process.env.DB_TEST_PASSWORD,
+    username: 'postgres',
+    password: null,
     database: 'more_recipes_test',
     host: 'localhost',
     port: 5432,

@@ -8,8 +8,8 @@
       "dialect": "postgres"
     },
     "test": {
-      "username": "TOBI",
-      "password": "password",
+      "username": "postgres",
+      "password": null,
       "database": "more_recipes_test",
       "host": "localhost",
       "port": 5432,

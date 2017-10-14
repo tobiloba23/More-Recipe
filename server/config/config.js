@@ -8,8 +8,8 @@ export default {
     dialect: 'postgres'
   },
   test: {
-    username: 'toi',
-    password: 'pasord',
+    username: 'tobi',
+    password: 'password',
     database: 'more_recipes_test',
     port: 5432,
     dialect: 'postgres'

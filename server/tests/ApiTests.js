@@ -1,5 +1,5 @@
 import chai from 'chai';
-import supertest from 'supertest';
+import supertest from 'supertest-as-promised';
 import Faker from 'Faker';
 
 const should = chai.should();
@@ -12,14 +12,14 @@ process.env.NODE_ENV = 'test';
 // This agent refers to PORT where program is runninng.
 
 const server = supertest.agent('http://localhost:8080/api/v2');
-let token1 = '';
+let token = '';
 
 // UNIT test begin
 
 describe('SAMPLE unit test', () => {
   before(() => {
     // Reset user mode before tests
-    token1 = '';
+    token = '';
   });
 
   const exstnRecipeId = 'e4bb33e4-8db3-4e22-aaf6-4200dced502c';
@@ -295,7 +295,7 @@ describe('SAMPLE unit test', () => {
         should.not.exist(res.body.error);
         // No token should be supplied
         should.exist(res.body.token);
-        token1 = res.body.token;
+        token = res.body.token;
         done();
       });
   });

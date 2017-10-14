@@ -11,7 +11,9 @@ services:
 before_script:
 - psql -c 'create database more_recipes_test;' -U postgres
 - psql -c "CREATE ROLE TOBI WITH LOGIN PASSWORD 'password';" -U postgres
-- psql -c 'grant all privileges on database more_recipes_test to TOBI;' -U postgres
+- psql -c 'GRANT ALL PRIVILEGES ON DATABASE more_recipes_test TO TOBI;' -U postgres
+- psql -c '\list' -U postgres
+- psql -c '\du' -U postgres
 - cross-env NODE_ENV=test sequelize db:migrate
 
 after_success:

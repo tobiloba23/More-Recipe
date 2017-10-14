@@ -29,7 +29,8 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 
@@ -42,7 +43,8 @@ export default {
       }))
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 
@@ -134,7 +136,8 @@ export default {
       }))
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 
@@ -209,7 +212,8 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 
@@ -247,7 +251,8 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 

@@ -28,7 +28,8 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 
@@ -51,7 +52,8 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 
@@ -69,7 +71,6 @@ export default {
 
     const isValid = new validator(req.body, rules);
     if (isValid.fails()) {
-      console.log(isValid.fails());
       return res.status(400).json({
         statusCode: 400,
         error: true,
@@ -139,7 +140,8 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 
@@ -196,7 +198,8 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 
@@ -229,7 +232,8 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   }
 };

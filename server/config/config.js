@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   development: {
     username: 'TOBI',
     password: process.env.DB_DEV_PASSWORD,
@@ -9,9 +9,9 @@ export default {
   },
   test: {
     username: 'tobi',
-    password: 'pasord',
+    password: 'password',
     database: 'more_recipes_test',
-    port: 5432,
+    port: 2701,
     dialect: 'postgres'
   },
   production: {

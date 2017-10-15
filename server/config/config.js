@@ -11,7 +11,7 @@ module.exports = {
     username: 'tobi',
     password: 'password',
     database: 'more_recipes_test',
-    port: 2701,
+    port: 5432,
     dialect: 'postgres'
   },
   production: {

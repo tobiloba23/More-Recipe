@@ -7,7 +7,7 @@ const should = chai.should();
 
 // This agent refers to PORT where program is runninng.
 
-const server = supertest.agent(app);
+const server = supertest(app);
 let token1 = '';
 
 // UNIT test begin

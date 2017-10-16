@@ -22,7 +22,8 @@
   "nyc": {
     "require": [
       "babel-register",
-      "babel-polyfill"
+      "babel-polyfill",
+      "./mocha.env.js"
     ],
     "reporter": [
       "lcov",

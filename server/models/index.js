@@ -4,7 +4,7 @@ import Sequelize from 'sequelize';
 import config from '../config/config';
 
 const basename = path.basename(__filename);
-const env = 'test';
+const env = 'wewew';
 const configEnv = config[env];
 const db = {};
 let sequelize;

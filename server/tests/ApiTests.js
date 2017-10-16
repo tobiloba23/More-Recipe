@@ -1,17 +1,19 @@
 import chai from 'chai';
 import supertest from 'supertest-as-promised';
 import Faker from 'Faker';
+// During the test the env variable is set to test
+process.env.NODE_ENV = 'test';
+
+import app from '../../app';
 
 const should = chai.should();
 
 // const { expect } = chai;
 
-// During the test the env variable is set to test
-process.env.NODE_ENV = 'test';
 
 // This agent refers to PORT where program is runninng.
 
-const server = supertest.agent('http://localhost:8080/api/v2');
+const server = supertest(app);
 let token1 = '';
 
 // UNIT test begin
@@ -91,7 +93,7 @@ describe('SAMPLE unit test', () => {
   // #1 sholud return 404
   it('should return 404', () => {
     server
-      .get('/random')
+      .get('/api/v2/random')
       .expect('Content-type', /html/)
       .expect(404);
   });
@@ -100,7 +102,7 @@ describe('SAMPLE unit test', () => {
   it('should return recipes', () => {
     // calling home page api
     server
-      .get('/recipes')
+      .get('/api/v2/recipes')
       .expect('Content-type', /json/)
       .expect(200)
       .then((err, res) => {
@@ -118,7 +120,7 @@ describe('SAMPLE unit test', () => {
   it('should not grant access', () => {
     // unauthorized user trying to access restricted content
     server
-      .get('/recipes/'.concat(exstnRecipeId))
+      .get('/api/v2//recipes/'.concat(exstnRecipeId))
       .expect('Content-type', /json/)
       .expect(401)
       .then((err, res) => {
@@ -135,7 +137,7 @@ describe('SAMPLE unit test', () => {
   // #4 register should fail on no first name supplied
   it('register should fail on no first name supplied', () => {
     server
-      .post('/users/signup')
+      .post('/api/v2/users/signup')
       .send(registerNoFirstName)
       .expect('Content-type', /json/)
       .expect(400)
@@ -157,7 +159,7 @@ describe('SAMPLE unit test', () => {
   // #5 register should fail on no last name supplied
   it('register should fail on no last name supplied', () => {
     server
-      .post('/users/signup')
+      .post('/api/v2/users/signup')
       .send(registerNoLastName)
       .expect('Content-type', /json/)
       .expect(400)
@@ -179,7 +181,7 @@ describe('SAMPLE unit test', () => {
   // #6 register should fail on no email supplied
   it('register should fail on no email supplied', () => {
     server
-      .post('/users/signup')
+      .post('/api/v2/users/signup')
       .send(registerNoEmail)
       .expect('Content-type', /json/)
       .expect(400)
@@ -201,7 +203,7 @@ describe('SAMPLE unit test', () => {
   // #7 register should fail on no password supplied
   it('register should fail on no password supplied', () => {
     server
-      .post('/users/signup')
+      .post('/api/v2/users/signup')
       .send(registerNoPassword)
       .expect('Content-type', /json/)
       .expect(400)
@@ -223,7 +225,7 @@ describe('SAMPLE unit test', () => {
   // #8 register should fail on invalid email supplied
   it('register should fail on no invalid email supplied', () => {
     server
-      .post('/users/signup')
+      .post('/api/v2/users/signup')
       .send(registerNotEmail)
       .expect('Content-type', /json/)
       .expect(400)
@@ -247,7 +249,7 @@ describe('SAMPLE unit test', () => {
   // as well as dashes and underscores.
   it('register should fail on invalid password supplied', () => {
     server
-      .post('/users/signup')
+      .post('/api/v2/users/signup')
       .send(registerNotPassword)
       .expect('Content-type', /json/)
       .expect(400)
@@ -269,7 +271,7 @@ describe('SAMPLE unit test', () => {
   // #10 register should fail on no password confirmation supplied
   it('register should fail on no password confirmation supplied', () => {
     server
-      .post('/users/signup')
+      .post('/api/v2/users/signup')
       .send(registerNoPasswordConfirmation)
       .expect('Content-type', /json/)
       .expect(400)
@@ -298,7 +300,7 @@ describe('SAMPLE unit test', () => {
   it('should allow a user sign up and sign in', () => {
     // calling home page api
     server
-      .post('/users/signup')
+      .post('/api/v2/users/signup')
       .send(registerDetails)
       .expect('Content-type', /json/)
       .then((err, res) => {

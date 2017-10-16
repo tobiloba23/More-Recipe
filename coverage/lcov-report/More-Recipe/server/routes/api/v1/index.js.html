@@ -20,9 +20,9 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">87.5% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/8</span>
+        <span class='fraction'>7/8</span>
       </div>
       <div class='fl pad1y space-right2'>
         <span class="strong">100% </span>
@@ -35,13 +35,13 @@
         <span class='fraction'>0/1</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">87.5% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/8</span>
+        <span class='fraction'>7/8</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -88,25 +88,21 @@
 43</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -119,7 +115,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -130,21 +130,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import express from 'express';
 import Controller from '../../../controllers';
 &nbsp;
-const router = <span class="cstat-no" title="statement not covered" >express.Router();</span>
-const recipesController = <span class="cstat-no" title="statement not covered" >Controller.recipesApiv1;</span>
-const recipesReviewsController = <span class="cstat-no" title="statement not covered" >Controller.recipeReviewsApiv1;</span>
+const router = express.Router();
+const recipesController = Controller.recipesApiv1;
+const recipesReviewsController = Controller.recipeReviewsApiv1;
 // const usersController = Controller.usersApi;
 &nbsp;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >router.route('/recipes')</span>
+router.route('/recipes')
   .get(recipesController.list)
   .post(recipesController.create);
-<span class="cstat-no" title="statement not covered" >router.route('/recipes/:recipeId/')</span>
+router.route('/recipes/:recipeId/')
   // .get(recipesController.listOne)
   .put(recipesController.update)
   .delete(recipesController.delete);
 &nbsp;
-<span class="cstat-no" title="statement not covered" >router.route('/recipes/:recipeId/reviews')</span>
+router.route('/recipes/:recipeId/reviews')
   // .get(recipesReviewsController.list)
   .post(recipesReviewsController.create);
 // router.route('/recipes/:recipeId/reviews/:reviewId')
@@ -161,7 +161,7 @@ const recipesReviewsController = <span class="cstat-no" title="statement not cov
 &nbsp;
 &nbsp;
 // For any other request method on recipes, we're going to return "Method Not Allowed"
-<span class="cstat-no" title="statement not covered" >router.route('/recipes/:recipeId/reviews').all(<span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt;</span>
+router.route('/recipes/:recipeId/reviews').all(<span class="fstat-no" title="function not covered" >(r</span>eq, res) =&gt;
 <span class="cstat-no" title="statement not covered" >  res.status(405).send({</span>
     statusCode: 405,
     error: true,
@@ -175,7 +175,7 @@ export default router;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Oct 15 2017 18:41:43 GMT+0100 (WAT)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Oct 16 2017 02:45:41 GMT+0100 (WAT)
 </div>
 </div>
 <script src="../../../../../prettify.js"></script>

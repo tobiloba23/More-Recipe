@@ -20,28 +20,28 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>0/17</span>
+        <span class='fraction'>17/17</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/2</span>
+        <span class='fraction'>2/2</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/2</span>
+        <span class='fraction'>2/2</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">100% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>0/17</span>
+        <span class='fraction'>17/17</span>
       </div>
     </div>
   </div>
-  <div class='status-line low'></div>
+  <div class='status-line high'></div>
 <pre><table class="coverage">
 <tr><td class="line-count quiet">1
 2
@@ -111,27 +111,25 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">10x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -140,19 +138,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -168,25 +168,25 @@ import apiRoutesv1 from './server/routes/api/v1';
 import apiRoutesv2 from './server/routes/api/v2';
 import pageLoaderRoutes from './server/routes/pageLoader';
 &nbsp;
-<span class="cstat-no" title="statement not covered" >dotenv.config();</span>
+dotenv.config();
 &nbsp;
-const app = <span class="cstat-no" title="statement not covered" >express();</span>
+const app = express();
 &nbsp;
 // Log requests to the console.
-<span class="cstat-no" title="statement not covered" >app.use(logger('dev'));</span>
+app.use(logger('dev'));
 &nbsp;
-const port = <span class="cstat-no" title="statement not covered" >parseInt(process.env.PORT, 10) || 8080;</span>
+const port = parseInt(process.env.PORT, 10) || 8080;
 &nbsp;
-<span class="cstat-no" title="statement not covered" >app.set('Port', port);</span>
+app.set('Port', port);
 &nbsp;
 // Add middleware to console log every request
-<span class="cstat-no" title="statement not covered" >app.use(<span class="fstat-no" title="function not covered" >(r</span>eq, res, next) =&gt; {</span>
-<span class="cstat-no" title="statement not covered" >  console.log(req.method, req.url);</span>
-<span class="cstat-no" title="statement not covered" >  next();</span>
+app.use((req, res, next) =&gt; {
+  console.log(req.method, req.url);
+  next();
 });
 &nbsp;
 // middle-ware that sets client folder as the default directory
-<span class="cstat-no" title="statement not covered" >app.use(express.static(path.join(__dirname, '/client')));</span>
+app.use(express.static(path.join(__dirname, '/client')));
 &nbsp;
 // // middle-ware that
 // app.use(tokenValid);
@@ -197,19 +197,19 @@ const port = <span class="cstat-no" title="statement not covered" >parseInt(proc
 // app.use('/fonts', express.static(path.join(__dirname, '/template')));
 &nbsp;
 // Enable parsing of posted forms
-<span class="cstat-no" title="statement not covered" >app.use(bodyParser.urlencoded({ extended: false })); </span>//
-<span class="cstat-no" title="statement not covered" >app.use(bodyParser.json());</span>
+app.use(bodyParser.urlencoded({ extended: false })); //
+app.use(bodyParser.json());
 &nbsp;
 // Call to server /routes
-<span class="cstat-no" title="statement not covered" >app.use('/', pageLoaderRoutes);</span>
+app.use('/', pageLoaderRoutes);
 // Call to server /routes/api/v1
-<span class="cstat-no" title="statement not covered" >app.use('/api/v1', apiRoutesv1);</span>
+app.use('/api/v1', apiRoutesv1);
 // Call to server /routes/api/v2
-<span class="cstat-no" title="statement not covered" >app.use('/api/v2', apiRoutesv2);</span>
+app.use('/api/v2', apiRoutesv2);
 &nbsp;
-const server = <span class="cstat-no" title="statement not covered" >app.listen(app.get('Port'), <span class="fstat-no" title="function not covered" >()</span> =&gt; {</span>
-  const portCheck = <span class="cstat-no" title="statement not covered" >server.address().port;</span>
-<span class="cstat-no" title="statement not covered" >  console.log('Magic happens on port ', portCheck);</span>
+const server = app.listen(app.get('Port'), () =&gt; {
+  const portCheck = server.address().port;
+  console.log('Magic happens on port ', portCheck);
 });
 &nbsp;
 &nbsp;
@@ -220,7 +220,7 @@ export default app;
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Oct 15 2017 18:41:43 GMT+0100 (WAT)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Mon Oct 16 2017 02:45:41 GMT+0100 (WAT)
 </div>
 </div>
 <script src="../prettify.js"></script>

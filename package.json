@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon --watch server --exec babel-node  -- app.js",
     "build": "babel ./server -d dist",
-    "test": "cross-env NODE_ENV=test nyc mocha \"./server/tests/**/*@(.js|.jsx)\"",
+    "test": "cross-env NODE_ENV=test nyc mocha --timeout 60 \"./server/tests/**/*@(.js|.jsx)\"",
     "test:local": "cross-env NODE_ENV=test nyc mocha \"./server/tests/**/*@(.js|.jsx)\"",
     "coveralls": "node ./node_modules/coveralls/bin/coveralls.js < coverage/lcov.info"
   },
@@ -23,7 +23,8 @@
   "nyc": {
     "require": [
       "babel-register",
-      "./mocha.env.js"
+      "babel-polyfill",
+      "env-test"
     ],
     "reporter": [
       "lcov",
@@ -67,10 +68,12 @@
   },
   "devDependencies": {
     "babel-plugin-istanbul": "^4.1.5",
+    "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
     "cross-env": "^5.0.5",
+    "env-test": "^1.0.0",
     "eslint": "^4.8.0",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-config-airbnb-base": "^12.0.2",

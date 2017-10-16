@@ -18,7 +18,11 @@ app.use(logger('dev'));
 
 const port = parseInt(process.env.PORT, 10) || 8080;
 
-app.set('Port', port);
+if (process.env.NODE_ENV === 'test') {
+  app.set('Port', port);
+} else {
+  app.set('Port', 8000);
+}
 
 // Add middleware to console log every request
 app.use((req, res, next) => {

@@ -7,7 +7,6 @@
     "start": "nodemon --watch server --exec babel-node  -- app.js",
     "build": "babel ./server -d dist",
     "test": "cross-env NODE_ENV=test nyc mocha --timeout 6000 \"./server/tests/**/*@(.js|.jsx)\"",
-    "test:local": "cross-env NODE_ENV=test nyc mocha \"./server/tests/**/*@(.js|.jsx)\"",
     "coveralls": "node ./node_modules/coveralls/bin/coveralls.js < coverage/lcov.info"
   },
   "repository": {
@@ -23,8 +22,7 @@
   "nyc": {
     "require": [
       "babel-register",
-      "babel-polyfill",
-      "env-test"
+      "babel-polyfill"
     ],
     "reporter": [
       "lcov",

@@ -1,11 +1,93 @@
 
 html,
-body,
 header,
-
 body{
-    font-family: 'Homemade Apple', cursive;
+    font-family: 'Jura', sans-serif;
 }
+
+@media screen and (min-width: 1025px) {
+    .infoViewHeight {
+        min-height: 50vh;
+    }
+}
+
+@media screen and (max-width: 1024px) and (min-width: 768px)  {
+    .infoViewHeight {
+        min-height: 75vh;
+    }
+}
+
+@media screen and (max-width: 991px) and (min-width: 768px)  {
+    .favViewHeight {
+        height: 120vh;
+        min-height: 120vh;
+    }
+}
+
+@media screen and (max-width: 991px) and (min-width: 768px)  {
+    .midViewHeight {
+        height: 60vh;
+        min-height: 60vh;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .favViewHeight{
+        height: 200vh;
+        min-height: 200vh;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    .midViewHeight{
+        height: 150vh;
+        min-height: 150vh;
+    }
+}
+
+@media screen and (max-width: 379px) {
+    .maxFontXXS1{
+        font-size: 1.5rem!important;
+    }
+}
+
+@media screen and (max-width: 420px) {
+    .maxFontXXS2{
+        height: 150px!important;
+        width: 360px!important;
+        font-size: 2.5rem!important;
+    }
+}
+
+@media screen and (max-width: 420px) and (min-width: 380px)  {
+    .maxFontXS{
+        font-size: 2rem!important;
+    }
+}
+
+@media screen and (max-width: 767px) and (min-width: 420px) {
+    .maxFontSM1{
+        font-size: 4rem!important;
+    }
+}
+
+@media screen and (max-width: 767px) and (min-width: 420px) {
+    .maxFontSM2{
+        font-size: 2rem!important;
+    }
+}
+
+@media screen and (max-width: 991px) and (min-width: 767px) {
+    .maxFontMD {
+        font-size: 3rem!important;
+    }
+}
+
+#homeIntro{
+    height: 100%;
+    min-height: 100vh;
+}
+
 
 .centre-piece-txt{
     color: #ffffff;
@@ -17,22 +99,53 @@ body{
     line-height: 1.2em;
 }
 
+.carousel-caption {
+    top: 0;
+    bottom: auto;
+}
+
 
 #intro {
     height: 0%;
 }
 
 #intro {
-    background: url(../images/background.png) no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
+    background: url("../images/More\ Recipes.jpg") no-repeat center center fixed;
+    background-size: cover;
+    height: 100%;
+    min-height: 100vh;
+}
+
+#midView {
+    background: url("../images/table of plenty.jpeg") no-repeat center center fixed;
     background-size: cover;
 }
 
-
 .card img {
-
     min-width: 100%;
     height: 300px;
+}
+
+.navbarColor {
+    background-color: #02c8a7;
+    Color: whitesmoke
+}
+
+.buttonsColor {
+    background-color: #eab126;
+    Color: whitesmoke
+}
+
+.layerColor {
+    background-color: #36b351;
+    Color: whitesmoke
+}
+
+.layerText {
+    Color: #36b351
+}
+
+.bodyColor {
+    background-color: #eab126;
+    Color: whitesmoke
 }

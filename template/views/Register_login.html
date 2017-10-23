@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Hello, world!</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>More Recipes - Register/Login</title>
+    <link href="https://fonts.googleapis.com/css?family=Jura|Syncopate" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.0/css/font-awesome.min.css">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
+        crossorigin="anonymous">
+    <!-- Material Design Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.3.2/css/mdb.min.css" />
+    <link rel="stylesheet" href="../../template/css/Register_login.css">
+
+
+</head>
+
+<body>
+
+
+    <!-- YOUR CONTENT STARTS HERE -->
+
+    <!--Section: Live preview-->
+    <section class="form-dark" id="signin" style="display: block">
+
+        <!--Form without header-->
+        <div id="card-image" class="card card-image">
+            <div class="text-white rgba-stylish-strong py-5 px-5 z-depth-4" style="height: 100%; min-height: 100vh">
+
+                <!--Header-->
+                <div class="text-center">
+                    <h3 class="white-text mb-5 mt-4 font-bold">
+                        <strong>SIGN</strong>
+                        <a class="green-text font-bold">
+                            <strong> IN</strong>
+                        </a>
+                    </h3>
+                </div>
+
+                <!--Body-->
+                <div class="md-form">
+                        <i class="fa fa-user prefix grey-text"></i>
+                        <input type="text" id="Form-userName" class="form-control white-text" placeholder="User Name">
+                    </div>
+
+                <div class="md-form">
+                    <i class="fa fa-lock prefix grey-text"></i>
+                    <input type="password" id="Form-pass5" class="form-control white-text" placeholder="Password">
+                    <i class="fa fa-lock prefix grey-text" style="opacity: 0"></i>
+                </div>
+                <label for="password1">Show Password: <input type="checkbox" id="password1" onclick="showPassword('Form-pass5')"></label> 
+                
+
+                <!--Grid row-->
+                <div class="row d-flex align-items-center mb-4">
+
+                    <!--Grid column-->
+                    <div class="text-center mb-3 col-md-12">
+                        <a href="./Recipe_LandingA.html">
+                            <button type="button" class="btn btn-success btn-block z-depth-1">Sign in</button>
+                        </a>
+                    </div>
+                    <!--Grid column-->
+                </div>
+                <!--Grid row-->
+
+                <div class="row">
+                        <div class="col-md-6">
+                                <p class="font-small white-text d-flex justify-content-start">Forgot your password?
+                                    <a href="" class="green-text ml-1 font-bold"> Reset password</a>
+                                </p>
+                            </div>
+                            <!--Grid column-->
+                <div class="col-md-6">
+                        <p class="font-small white-text d-flex justify-content-end">Don't have an account?
+                            <a onclick="signUser()" class="green-text ml-1 font-bold"> Register</a>
+                        </p>
+                    </div>
+                    <!--Grid column-->
+
+                </div>
+                <!--Grid column-->
+
+
+            </div>
+        </div>
+        <!--/Form without header-->
+
+    </section>
+    <!--Section: Live preview-->
+
+
+
+    <!--Section: Live preview-->
+    <section class="form-dark" id="signup" style="display: none">
+
+        <!--Form without header-->
+        <div id="card-image" class="card card-image">
+            <div class="text-white rgba-stylish-strong py-5 px-5 z-depth-4" style="height: 100%; min-height: 100vh">
+
+                <!--Header-->
+                <div class="text-center">
+                    <h3 class="white-text mb-5 mt-4 font-bold">
+                        <strong>SIGN</strong>
+                        <a class="green-text font-bold">
+                            <strong> UP</strong>
+                        </a>
+                    </h3>
+                </div>
+
+                <!--Body-->
+                <div class="md-form">
+                    <i class="fa fa-envelope prefix grey-text"></i>
+                    <input type="text" id="Form-email5" class="form-control white-text" placeholder="Email">
+                </div>
+
+                <div class="md-form">
+                    <i class="fa fa-lock prefix grey-text"></i>
+                    <input type="password" id="Form-pass50" class="form-control white-text" placeholder="Password">
+                </div>
+                <label for="password1">Show Password: <input type="checkbox" id="password1" onclick="showPassword('Form-pass50')"></label> 
+                
+
+                <div class="md-form">
+                        <i class="fa fa-key prefix grey-text"></i>
+                    <input type="password" id="Form-confPass5" class="form-control white-text" placeholder="Confirm password">
+                </div>
+
+                <div class="md-form">
+                    <i class="fa fa-user prefix grey-text"></i>
+                    <input type="text" id="Form-userName" class="form-control white-text" placeholder="User Name">
+                </div>
+
+                <div class="md-form">
+                    <i class="fa fa-user-circle prefix grey-text"></i>
+                    <input type="text" id="Form-firstName5" class="form-control white-text" placeholder="First Name">
+                </div>
+
+                <div class="md-form">
+                    <i class="fa fa-user-circle prefix grey-text"></i>
+                    <input type="text" id="Form-lastName5" class="form-control white-text" placeholder="Last Name">
+                </div>
+
+                <div class="md-form">
+                    <i class="fa fa-phone prefix grey-text"></i>
+                    <input type="text" id="Form-phoneNumber5" class="form-control white-text" placeholder="Phone Number">
+                </div>
+
+                <!--Grid row-->
+                <div class="row d-flex align-items-center mb-4">
+
+                    <!--Grid column-->
+                    <div class="text-center mb-3 col-md-12">
+                        <a href="./Recipe_LandingA.html">
+                            <button type="button" class="btn btn-success btn-block z-depth-1">Register</button>
+                        </a>
+                    </div>
+                    <!--Grid column-->
+                </div>
+                <!--Grid row-->
+
+                <!--Grid column-->
+                <div class="col-md-12">
+                    <p class="font-small white-text d-flex justify-content-end">Have an account?
+                        <a href="./Register_login.html" onclick="signUser()" class="green-text ml-1 font-bold"> Log in</a>
+                    </p>
+                </div>
+                <!--Grid column-->
+
+            </div>
+        </div>
+        <!--/Form without header-->
+
+    </section>
+    <!--Section: Live preview-->
+
+
+    <!-- YOUR CONTENT ENDS HERE -->
+
+
+    <!-- JavaScript: placed at the end of the document so the pages load faster -->
+
+    <script src="../js/Register_login.js"></script>
+
+
+    <!-- jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+
+    <!-- Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+        crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified Bootstrap JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+        crossorigin="anonymous"></script>
+
+</body>
+
+</html>

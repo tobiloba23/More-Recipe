@@ -26,7 +26,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// middle-ware that sets public folder as the default directory
+// middle-ware that sets client folder as the default directory
 app.use(express.static(path.join(__dirname, '/client')));
 
 // // middle-ware that
@@ -34,8 +34,8 @@ app.use(express.static(path.join(__dirname, '/client')));
 
 
 // Set other static directories before defining routes
-app.use('/node_modules', express.static(path.join(__dirname, '/node_modules')));
-app.use('/fonts', express.static(path.join(__dirname, '/template')));
+// app.use('/node_modules', express.static(path.join(__dirname, '/node_modules')));
+// app.use('/fonts', express.static(path.join(__dirname, '/template')));
 
 // Enable parsing of posted forms
 app.use(bodyParser.urlencoded({ extended: false })); //

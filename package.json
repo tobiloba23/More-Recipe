@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon --watch server --exec babel-node  -- app.js",
     "build": "babel ./server -d dist",
-    "test": "cross-env NODE_ENV=test nyc mocha \"./server/tests/**/*@(.js|.jsx)\"",
+    "test": "nyc mocha \"./server/tests/**/*@(.js|.jsx)\"",
     "coveralls": "node ./node_modules/coveralls/bin/coveralls.js < coverage/lcov.info"
   },
   "repository": {
@@ -21,7 +21,9 @@
   "homepage": "https://github.com/tobiloba23/More-Recipe#readme",
   "nyc": {
     "require": [
-      "babel-register"
+      "babel-register",
+      "babel-polyfill",
+      "./mocha.env.js"
     ],
     "reporter": [
       "lcov",
@@ -32,6 +34,7 @@
   },
   "dependencies": {
     "Faker": "^0.7.2",
+    "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
@@ -57,19 +60,19 @@
     "sequelize": "^4.13.2",
     "sequelize-cli": "^3.0.0",
     "supertest": "^3.0.0",
-    "sync-exec": "^0.6.2",
+    "supertest-as-promised": "^4.0.2",
     "uglifyjs-webpack-plugin": "^0.4.6",
     "validatorjs": "^3.13.5",
     "webpack": "^3.6.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
     "babel-plugin-istanbul": "^4.1.5",
-    "babel-preset-es2015": "^6.24.1",
+    "babel-polyfill": "^6.26.0",
     "babel-register": "^6.26.0",
     "chai": "^4.1.2",
     "coveralls": "^3.0.0",
     "cross-env": "^5.0.5",
+    "env-test": "^1.0.0",
     "eslint": "^4.8.0",
     "eslint-config-airbnb": "^15.1.0",
     "eslint-config-airbnb-base": "^12.0.2",

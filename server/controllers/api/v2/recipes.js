@@ -64,7 +64,8 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 
@@ -77,7 +78,8 @@ export default {
       }))
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 
@@ -107,7 +109,8 @@ export default {
       }))
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 
@@ -148,7 +151,8 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 
@@ -185,9 +189,10 @@ export default {
             data: deletedRecipe
           }));
       })
-      .catch(error => res.status(404).json({
-        statusCode: 404,
-        error
+      .catch(error => res.status(400).json({
+        statusCode: 400,
+        error: true,
+        message: error
       }));
   }
 };

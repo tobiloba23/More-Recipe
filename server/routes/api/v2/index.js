@@ -13,7 +13,7 @@ router.route('/get-token').get((req, res) => {
   const token = jwt.sign(
     { foo: 'foo' },
     process.env.JWT_SEC_KEY, {
-      expiresIn: 100 // expires in 24 hours
+      expiresIn: 300 // expires 5mins
     }
   );
   res.json({ token });

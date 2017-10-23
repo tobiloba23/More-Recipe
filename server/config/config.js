@@ -1,21 +1,15 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-export default {
+module.exports = {
   development: {
     username: 'TOBI',
-    password: null,
+    password: process.env.DB_DEV_PASSWORD,
     database: 'more_recipes_dev',
     host: '127.0.0.1',
     port: 5432,
     dialect: 'postgres'
   },
   test: {
-    username: 'TOBI',
-    password: null,
-    database: 'more_recipes_dev',
-    host: '127.0.0.1',
+    username: 'postgres',
+    database: 'more_recipes_test',
     port: 5432,
     dialect: 'postgres'
   },

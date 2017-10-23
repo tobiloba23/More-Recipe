@@ -4,11 +4,12 @@ import validator from 'validatorjs';
 import models from '../../../models/';
 
 const { User } = models;
+let token;
 
 export default {
   list(req, res) {
     return User
-      .find({
+      .findAll({
         attributes: ['userId', 'userName'],
       })
       .then((user) => {
@@ -27,7 +28,8 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 
@@ -50,11 +52,12 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 
-  signup(req, res) {
+  async signup(req, res) {
     const rules = {
       userName: 'required|string',
       email: 'required|email',
@@ -68,13 +71,47 @@ export default {
 
     const isValid = new validator(req.body, rules);
     if (isValid.fails()) {
-      console.log(isValid.fails());
       return res.status(400).json({
         statusCode: 400,
         error: true,
         message: isValid.errors.all()
       });
     }
+
+    let response;
+    await User
+      .find({
+        where: {
+          userName: req.body.userName
+        }
+      })
+      .then((user) => {
+        if (user) {
+          response = {
+            statusCode: 409,
+            error: true,
+            message: user.userName.concat(' has already been taken'),
+          };
+        }
+      });
+    if (response) return res.status(response.statusCode).json(response);
+
+    await User
+      .find({
+        where: {
+          email: req.body.email
+        }
+      })
+      .then((user) => {
+        if (user) {
+          response = {
+            statusCode: 409,
+            error: true,
+            message: 'An account has already been created for '.concat(user.email),
+          };
+        }
+      });
+    if (response) return res.status(response.statusCode).json(response);
 
     return User
       .create({
@@ -86,7 +123,7 @@ export default {
       })
       .then((user) => {
         // create a token with only our given payload
-        const token = jwt.sign(
+        token = jwt.sign(
           { id: user.userId },
           process.env.JWT_SEC_KEY,
           {
@@ -96,14 +133,15 @@ export default {
 
         res.status(201).json({
           statusCode: 201,
-          message: 'User '.concat(user.userName, ' has successfully been created.'),
+          message: 'User '.concat(user.userName, '\' account has successfully been created.'),
           data: user,
           token
         });
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   },
 
@@ -141,7 +179,7 @@ export default {
           });
         }
         // create a token with only our given payload
-        const token = jwt.sign(
+        token = jwt.sign(
           { id: user.userId },
           process.env.JWT_SEC_KEY,
           {
@@ -159,8 +197,9 @@ export default {
         }).status(200);
       })
       .catch(error => res.status(400).json({
-        statusCode: 404,
-        error
+        statusCode: 400,
+        error: true,
+        message: error
       }));
   },
 
@@ -187,13 +226,14 @@ export default {
           .update({ fields: Object.keys(req.body) })
           .then(() => res.status(202).json({
             statusCode: 202,
-            message: user.userName.concat('\'s has successfully been updated.'),
+            message: user.userName.concat('\'s account has successfully been updated.'),
             data: user
           }));
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error
+        error: true,
+        message: error
       }));
   }
 };

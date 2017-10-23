@@ -1,8 +1,8 @@
 import jsonfile from 'jsonfile';
-import join from 'join-path';
-import recipesData from '../models/recipes-data.json';
+import path from 'path';
+import recipesData from '../../../models/dummyData/recipes-data.json';
 
-const dataDir = '../models/model/recipes-data.json';
+const dataDir = '../../../models/recipes-data.json';
 
 export default {
   list(req, res) {
@@ -38,7 +38,7 @@ export default {
     req.body.reviews = [];
     recipesData.push(req.body);
 
-    jsonfile.writeFile(join(__dirname, dataDir), recipesData, (err) => {
+    jsonfile.writeFile(path.join(__dirname, dataDir), recipesData, (err) => {
       if (err) res.status(403).send('Forbidden: Cannot access database. '.concat(err));
       else res.status(200).json(req.body);
     });
@@ -47,18 +47,19 @@ export default {
   update(req, res) {
     const recipeId = parseInt(req.params.recipeId, 10);
     let itemExists = false;
-    recipesData.forEach((recipe) => {
+    recipesData.forEach((recipe, i, theArray) => {
       if (recipe.id === recipeId) {
         itemExists = true;
         req.body.id = recipe.id;
         req.body.reviews = recipe.reviews;
+        theArray[i] = req.body;
       }
     });
     if (itemExists === false) {
       res.status(404).send('Not Found: The recipe with id: '.concat([req.params.recipeId, ' does not exist on record.']));
     }
 
-    jsonfile.writeFile(join(__dirname, dataDir), recipesData, (err) => {
+    jsonfile.writeFile(path.join(__dirname, dataDir), recipesData, (err) => {
       if (err) res.status(403).send('Forbidden: Cannot access database. '.concat(err));
       else res.status(200).json(req.body);
     });
@@ -76,7 +77,7 @@ export default {
       res.status(404).send('Not Found: The recipe with id: '.concat([req.params.recipeId, ' does not exist on record.']));
     }
 
-    jsonfile.writeFile(join(__dirname, dataDir), recipesData, (err) => {
+    jsonfile.writeFile(path.join(__dirname, dataDir), recipesData, (err) => {
       if (err) res.status(403).send('Forbidden: Cannot access database. '.concat(err));
       else res.status(200).json(recipesData);
     });

@@ -1,8 +1,8 @@
 import jsonfile from 'jsonfile';
-import join from 'join-path';
-import recipesData from '../models/recipes-data.json';
+import path from 'path';
+import recipesData from '../../../models/dummyData/recipes-data.json';
 
-const dataDir = '../models/models/recipes-data.json';
+const dataDir = '../../../models/recipes-data.json';
 
 export default {
 
@@ -23,7 +23,7 @@ export default {
       res.status(404).send('Not Found: The recipe with id: '.concat([req.params.recipeId, ' does not exist on record.']));
     }
 
-    jsonfile.writeFile(join(__dirname, dataDir), recipesData, (err) => {
+    jsonfile.writeFile(path.join(__dirname, dataDir), recipesData, (err) => {
       if (err) res.status(403).send('Forbidden: Cannot access database. '.concat(err));
       else res.status(200).json(returnData);
     });

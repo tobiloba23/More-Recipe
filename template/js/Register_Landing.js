@@ -23,7 +23,7 @@ $(document).ready(() => {
   favRev3.innerHTML = '<h3>fav1Rev3</h3> <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error eum mollitia sit dolorem autem qui possimus ex voluptate, voluptatibus iste unde numquam illum, molestiae reprehenderit, eligendi. Illum quod esse voluptatibus.</p>';
 
   const changeRevSet = function () {
-    let rem = slideCount % 3;
+    const rem = slideCount % 3;
     switch (rem) {
       case 0:
         favRev1.innerHTML = '<h3>fav1Rev1</h3> <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Error eum mollitia sit dolorem autem qui possimus ex voluptate, voluptatibus iste unde numquam illum, molestiae reprehenderit, eligendi. Illum quod esse voluptatibus.</p>';
@@ -132,6 +132,23 @@ function searchRecipes() {
   href.value = '../views/Register_login.html';
   x.attributes.setNamedItem(href);
   x.click();
+}
+
+function addOne() {
+  const e = event.srcElement;
+  e.innerHTML = parseInt(event.srcElement.innerHTML, 10) + 1;
+  e.removeAttribute('onclick');
+  const inner = document.createElement('i');
+  inner.setAttribute('class', 'fa fa-undo');
+  inner.setAttribute('onclick', 'minusOne()');
+  inner.innerHTML = '';
+  e.appendChild(inner);
+}
+
+function minusOne() {
+  const e = event.srcElement.parentElement;
+  e.innerHTML = parseInt(e.innerHTML, 10) - 1;
+  e.setAttribute('onclick', 'addOne()');
 }
 
 document.body.addEventListener('mousemove', (event) => {

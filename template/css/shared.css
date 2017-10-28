@@ -88,6 +88,16 @@ body{
     min-height: 100vh;
 }
 
+.card img {
+    min-width: 100%;
+    height: 300px;
+}
+
+.card img.rounded-circle {
+    height: 100px;
+    width: 100px;
+    text-align: center;
+}
 
 .centre-piece-txt{
     color: #ffffff;
@@ -121,11 +131,6 @@ body{
     background-size: cover;
 }
 
-.card img {
-    min-width: 100%;
-    height: 300px;
-}
-
 .navbarColor {
     background-color: #02c8a7;
     Color: whitesmoke
@@ -145,7 +150,20 @@ body{
     Color: #36b351
 }
 
+.highlightIcon {
+    Color: #003bfc !important
+}
+
 .bodyColor {
     background-color: #eab126;
     Color: whitesmoke
 }
+
+#toTopButton {
+    display: none;
+    position: fixed;
+    bottom: 20px;
+    right: 30px;
+    z-index: 99;
+}
+  

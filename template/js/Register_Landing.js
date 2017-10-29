@@ -205,6 +205,30 @@ function minusOne() {
   }
 }
 
+function like() {
+  const e = event.srcElement;
+  e.setAttribute('onclick', 'dislike()');
+  e.classList.add('highlightIcon');
+  const p = event.srcElement.parentElement;
+  if (p.childNodes[5] !== e && p.childNodes[5].classList.contains('highlightIcon')) {
+    p.childNodes[5].click();
+  } else if (p.childNodes[3] !== e && p.childNodes[3].classList.contains('highlightIcon')) {
+    p.childNodes[3].click();
+  }
+}
+
+function dislike() {
+  const e = event.srcElement;
+  e.setAttribute('onclick', 'like()');
+  e.classList.remove('highlightIcon');
+  const p = event.srcElement.parentElement;
+  if (p.childNodes[5] !== e && p.childNodes[5].classList.contains('highlightIcon')) {
+    p.childNodes[5].click();
+  } else if (p.childNodes[3] !== e && p.childNodes[3].classList.contains('highlightIcon')) {
+    p.childNodes[3].click();
+  }
+}
+
 document.body.addEventListener('mousemove', (event) => {
   if (screen.width > 500) {
     // Check if we are in the top area of the page.

@@ -18,4 +18,3 @@ const signUser = () => {
     y.style.display = 'none';
   }
 };
-

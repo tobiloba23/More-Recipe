@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "nodemon --watch server --exec babel-node  -- app.js",
-    "build": "babel ./server -d dist",
-    "test": "nyc mocha \"./server/tests/**/*@(.js|.jsx)\"",
+    "test": "nyc mocha \"./tests/**/*@(.js|.jsx)\"",
     "coveralls": "node ./node_modules/coveralls/bin/coveralls.js < coverage/lcov.info"
   },
   "repository": {
@@ -33,15 +32,19 @@
     "instrument": false
   },
   "dependencies": {
-    "Faker": "^0.7.2",
+    "asn1.js": "^5.0.0",
+    "ast-types-flow": "0.0.7",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
+    "babel-preset-es2015-mod": "^6.6.0",
+    "babel-preset-es3": "^1.0.1",
     "babel-preset-react": "^6.24.1",
     "bcrypt-nodejs": "0.0.3",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.2",
+    "diff": "^3.4.0",
     "dotenv": "^4.0.0",
     "express": "^4.15.5",
     "express-route-validator": "^0.2.5",
@@ -79,6 +82,7 @@
     "eslint-plugin-import": "^2.7.0",
     "eslint-plugin-jsx-a11y": "^5.1.1",
     "eslint-plugin-react": "^7.4.0",
+    "faker": "^4.1.0",
     "istanbul": "^0.4.5",
     "mocha": "^4.0.1",
     "mocha-lcov-reporter": "^1.3.0",

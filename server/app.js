@@ -4,10 +4,10 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import dotenv from 'dotenv';
 
-// import tokenValid from './server/auth/local';
-import apiRoutesv1 from './server/routes/api/v1';
-import apiRoutesv2 from './server/routes/api/v2';
-import pageLoaderRoutes from './server/routes/pageLoader';
+// import tokenValid from './auth/local';
+import apiRoutesv1 from './routes/api/v1';
+import apiRoutesv2 from './routes/api/v2';
+import pageLoaderRoutes from './routes/pageLoader';
 
 dotenv.config();
 

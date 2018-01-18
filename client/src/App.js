@@ -1,21 +1,25 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
+
+import Layout from './hoc/Layout/Layout';
+import RecipeLanding from './containers/RecipeLanding/RecipeLanding';
 
 class App extends Component {
   render() {
+    let routes = (
+      <Switch>
+        <Route path="/" exact component={RecipeLanding} />
+        <Redirect to="/" />
+      </Switch>
+    );
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+      <div>
+        <Layout>
+          {routes}
+        </Layout>
       </div>
     );
   }
 }
 
-export default App;
+export default withRouter(App);

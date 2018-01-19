@@ -1,7 +1,7 @@
 import React from 'react';
 import { Col, Container, View } from 'mdbreact';
 
-import SectionTitle from '../SectionTitle/SectionTitle';
+import SectionTitle from '../../UI/SectionTitle/SectionTitle';
 import classes from './JoinUs.css';
 
 const joinUs = (props) => {

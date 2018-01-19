@@ -7,7 +7,38 @@ import FooterComponent from '../../components/Navigation/Footer/FooterComponent'
 class Layout extends Component {
   state = {
     dropdownOpen: false,
-    navbarOpen: false
+    navbarOpen: false,
+    page: 'Landing'
+  };
+
+  setPageHandler = (newPage) => {
+    this.setState({
+      page: newPage
+    });
+
+    let p1 = new Promise(
+      (resolve, reject) => {
+        window.setTimeout(
+          () => {
+            const changeNavColor = () => {
+              if (this.state.page === 'Landing' || 'Auth') {
+                document.getElementById('navbar').classList.remove('navbarColor');
+              } else {
+                document.getElementById('navbar').classList.add('navbarColor');
+              }
+            };
+            resolve(changeNavColor());
+          }, 
+          100
+        );
+      }
+    );
+    p1.catch(
+      // Log the rejection reason
+      (reason) => {
+        console.log('Handle rejected promise (' + reason + ') here.');
+      }
+    );
   };
 
   toggleNavHandler = () => {
@@ -27,18 +58,19 @@ class Layout extends Component {
   };
 
   handleScroll = (event) => {
-    if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
-      // $('#navbar')[0].classList.add('navbarColor');
-      if (window.screen.width > 500) document.getElementById('navbar').setAttribute('style', 'visibility: visible');
-      document.getElementById('navbar').classList.add('navbarColor');
-    } else {
-      if (window.screen.width > 500) document.getElementById('navbar').setAttribute('style', 'visibility: visible');
-      document.getElementById('navbar').classList.remove('navbarColor');
-    }
+    if (window.screen.width > 500) document.getElementById('navbar').setAttribute('style', 'visibility: visible');
+    if (this.state.page === 'Landing') {
+      const introHeight = document.getElementById('intro').getBoundingClientRect().height - 30;
+      if (document.body.scrollTop > introHeight || document.documentElement.scrollTop > introHeight) {
+        document.getElementById('navbar').classList.add('navbarColor');
+      } else {
+        document.getElementById('navbar').classList.remove('navbarColor');
+      }
+    };
     if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
       document.getElementById('toTopButton').style.display = 'block';
     } else {
-        document.getElementById('toTopButton').style.display = 'none';
+      document.getElementById('toTopButton').style.display = 'none';
     };
   };
 
@@ -57,22 +89,29 @@ class Layout extends Component {
     window.addEventListener('scroll', this.handleScroll);
     window.addEventListener('mousemove', this.mouseAtScreenTop);
   };
-  
+
   componentWillUnmount = () => {
-      window.removeEventListener('scroll', this.handleScroll);
-      window.removeEventListener('mousemove', this.mouseAtScreenTop);
+    window.removeEventListener('scroll', this.handleScroll);
+    window.removeEventListener('mousemove', this.mouseAtScreenTop);
   };
 
   render() {
+    const { children } = this.props;
+
+    var childrenWithProps = React.Children.map(children,
+      child => React.cloneElement(child, { setPage: this.setPageHandler })
+    );
+
     return (
       <Aux>
-        <CollapsibleNavbar 
-          toggleDDclicked={this.toggleDDHandler} 
+        <CollapsibleNavbar
+          toggleDDclicked={this.toggleDDHandler}
           toggleNavClicked={this.toggleNavHandler}
           navbarOpen={this.state.navbarOpen}
-          dropdownOpen={this.state.dropdownOpen} />
+          dropdownOpen={this.state.dropdownOpen}
+        />
         <main>
-            {this.props.children}
+          {childrenWithProps}
         </main>
         <FooterComponent />
       </Aux>

@@ -22,7 +22,6 @@ const carouselComponent = (props) => {
             }
           </h4>
           <p>
-            {props.descriptionSumm ? props.descriptionSumm : item.descriptionSumm}
             {props.arrayDepth === 1 ? 
               props.descriptionSumm ? 
                 props.descriptionSumm :

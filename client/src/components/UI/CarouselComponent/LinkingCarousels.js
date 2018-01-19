@@ -1,8 +1,8 @@
 import React from 'react';
 
-import Aux from '../../hoc/Aux/Aux';
+import Aux from '../../../hoc/Aux/Aux';
 import CarouselComponent from './CarouselComponent';
-import transparent from '../../assets/images/asfalt-light.png';
+import transparent from '../../../assets/images/asfalt-light.png';
 
 const linkingCarousels = ( props ) => {
   return (

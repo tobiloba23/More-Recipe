@@ -17,9 +17,7 @@ const collapsibleNavbar = ( props ) => {
           <Collapse isOpen={props.navbarOpen} navbar>
             <NavbarNav className="mr-auto">
               <NavItem className={`my-auto navItemBorder`}>
-                {/* <NavLink> */}
-                <a id="Home" href="#intro">Home</a>
-                {/* </NavLink> */}
+                <NavLink id="Home" to="/Home">Home</NavLink>
               </NavItem>
               <Dropdown isOpen={props.dropdownOpen} toggle={props.toggleDDclicked}>
                 {/* <DropdownToggle caret className={`z-depth-0`}>
@@ -39,7 +37,7 @@ const collapsibleNavbar = ( props ) => {
                 </FormInline>
               </li>
             </NavbarNav>
-            <NavLink className={`btn btn-outline-white buttonsColor`} to="/">Log out
+            <NavLink className={`btn btn-outline-white buttonsColor`} to="/signin">Log out
               <i className="fa fa-sign-out ml-2"></i>
             </NavLink>
           </Collapse>

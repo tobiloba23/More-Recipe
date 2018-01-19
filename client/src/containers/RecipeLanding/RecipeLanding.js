@@ -2,21 +2,30 @@ import React, { Component } from 'react';
 import axios from 'axios';
 
 import Aux from '../../hoc/Aux/Aux';
-import Mask from '../../components/Mask/Mask';
-import JoinUs from '../../components/JoinUs/JoinUs';
-import PopularRecipes from '../../components/PopularRecipes/PopularRecipes';
-import RecipesList from '../../components/RecipesList/RecipesList';
+import Mask from '../../components/UI/Mask/Mask';
+import LandingMask from '../../components/RecipeLanding/LandingMask/LandingMask';
+import JoinUs from '../../components/RecipeLanding/JoinUs/JoinUs';
+import PopularRecipes from '../../components/RecipeLanding/PopularRecipes/PopularRecipes';
+import RecipesList from '../../components/RecipeLanding/RecipesList/RecipesList';
 import pasta from '../../assets/images/background.png';
 import poundedYam from '../../assets/images/pounded_yam.jpg';
 import bbqWings from '../../assets/images/wings-bbq.jpg';
 import transparent from '../../assets/images/asfalt-light.png';
 import rickBanks from '../../assets/images/Reekado-Banks.jpg';
 
+import classes from '../../components/UI/Mask/Mask.css';
+
 class RecipeLanding extends Component {
   constructor (props) {
     super(props);
+    props.setPage('Landing');
     this.next = this.next.bind(this);
     this.prev = this.prev.bind(this);
+    this.goToIndex = this.goToIndex.bind(this);
+    this.nextInnerCarousel = this.nextInnerCarousel.bind(this);
+    this.prevInnerCarousel = this.prevInnerCarousel.bind(this);
+    this.upvote = this.upvote.bind(this);
+    this.downvote = this.downvote.bind(this);
     this.state = {
       maxLength: 3,
       activeRecipe: 0,
@@ -436,7 +445,11 @@ class RecipeLanding extends Component {
   render() {
     return (
         <Aux>
-          <Mask />
+          <div className="mb-2">
+            <Mask backImage={classes.intro} className="mb-2">            
+              <LandingMask />
+            </Mask>
+          </div>
           <RecipesList 
             items={this.state.latestRecipes} 
             upvote={this.upvote}

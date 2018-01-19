@@ -3,21 +3,31 @@ import { Route, Switch, withRouter, Redirect } from 'react-router-dom';
 
 import Layout from './hoc/Layout/Layout';
 import RecipeLanding from './containers/RecipeLanding/RecipeLanding';
+import Auth from './containers/Auth/Auth';
 
 class App extends Component {
   render() {
-    let routes = (
-      <Switch>
-        <Route path="/" exact component={RecipeLanding} />
-        <Redirect to="/" />
-      </Switch>
-    );
+    let Routes = (props) => {
+      return (
+        <Switch>
+          <Route path="/" exact> 
+            <RecipeLanding setPage={props.setPage} />
+          </Route>
+          <Route path="/signin" exact>
+            <Auth setPage={props.setPage} signin />
+          </Route>
+          <Route path="/register" exact>
+            <Auth setPage={props.setPage} register />
+          </Route>
+          <Redirect to="/" />
+        </Switch>
+      );
+    };
+
     return (
-      <div>
-        <Layout>
-          {routes}
-        </Layout>
-      </div>
+      <Layout>
+        <Routes />
+      </Layout>
     );
   }
 }

@@ -1,0 +1,11 @@
+.intro {
+  background: url("../../../assets/images/More Recipes.jpg") no-repeat center center fixed;
+  background-size: cover;
+  min-height: 100vh;
+}
+
+.authPage {
+  background: url("../../../assets/images/Login2.jpg");
+  color: #fba100;
+  min-height: 100vh;
+}

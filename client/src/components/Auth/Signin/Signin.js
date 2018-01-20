@@ -2,9 +2,20 @@ import React from 'react';
 import { Row, Col } from 'mdbreact';
 import { NavLink } from 'react-router-dom';
 
+import TextInputElements from '../../UI/FormElements/TextInputElements';
 import Aux from '../../../hoc/Aux/Aux';
+import Spinner from '../../../components/UI/Spinner/Spinner';
 
 const signin = (props) => {
+  let form = <Spinner />;
+  if (!props.loading) {
+    form = <TextInputElements 
+              formElementsArray={props.formElementsArray} 
+              showPassword={props.showPassword} 
+              inputChanged={props.inputChanged}
+            />;
+  };
+
   return (
     <Aux>
       <div className="text-center">
@@ -15,22 +26,11 @@ const signin = (props) => {
           </a>
         </h3>
       </div>
-      <div className="md-form">
-        <i className="fa fa-user prefix grey-text"></i>
-        <input type="text" className="form-control white-text" placeholder="User Name" />
-      </div>
-      <div className="md-form">
-        <i className="fa fa-lock prefix grey-text"></i>
-        <input id="password" type="password" className="form-control white-text" placeholder="Password" />
-        <i className="fa fa-lock prefix grey-text" style={{ opacity: 0 }}></i>
-      </div>
-      <label onClick={() => props.showPassword('password')} >
-        Show Password: <input type="checkbox"/>
-      </label>
+      {form}
       <Row className="d-flex align-items-center mb-4">
         <Col md="12" className="text-center mb-3">
-          <NavLink to="/">
-            <button type="button" className="btn btn-success btn-block z-depth-1">Sign in</button>
+          <NavLink to="/" className={`btn btn-outline-white buttonsColor`} >Sign in
+            <i className="fa fa-sign-in ml-2"></i>
           </NavLink>
         </Col>
       </Row>

@@ -17,8 +17,8 @@ import classes from './FooterComponent.css'
 
 const footerComponent = (props) => {
   return (
-    <Footer className="page-footer center-on-small-only" style={{marginTop: '0px', paddingTop: '0px'}}>
-      <Container fluid className="buttonsColor">
+    <Footer className="page-footer center-on-small-only" style={{marginTop: '0px', paddingTop: '0px', backgroundColor: '#eab126'}}>
+      <Container className="buttonsColor">
         {/* <!--Footer Links--> */}
         <Container fluid  className="white-text" opacity={0.8}>
           <Row className="wow fadeIn" data-wow-delay="0.2s" style={{animationName: 'none', visibility: 'visible'}}>

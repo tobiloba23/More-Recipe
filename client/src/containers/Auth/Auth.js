@@ -4,7 +4,6 @@ import { Redirect } from 'react-router-dom';
 import Mask from '../../components/UI/Mask/Mask';
 import Signin from '../../components/Auth/Signin/Signin';
 import Register from '../../components/Auth/Register/Register';
-import Spinner from '../../components/UI/Spinner/Spinner';
 import classes from './Auth.css';
 import claases2 from '../../components/UI/Mask/Mask.css';
 
@@ -14,7 +13,6 @@ class Auth extends Component {
   constructor(props) {
     super(props);
     props.setPage('Auth');
-    this.switchAuthModeHandler = this.switchAuthModeHandler.bind(this);
     this.submitHandler = this.submitHandler.bind(this);
     this.inputChangedHandler = this.inputChangedHandler.bind(this);
     this.showPasswordHandler = this.showPasswordHandler.bind(this);
@@ -22,9 +20,10 @@ class Auth extends Component {
       controls: {
         email: {
           elementType: 'input',
+          symbol: 'fa fa-envelope',
           elementConfig: {
             type: 'email',
-            placeholder: 'email Address'
+            placeholder: 'Mail Address'
           },
           value: '',
           validation: {
@@ -36,14 +35,90 @@ class Auth extends Component {
         },
         password: {
           elementType: 'input',
+          symbol: 'fa fa-lock',
           elementConfig: {
             type: 'password',
-            placeholder: 'password'
+            placeholder: 'Password'
           },
           value: '',
           validation: {
             required: true,
-            minLength: 6,
+            isPassword: true,
+            valid: false
+          },
+          touched: false
+        },
+        confirmPassword: {
+          elementType: 'input',
+          symbol: 'fa fa-key',
+          elementConfig: {
+            type: 'password',
+            placeholder: 'Confirm Password'
+          },
+          value: '',
+          validation: {
+            required: true,
+            isPassword: true,
+            valid: false
+          },
+          touched: false
+        },
+        userName: {
+          elementType: 'input',
+          symbol: 'fa fa-user',
+          elementConfig: {
+            type: 'text',
+            placeholder: 'User Name'
+          },
+          value: '',
+          validation: {
+            required: true,
+            minLength: 4,
+            valid: false
+          },
+          touched: false
+        },
+        firstName: {
+          elementType: 'input',
+          symbol: 'fa fa-user-circle',
+          elementConfig: {
+            type: 'text',
+            placeholder: 'First Name'
+          },
+          value: '',
+          validation: {
+            required: true,
+            minLength: 1,
+            valid: false
+          },
+          touched: false
+        },
+        lastName: {
+          elementType: 'input',
+          symbol: 'fa fa-user-circle',
+          elementConfig: {
+            type: 'text',
+            placeholder: 'Last Name'
+          },
+          value: '',
+          validation: {
+            required: true,
+            minLength: 1,
+            valid: false
+          },
+          touched: false
+        },
+        phoneNumber: {
+          elementType: 'input',
+          symbol: 'fa fa-phone',
+          elementConfig: {
+            type: 'text',
+            placeholder: 'Phone Number'
+          },
+          value: '',
+          validation: {
+            minLength: 7,
+            isNumeric: true,
             valid: false
           },
           touched: false
@@ -65,7 +140,7 @@ class Auth extends Component {
         },
         touched: true
       }
-    }
+    };
 
     this.setState({
       controls: updatedControls
@@ -75,14 +150,6 @@ class Auth extends Component {
   submitHandler = (event) => {
     event.preventDefault();
     this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup)
-  };
-
-  switchAuthModeHandler = () => {
-    this.setState(prevState => {
-      return {
-        isSignup: !prevState.isSignup
-      };
-    });
   };
 
   showPasswordHandler = (id) => {
@@ -97,9 +164,9 @@ class Auth extends Component {
   };
 
   componentDidMount() {
-    if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
-      // this.props.onSetAuthRedirectPath();
-    }
+    // if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
+    //   this.props.onSetAuthRedirectPath();
+    // }
   }
 
   render() {
@@ -109,22 +176,6 @@ class Auth extends Component {
         id: key,
         config: this.state.controls[key]
       })
-    };
-
-    let form = formElementsArray.map(formElement => (
-      <input
-        key={formElement.id}
-        elementType={formElement.config.elementType}
-        elementConfig={formElement.config.elementConfig}
-        value={formElement.config.value}
-        invalid={!(formElement.config.validation && formElement.config.validation.valid)}
-        shouldValidate={formElement.config.validation}
-        touched={formElement.config.touched}
-        changed={(event) => this.inputChangedHandler(event, formElement.id)} />
-    ));
-
-    if (this.props.loading) {
-      form = <Spinner />
     };
 
     let errorMessage = null;
@@ -141,9 +192,12 @@ class Auth extends Component {
 
     let element = (<div></div>);
     if (!this.state.isSignup) {
-      element = <Signin showPassword={this.showPasswordHandler} />
+      let formElementsArrayCut = [];
+      formElementsArrayCut.push(formElementsArray[3]);
+      formElementsArrayCut.push(formElementsArray[1]);
+      element = <Signin formElementsArray={formElementsArrayCut} showPassword={this.showPasswordHandler} inputChanged={this.inputChangedHandler} />
     } else {
-      element = <Register showPassword={this.showPasswordHandler} />
+      element = <Register formElementsArray={formElementsArray} showPassword={this.showPasswordHandler} inputChanged={this.inputChangedHandler} />
     }
 
     return (

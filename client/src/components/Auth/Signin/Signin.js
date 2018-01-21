@@ -12,7 +12,7 @@ const signin = (props) => {
     form = <TextInputElements 
               formElementsArray={props.formElementsArray} 
               showPassword={props.showPassword} 
-              inputChanged={props.inputChanged}
+              inputChanged={props.inputChanged}              
             />;
   };
 
@@ -26,14 +26,16 @@ const signin = (props) => {
           </a>
         </h3>
       </div>
-      {form}
-      <Row className="d-flex align-items-center mb-4">
-        <Col md="12" className="text-center mb-3">
-          <NavLink to="/" className={`btn btn-outline-white buttonsColor`} >Sign in
+      <form>
+        {form}
+        <Row className="d-flex align-items-center mb-4">
+          <Col md="12" className="text-center mb-3">          
+          <NavLink to="/" className={`btn btn-outline-white buttonsColor`} onClick={props.submit} >Sign in
             <i className="fa fa-sign-in ml-2"></i>
           </NavLink>
-        </Col>
-      </Row>
+          </Col>
+        </Row>
+      </form>
       <Row style={{width: '80vw', maxWidth: '620px'}}>
         <Col md="6">
           <p className="font-small white-text d-flex justify-content-start">Forgot your password?

@@ -8,6 +8,7 @@ import classes from './Auth.css';
 import claases2 from '../../components/UI/Mask/Mask.css';
 
 import { checkValidity } from '../../shared/utility';
+import axios from 'axios';
 
 class Auth extends Component {
   constructor(props) {
@@ -124,7 +125,8 @@ class Auth extends Component {
           touched: false
         }
       },
-      isSignup: !props.signin || props.register
+      isSignup: !props.signin || props.register,
+      loading: false
     };
   };
 
@@ -147,9 +149,53 @@ class Auth extends Component {
     });
   };
 
+  authRedirect = null;
+
+  onAuth = (email, password, /*userName, firstName, lastName, phoneNumber,*/ isSignup) => {
+    this.setState({
+      loading: true
+    });
+    const authData = {
+      email,
+      password,
+      // userName, 
+      // firstName, 
+      // lastName, 
+      // phoneNumber,
+      returnSecureToken: true
+    }
+    let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyBnmUJfqF9kWfATJpA42F8_WjBGMIwiZbE';
+    if (!isSignup) {
+      url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyBnmUJfqF9kWfATJpA42F8_WjBGMIwiZbE'
+    }
+    axios.post(url, authData)
+      .then(response => {
+        console.log(response);
+        const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
+        localStorage.setItem('token', response.data.idToken);
+        localStorage.setItem('expirationDate', expirationDate);
+        localStorage.setItem('userId', response.data.localId);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    this.setState({
+      loading: false
+    });
+    this.authRedirect = <Redirect to="/" />
+  }
+
   submitHandler = (event) => {
     event.preventDefault();
-    this.props.onAuth(this.state.controls.email.value, this.state.controls.password.value, this.state.isSignup)
+    this.onAuth(
+      this.state.controls.email.value,
+      this.state.controls.password.value,      
+      // this.state.controls.userName.value,
+      // this.state.controls.firstName.value,
+      // this.state.controls.lastName.value,
+      // this.state.controls.phoneNumber.value,
+      this.state.isSignup
+    );
   };
 
   showPasswordHandler = (id) => {
@@ -178,30 +224,41 @@ class Auth extends Component {
       })
     };
 
-    let errorMessage = null;
-    if (this.props.error) {
-      errorMessage = (
-        <p>{this.props.error.message}</p>
-      )
-    }
+    // let errorMessage = null;
+    // if (this.props.error) {
+    //   errorMessage = (
+    //     <p>{this.props.error.message}</p>
+    //   )
+    // };
 
-    let authRedirect = null;
-    if (this.props.isAuthenticated) {
-      authRedirect = <Redirect to={this.props.authRedirectPath} />;
-    }
+    // let authRedirect = null;
+    // if (this.props.isAuthenticated) {
+    //   authRedirect = <Redirect to={this.props.authRedirectPath} />;
+    // };
 
     let element = (<div></div>);
     if (!this.state.isSignup) {
       let formElementsArrayCut = [];
-      formElementsArrayCut.push(formElementsArray[3]);
+      formElementsArrayCut.push(formElementsArray[0]);
       formElementsArrayCut.push(formElementsArray[1]);
-      element = <Signin formElementsArray={formElementsArrayCut} showPassword={this.showPasswordHandler} inputChanged={this.inputChangedHandler} />
+      element = <Signin
+                  formElementsArray={formElementsArrayCut}
+                  showPassword={this.showPasswordHandler}
+                  inputChanged={this.inputChangedHandler}
+                  submit={this.submitHandler}
+                  loading={this.state.loading} />
     } else {
-      element = <Register formElementsArray={formElementsArray} showPassword={this.showPasswordHandler} inputChanged={this.inputChangedHandler} />
+      element = <Register
+                  formElementsArray={formElementsArray}
+                  showPassword={this.showPasswordHandler}
+                  inputChanged={this.inputChangedHandler}
+                  submit={this.submitHandler}
+                  loading={this.state.loading} />
     }
 
     return (
       <Mask className={classes.formDark} backImage={claases2.authPage}>
+        {this.authRedirect}
         <div className="text-white rgba-stylish-strong py-5 px-5 z-depth-4">
           {element}
         </div>

@@ -26,14 +26,16 @@ const register = (props) => {
           </a>
         </h3>
       </div>
-      {form}
-      <Row className="d-flex align-items-center mb-4">
-        <Col md="12" className="text-center mb-3">          
-        <NavLink to="/" className={`btn btn-outline-white buttonsColor`} >Register
-          <i className="fa fa-sign-in ml-2"></i>
-        </NavLink>
-        </Col>
-      </Row>
+      <form>
+        {form}
+        <Row className="d-flex align-items-center mb-4">
+          <Col md="12" className="text-center mb-3">          
+          <NavLink to="/" className={`btn btn-outline-white buttonsColor`} onClick={props.submit}>Register
+            <i className="fa fa-sign-in ml-2"></i>
+          </NavLink>
+          </Col>
+        </Row>
+      </form>
       <Row style={{width: '80vw', maxWidth: '620px'}}>
         <Col md="12">
           <p className="font-small white-text d-flex justify-content-end">Have an account?

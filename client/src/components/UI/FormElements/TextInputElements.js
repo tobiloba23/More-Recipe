@@ -17,13 +17,12 @@ const textInputElements = (props) => {
           <input
             key={formElement.id}
             id={formElement.id}
-            elementType={formElement.config.elementType}
             type={formElement.config.elementConfig.type}
             placeholder={formElement.config.elementConfig.placeholder}
             value={formElement.config.value}
-            invalid={!(formElement.config.validation && formElement.config.validation.valid)}
-            shouldValidate={formElement.config.validation}
-            touched={formElement.config.touched}
+            invalid={`{${!(formElement.config.validation && formElement.config.validation.valid)}`}
+            shouldvalidate={formElement.config.validation}
+            touched={`{${formElement.config.touched}`}
             onChange={(event) => props.inputChanged(event, formElement.id)}
             className={`form-control white-text ${inputClasses}`}
           />

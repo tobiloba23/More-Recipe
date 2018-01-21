@@ -5,6 +5,19 @@ import { NavLink } from 'react-router-dom';
 // import classes from '../../../hoc/Layout/Layout.css';
 
 const collapsibleNavbar = ( props ) => {
+  let authenticationLink = (
+    <NavLink className={`btn btn-outline-white buttonsColor`} to="/signin">Sign in/Register
+      <i className="fa fa-sign-in ml-2"></i>
+    </NavLink>
+  );
+  if(props.isAuthenticated) {
+    authenticationLink = (
+      <NavLink onClick={props.logout} className={`btn btn-outline-white buttonsColor`} to="/">Log out
+        <i className="fa fa-sign-out ml-2"></i>
+      </NavLink>
+    );
+  }
+
   return (
     <div>
       <nav id="navbar" color="success" className="navbar navbar-expand-lg navbar-dark fixed-top">
@@ -32,14 +45,12 @@ const collapsibleNavbar = ( props ) => {
               </Dropdown>
               <li className="my-auto">
                 {/* <!-- Search form --> */}
-                <FormInline action="./Recipe_LandingA">
+                <FormInline action="/recipes">
                   <input style={{ width: 600 }} className="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" />
                 </FormInline>
               </li>
             </NavbarNav>
-            <NavLink className={`btn btn-outline-white buttonsColor`} to="/signin">Log out
-              <i className="fa fa-sign-out ml-2"></i>
-            </NavLink>
+            {authenticationLink}
           </Collapse>
         </Container>
       </nav>

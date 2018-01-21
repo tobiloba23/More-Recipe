@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import axios from 'axios';
+import axios from '../../axios-orders';
 
 import Aux from '../../hoc/Aux/Aux';
 import Mask from '../../components/UI/Mask/Mask';

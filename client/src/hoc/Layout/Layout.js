@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import Aux from '../Aux/Aux';
 import CollapsibleNavbar from '../../components/Navigation/Navbar/CollapsibleNavbar';
 import FooterComponent from '../../components/Navigation/Footer/FooterComponent';
+
+import * as actions from '../../store/actions/index';
 
 class Layout extends Component {
   state = {
@@ -36,7 +39,7 @@ class Layout extends Component {
     p1.catch(
       // Log the rejection reason
       (reason) => {
-        console.log('Handle rejected promise (' + reason + ') here.');
+        console.log('Page is loading slowly due to: (' + reason + '.');
       }
     );
   };
@@ -109,6 +112,8 @@ class Layout extends Component {
           toggleNavClicked={this.toggleNavHandler}
           navbarOpen={this.state.navbarOpen}
           dropdownOpen={this.state.dropdownOpen}
+          isAuthenticated={this.props.isAuthenticated}
+          logout={this.props.onLogout}
         />
         <main>
           {childrenWithProps}
@@ -119,4 +124,17 @@ class Layout extends Component {
   };
 };
 
-export default Layout;
+const mapReduxStateToCompProps = state => {
+  return {
+    isAuthenticated: state.auth.token !== null
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onLogout: () => dispatch(actions.logout())
+  }
+}
+
+export default connect(mapReduxStateToCompProps, mapDispatchToProps)(Layout);
+

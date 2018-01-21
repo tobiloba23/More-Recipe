@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Mask from '../../components/UI/Mask/Mask';
 import Signin from '../../components/Auth/Signin/Signin';
@@ -7,8 +8,8 @@ import Register from '../../components/Auth/Register/Register';
 import classes from './Auth.css';
 import claases2 from '../../components/UI/Mask/Mask.css';
 
+import * as actions from '../../store/actions/index';
 import { checkValidity } from '../../shared/utility';
-import axios from 'axios';
 
 class Auth extends Component {
   constructor(props) {
@@ -126,7 +127,6 @@ class Auth extends Component {
         }
       },
       isSignup: !props.signin || props.register,
-      loading: false
     };
   };
 
@@ -149,45 +149,9 @@ class Auth extends Component {
     });
   };
 
-  authRedirect = null;
-
-  onAuth = (email, password, /*userName, firstName, lastName, phoneNumber,*/ isSignup) => {
-    this.setState({
-      loading: true
-    });
-    const authData = {
-      email,
-      password,
-      // userName, 
-      // firstName, 
-      // lastName, 
-      // phoneNumber,
-      returnSecureToken: true
-    }
-    let url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/signupNewUser?key=AIzaSyBnmUJfqF9kWfATJpA42F8_WjBGMIwiZbE';
-    if (!isSignup) {
-      url = 'https://www.googleapis.com/identitytoolkit/v3/relyingparty/verifyPassword?key=AIzaSyBnmUJfqF9kWfATJpA42F8_WjBGMIwiZbE'
-    }
-    axios.post(url, authData)
-      .then(response => {
-        console.log(response);
-        const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
-        localStorage.setItem('token', response.data.idToken);
-        localStorage.setItem('expirationDate', expirationDate);
-        localStorage.setItem('userId', response.data.localId);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    this.setState({
-      loading: false
-    });
-    this.authRedirect = <Redirect to="/" />
-  }
-
   submitHandler = (event) => {
     event.preventDefault();
-    this.onAuth(
+    this.props.onAuth(
       this.state.controls.email.value,
       this.state.controls.password.value,      
       // this.state.controls.userName.value,
@@ -209,11 +173,15 @@ class Auth extends Component {
     };
   };
 
-  componentDidMount() {
-    // if (!this.props.buildingBurger && this.props.authRedirectPath !== '/') {
-    //   this.props.onSetAuthRedirectPath();
-    // }
+  clearErrorHandler = () => {
+    this.props.onRegisterSigninToggle();
   }
+
+  componentDidMount() {
+    if (this.props.authRedirectPath !== '/') {
+      this.props.onSetAuthRedirectPath();
+    };
+  };
 
   render() {
     const formElementsArray = [];
@@ -224,17 +192,10 @@ class Auth extends Component {
       })
     };
 
-    // let errorMessage = null;
-    // if (this.props.error) {
-    //   errorMessage = (
-    //     <p>{this.props.error.message}</p>
-    //   )
-    // };
-
-    // let authRedirect = null;
-    // if (this.props.isAuthenticated) {
-    //   authRedirect = <Redirect to={this.props.authRedirectPath} />;
-    // };
+    let authRedirect = null;
+    if (this.props.isAuthenticated) {
+      authRedirect = <Redirect to={this.props.authRedirectPath} />;
+    };
 
     let element = (<div></div>);
     if (!this.state.isSignup) {
@@ -246,20 +207,24 @@ class Auth extends Component {
                   showPassword={this.showPasswordHandler}
                   inputChanged={this.inputChangedHandler}
                   submit={this.submitHandler}
-                  loading={this.state.loading} />
+                  loading={this.props.loading}
+                  error={this.props.error}
+                  clearError={this.clearErrorHandler} />
     } else {
       element = <Register
                   formElementsArray={formElementsArray}
                   showPassword={this.showPasswordHandler}
                   inputChanged={this.inputChangedHandler}
                   submit={this.submitHandler}
-                  loading={this.state.loading} />
-    }
+                  loading={this.props.loading}
+                  error={this.props.error}
+                  clearError={this.clearErrorHandler} />
+    };
 
     return (
       <Mask className={classes.formDark} backImage={claases2.authPage}>
-        {this.authRedirect}
         <div className="text-white rgba-stylish-strong py-5 px-5 z-depth-4">
+          {authRedirect}
           {element}
         </div>
       </Mask>
@@ -267,4 +232,21 @@ class Auth extends Component {
   };
 };
 
-export default Auth;
+const mapReduxStateToCompProps = state => {
+  return {
+    loading: state.auth.loading,
+    error: state.auth.error,
+    isAuthenticated: state.auth.token !== null,
+    authRedirectPath: state.auth.authRedirectPath
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onAuth: (email, password, isSignup) => dispatch(actions.auth(email, password, /*userName, firstName, lastName, phoneNumber,*/ isSignup)),
+    onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/')),
+    onRegisterSigninToggle: () => dispatch(actions.toggleRegisterSignin())
+  }
+}
+
+export default connect(mapReduxStateToCompProps, mapDispatchToProps)((Auth));

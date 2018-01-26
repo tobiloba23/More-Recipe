@@ -22,8 +22,9 @@ export default {
         if (!user) {
           return res.status(404).json({
             statusCode: 404,
-            error: true,
-            message: 'User Not Found',
+            error: {
+              message: 'User Not Found',
+            }
           });
         }
         return res.status(200).json({
@@ -33,8 +34,9 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error: true,
-        message: error
+        error: {
+          message: error
+        }
       }));
   },
 
@@ -51,8 +53,9 @@ export default {
       }))
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error: true,
-        message: error
+        error: {
+          message: error
+        }
       }));
   },
 
@@ -60,8 +63,9 @@ export default {
     if (req.params.userId !== req.decoded.id) {
       return res.status(403).json({
         statusCode: 403,
-        error: true,
-        message: 'You cannot alter records that do not belong to you.',
+        error: {
+          message: 'You cannot alter records that do not belong to you.',
+        }
       });
     }
 
@@ -76,8 +80,9 @@ export default {
         if (!userFavourite) {
           return res.status(404).json({
             statusCode: 404,
-            error: true,
-            message: 'User does not have that recipe as a favourite',
+            error: {
+              message: 'User does not have that recipe as a favourite',
+            }
           });
         }
 
@@ -93,8 +98,9 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error: true,
-        message: error
+        error: {
+          message: error
+        }
       }));
   },
 
@@ -102,8 +108,9 @@ export default {
     if (req.params.userId !== req.decoded.id) {
       return res.status(403).json({
         statusCode: 403,
-        error: true,
-        message: 'You cannot alter records that do not belong to you.',
+        error: {
+          message: 'You cannot alter records that do not belong to you.',
+        }
       });
     }
 
@@ -118,15 +125,17 @@ export default {
         if (!userFavourite) {
           return res.status(404).json({
             statusCode: 404,
-            error: true,
-            message: 'User does not have that recipe as a favourite',
+            error: {
+              message: 'User does not have that recipe as a favourite',
+            }
           });
         }
         if (req.decoded.id !== userFavourite.userId) {
           return res.status(403).json({
             statusCode: 403,
-            error: true,
-            message: 'You are not allowed to alter records that do not belong to you',
+            error: {
+              message: 'You are not allowed to alter records that do not belong to you',
+            }
           });
         }
 
@@ -140,8 +149,9 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error: true,
-        message: error
+        error: {
+          message: error
+        }
       }));
   },
 

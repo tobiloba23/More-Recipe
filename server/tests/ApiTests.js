@@ -1,7 +1,7 @@
 import chai from 'chai';
 import supertest from 'supertest';
-import Faker from 'Faker';
-import app from '../../app';
+import Faker from 'faker';
+import app from '../../server/app';
 
 const should = chai.should();
 
@@ -20,10 +20,10 @@ describe('SAMPLE unit test', () => {
 
   const exstnRecipeId = 'e4bb33e4-8db3-4e22-aaf6-4200dced502c';
   const registerDetails = {
-    firstName: Faker.Name.firstName(),
-    lastName: Faker.Name.lastName(),
-    email: Faker.Internet.email(),
-    userName: Faker.Name.findName(),
+    firstName: Faker.name.firstName(),
+    lastName: Faker.name.lastName(),
+    email: Faker.internet.email(),
+    userName: Faker.name.findName(),
     password: '123_abc',
     passwordConfirmation: '123_abc'
   };

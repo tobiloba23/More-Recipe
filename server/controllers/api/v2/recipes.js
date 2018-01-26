@@ -50,8 +50,9 @@ export default {
             } else {
               res.status(404).json({
                 statusCode: 404,
-                error: true,
-                message: 'Not Found: Order of sorting does not exist.'
+                error: {
+                  message: 'Not Found: Order of sorting does not exist.'
+                }
               });
             }
           }
@@ -64,8 +65,9 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error: true,
-        message: error
+        error: {
+          message: error
+        }
       }));
   },
 
@@ -78,8 +80,9 @@ export default {
       }))
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error: true,
-        message: error
+        error: {
+          message: error
+        }
       }));
   },
 
@@ -92,7 +95,9 @@ export default {
     if (isValid.fails()) {
       return res.json({
         statusCode: 401,
-        error: isValid.errors.all()
+        error: {
+          message: isValid.errors.all()
+        }
       });
     }
 
@@ -109,8 +114,9 @@ export default {
       }))
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error: true,
-        message: error
+        error: {
+          message: error
+        }
       }));
   },
 
@@ -121,7 +127,11 @@ export default {
 
     const isValid = new validator(req.body, rules);
     if (isValid.fails()) {
-      return res.json({ error: isValid.errors.all() });
+      return res.json({
+        error: {
+          message: isValid.errors.all()
+        }
+      });
     }
 
     return Recipe
@@ -130,15 +140,17 @@ export default {
         if (!recipe) {
           return res.status(404).json({
             statusCode: 404,
-            error: true,
-            message: 'Recipe Not Found',
+            error: {
+              message: 'Recipe Not Found',
+            }
           });
         }
         if (recipe.userId !== req.decoded.id) {
           return res.status(401).json({
             statusCode: 401,
-            error: true,
-            message: 'You are not authorized to edit this recipe',
+            error: {
+              message: 'You are not authorized to edit this recipe',
+            }
           });
         }
 
@@ -151,8 +163,9 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error: true,
-        message: error
+        error: {
+          message: error
+        }
       }));
   },
 
@@ -167,15 +180,17 @@ export default {
         if (!recipe) {
           return res.status(404).json({
             statusCode: 404,
-            error: true,
-            message: 'Recipe Not Found',
+            error: {
+              message: 'Recipe Not Found',
+            }
           });
         }
         if (recipe.userId !== req.decoded.id) {
           return res.status(401).json({
             statusCode: 401,
-            error: true,
-            message: 'You are not authorized to delete this recipe',
+            error: {
+              message: 'You are not authorized to delete this recipe',
+            }
           });
         }
 
@@ -191,8 +206,9 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error: true,
-        message: error
+        error: {
+          message: error
+        }
       }));
   }
 };

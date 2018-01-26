@@ -16,8 +16,9 @@ export default {
         if (!user) {
           return res.status(404).json({
             statusCode: 404,
-            error: true,
-            message: 'User Not Found',
+            error: {
+              message: 'User Not Found',
+            }
           });
         }
         return res.status(200).json({
@@ -28,8 +29,9 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error: true,
-        message: error
+        error: {
+          message: error
+        }
       }));
   },
 
@@ -40,8 +42,9 @@ export default {
         if (user.userId !== req.decoded.id) {
           return res.status(401).json({
             statusCode: 401,
-            error: true,
-            message: 'You do not have access to view other users detailed information.',
+            error: {
+              message: 'You do not have access to view other users detailed information.',
+            }
           });
         }
         res.status(200).json({
@@ -52,8 +55,9 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error: true,
-        message: error
+        error: {
+          message: error
+        }
       }));
   },
 
@@ -71,10 +75,11 @@ export default {
 
     const isValid = new validator(req.body, rules);
     if (isValid.fails()) {
-      return res.status(400).json({
-        statusCode: 400,
-        error: true,
-        message: isValid.errors.all()
+      return res.status(403).json({
+        statusCode: 403,
+        error: {
+          message: isValid.errors.all()
+        }
       });
     }
 
@@ -89,8 +94,9 @@ export default {
         if (user) {
           response = {
             statusCode: 409,
-            error: true,
-            message: user.userName.concat(' has already been taken'),
+            error: {
+              message: user.userName.concat(' has already been taken'),
+            }
           };
         }
       });
@@ -106,8 +112,9 @@ export default {
         if (user) {
           response = {
             statusCode: 409,
-            error: true,
-            message: 'An account has already been created for '.concat(user.email),
+            error: {
+              message: 'An account has already been created for '.concat(user.email),
+            }
           };
         }
       });
@@ -122,26 +129,30 @@ export default {
         lastName: req.body.lastName,
       })
       .then((user) => {
+        const day = 60 * 60 * 24; // expires in 24 hours
+
         // create a token with only our given payload
         token = jwt.sign(
           { id: user.userId },
           process.env.JWT_SEC_KEY,
           {
-            expiresIn: 1440 // expires in 24 hours
+            expiresIn: day
           }
         );
 
         res.status(201).json({
           statusCode: 201,
           message: 'User '.concat(user.userName, '\' account has successfully been created.'),
-          data: user,
-          token
+          userName: user.userName,
+          token,
+          expiresIn: day
         });
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error: true,
-        message: error
+        error: {
+          message: error
+        }
       }));
   },
 
@@ -153,7 +164,12 @@ export default {
 
     const isValid = new validator(req.body, rules);
     if (isValid.fails()) {
-      return res.json({ error: isValid.errors.all() });
+      return res.status(403).json({
+        statusCode: 403,
+        error: {
+          message: isValid.errors.all()
+        }
+      });
     }
 
     return User
@@ -166,24 +182,28 @@ export default {
         if (!user) {
           return res.status(404).json({
             statusCode: 404,
-            error: true,
-            message: 'User Not Found',
+            error: {
+              message: 'User Not Found',
+            }
           });
         }
         // password check
         if (!bcrypt.compareSync(req.body.password.trim(), user.password)) {
           return res.status(404).json({
             statusCode: 404,
-            error: true,
-            message: 'The username and password do not match our records.'
+            error: {
+              message: 'The username and password do not match our records.'
+            }
           });
         }
+        const day = 60 * 60 * 24; // expires in 24 hours
+
         // create a token with only our given payload
         token = jwt.sign(
           { id: user.userId },
           process.env.JWT_SEC_KEY,
           {
-            expiresIn: 1440 // expires in 24 hours
+            expiresIn: day
           }
         );
 
@@ -191,15 +211,19 @@ export default {
 
         return res.json({
           statusCode: 200,
-          success: true,
-          message: 'User authenticated',
-          token
+          success: {
+            message: 'User authenticated',
+          },
+          userName: user.userName,
+          token,
+          expiresIn: day
         }).status(200);
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error: true,
-        message: error
+        error: {
+          message: error
+        }
       }));
   },
 
@@ -210,15 +234,17 @@ export default {
         if (!user) {
           return res.status(404).json({
             statusCode: 404,
-            error: true,
-            message: 'User Not Found',
+            error: {
+              message: 'User Not Found',
+            }
           });
         }
         if (user.userId !== req.decoded.id) {
           return res.status(403).json({
             statusCode: 403,
-            error: true,
-            message: 'You cannot alter records that do not belong to you.',
+            error: {
+              message: 'You cannot alter records that do not belong to you.',
+            }
           });
         }
 
@@ -232,8 +258,9 @@ export default {
       })
       .catch(error => res.status(400).json({
         statusCode: 400,
-        error: true,
-        message: error
+        error: {
+          message: error
+        }
       }));
   }
 };

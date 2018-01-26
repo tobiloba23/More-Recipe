@@ -1,26 +1,44 @@
 import React from 'react';
-import { NavbarNav, NavbarToggler, NavItem, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Container, FormInline, Collapse } from 'mdbreact';
+import { NavbarNav, NavbarToggler, NavItem, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Container, FormInline, Collapse, Media } from 'mdbreact';
 import { NavLink } from 'react-router-dom';
 
-// import classes from '../../../hoc/Layout/Layout.css';
+import userImage from '../../../assets/images/Reekado-Banks.jpg';
+import Aux from '../../../hoc/Aux/Aux';
 
 const collapsibleNavbar = ( props ) => {
   let authenticationLink = (
-    <NavLink className={`btn btn-outline-white buttonsColor`} to="/signin">Sign in/Register
-      <i className="fa fa-sign-in ml-2"></i>
-    </NavLink>
-  );
-  if(props.isAuthenticated) {
-    authenticationLink = (
-      <NavLink onClick={props.logout} className={`btn btn-outline-white buttonsColor`} to="/">Log out
-        <i className="fa fa-sign-out ml-2"></i>
+    <NavItem>
+      <NavLink 
+        to={props.isAuthenticated ? '/' : '/signin'}
+        onClick={props.isAuthenticated ? props.logout : null}
+        className={`btn btn-outline-white float-right buttonsColor`}
+        style={{minWidth: "160px", padding: "13px"}}
+      >
+        {props.isAuthenticated ? 'Log-out' : 'Sign-in/Register'}
+        <i className={`fa fa-${props.isAuthenticated ? 'sign-out' : 'sign-in' } ml-2`}></i>
       </NavLink>
-    );
-  }
+    </NavItem>
+  ),
+  userProfileLink = !props.isAuthenticated ? null : (
+    <Aux>
+      <NavItem className={`my-auto mx-auto navItemBorder`} style={{paddingTop: '8px'}}>
+        <NavLink to="/Profile">
+          <Media left className="waves-light my-2 justify-content-center mx-auto">
+              <img style={{borderRadius: '20px', maxHeight: '40px', maxWidth: '40px'}} src={userImage} alt="User" />
+          </Media>
+        </NavLink>
+      </NavItem>
+      <NavItem className={`my-auto mx-auto navItemBorder`} style={{paddingTop: '8px'}}>
+        <NavLink to="/Profile">
+          <div>{props.userName}</div>
+        </NavLink>
+      </NavItem>
+    </Aux>
+  );
 
   return (
     <div>
-      <nav id="navbar" color="success" className="navbar navbar-expand-lg navbar-dark fixed-top">
+      <nav id="navbar" className="navbar navbar-expand-lg navbar-dark fixed-top">
         <Container>
           {/* <!-- Navbar brand  
               <NavbarBrand>
@@ -28,7 +46,7 @@ const collapsibleNavbar = ( props ) => {
               </NavbarBrand>-->*/}
           <NavbarToggler onClick={props.toggleNavClicked} />
           <Collapse isOpen={props.navbarOpen} navbar>
-            <NavbarNav className="mr-auto">
+            <NavbarNav style={{width: "100%"}}>
               <NavItem className={`my-auto navItemBorder`}>
                 <NavLink id="Home" to="/Home">Home</NavLink>
               </NavItem>
@@ -43,14 +61,15 @@ const collapsibleNavbar = ( props ) => {
                   <DropdownItem href="#">Your activities</DropdownItem>
                 </DropdownMenu>
               </Dropdown>
-              <li className="my-auto">
+              <NavItem className="my-auto resizableElement">
                 {/* <!-- Search form --> */}
                 <FormInline action="/recipes">
-                  <input style={{ width: 600 }} className="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" />
+                  <input className="form-control" type="text" placeholder="Search" aria-label="Search" />
                 </FormInline>
-              </li>
+              </NavItem>
+              {userProfileLink}
+              {authenticationLink}
             </NavbarNav>
-            {authenticationLink}
           </Collapse>
         </Container>
       </nav>

@@ -9,9 +9,16 @@ const textInputElements = (props) => {
     if (!(formElement.config.validation && formElement.config.validation.valid) && formElement.config.validation && formElement.config.touched) {
       inputClasses.push(classes.Invalid);
     };
+    let errorMessage = null;
+    if (props.formErrors) {
+      errorMessage = (
+        <p style={{color: "red"}}>{props.formErrors[formElement.id]}</p>
+      )
+    };
 
     return (
       <Aux>
+        {errorMessage}
         <div className="md-form">
           <i className={`${formElement.config.symbol} prefix grey-text`}></i>
           <input

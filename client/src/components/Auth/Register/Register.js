@@ -13,13 +13,14 @@ const register = (props) => {
               formElementsArray={props.formElementsArray} 
               showPassword={props.showPassword} 
               inputChanged={props.inputChanged}
+              formErrors={props.error && typeof props.error.message === 'object' ? props.error.message : null}
             />;
   };
 
   let errorMessage = null;
-  if (props.error) {
+  if (props.error && typeof props.error.message === 'string') {
     errorMessage = (
-      <p>{props.error.message}</p>
+      <p style={{color: "red"}}>{props.error.message}</p>
     )
   };
 
@@ -33,14 +34,16 @@ const register = (props) => {
           </a>
         </h3>
       </div>
-      <form>
+      {errorMessage}
+      <form onSubmit={props.submit}>
         {form}
         <Row className="d-flex align-items-center mb-4">
           <Col md="12" className="text-center mb-3"> 
-            {errorMessage}         
-            <NavLink to="/" className={`btn btn-outline-white buttonsColor`} onClick={props.submit}>Register
+            {errorMessage}
+            <button to="/" type="submit" className={`btn btn-outline-white buttonsColor`}>
+              Register
               <i className="fa fa-sign-in ml-2"></i>
-            </NavLink>
+            </button>
           </Col>
         </Row>
       </form>

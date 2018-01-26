@@ -50,7 +50,7 @@ class Auth extends Component {
           },
           touched: false
         },
-        confirmPassword: {
+        passwordConfirmation: {
           elementType: 'input',
           symbol: 'fa fa-key',
           elementConfig: {
@@ -153,11 +153,12 @@ class Auth extends Component {
     event.preventDefault();
     this.props.onAuth(
       this.state.controls.email.value,
-      this.state.controls.password.value,      
-      // this.state.controls.userName.value,
-      // this.state.controls.firstName.value,
-      // this.state.controls.lastName.value,
-      // this.state.controls.phoneNumber.value,
+      this.state.controls.password.value,
+      this.state.controls.passwordConfirmation.value,
+      this.state.controls.userName.value,
+      this.state.controls.firstName.value,
+      this.state.controls.lastName.value,
+      this.state.controls.phoneNumber.value,
       this.state.isSignup
     );
   };
@@ -200,7 +201,7 @@ class Auth extends Component {
     let element = (<div></div>);
     if (!this.state.isSignup) {
       let formElementsArrayCut = [];
-      formElementsArrayCut.push(formElementsArray[0]);
+      formElementsArrayCut.push(formElementsArray[3]);
       formElementsArrayCut.push(formElementsArray[1]);
       element = <Signin
                   formElementsArray={formElementsArrayCut}
@@ -243,7 +244,7 @@ const mapReduxStateToCompProps = state => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAuth: (email, password, isSignup) => dispatch(actions.auth(email, password, /*userName, firstName, lastName, phoneNumber,*/ isSignup)),
+    onAuth: (email, password, passwordConfirmation, userName, firstName, lastName, phoneNumber, isSignup) => dispatch(actions.auth(email, password, passwordConfirmation, userName, firstName, lastName, phoneNumber, isSignup)),
     onSetAuthRedirectPath: () => dispatch(actions.setAuthRedirectPath('/')),
     onRegisterSigninToggle: () => dispatch(actions.toggleRegisterSignin())
   }

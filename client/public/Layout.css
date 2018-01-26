@@ -98,8 +98,19 @@
   transform: translateY(-50%)!important
 }
 
+.resizableElement {
+  padding: 0 0 0 8px;
+  overflow: hidden;
+  width: 100%!important;
+}
+
+.resizableElement input {
+  width: 100%!important;
+}
+
 .navItemBorder {
   margin: 0px 5px 0px 5px;
+  padding: 0 15px 0 10px;
 }
 
 .flyout {

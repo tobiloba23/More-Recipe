@@ -3,6 +3,7 @@ import logger from 'morgan';
 import bodyParser from 'body-parser';
 import path from 'path';
 import dotenv from 'dotenv';
+import cors from 'cors';
 
 // import tokenValid from './auth/local';
 import apiRoutesv1 from './routes/api/v1';
@@ -40,6 +41,15 @@ app.use(express.static(path.join(__dirname, '/client')));
 // Enable parsing of posted forms
 app.use(bodyParser.urlencoded({ extended: false })); //
 app.use(bodyParser.json());
+
+// Use Cors to enable pre-flight on http request methods to convert from Options to appropriate verb
+app.options('*', cors());
+
+// Enable http request access response from the converted verb of the intial Options request
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
 
 // Call to server /routes
 app.use('/', pageLoaderRoutes);

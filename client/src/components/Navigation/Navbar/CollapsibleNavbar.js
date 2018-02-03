@@ -2,7 +2,6 @@ import React from 'react';
 import { NavbarNav, NavbarToggler, NavItem, Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Container, FormInline, Collapse, Media } from 'mdbreact';
 import { NavLink } from 'react-router-dom';
 
-import userImage from '../../../assets/images/Reekado-Banks.jpg';
 import Aux from '../../../hoc/Aux/Aux';
 
 const collapsibleNavbar = ( props ) => {
@@ -12,7 +11,7 @@ const collapsibleNavbar = ( props ) => {
         to={props.isAuthenticated ? '/' : '/signin'}
         onClick={props.isAuthenticated ? props.logout : null}
         className={`btn btn-outline-white float-right buttonsColor`}
-        style={{minWidth: "160px", padding: "13px"}}
+        style={{minWidth: "165px", padding: "13px"}}
       >
         {props.isAuthenticated ? 'Log-out' : 'Sign-in/Register'}
         <i className={`fa fa-${props.isAuthenticated ? 'sign-out' : 'sign-in' } ml-2`}></i>
@@ -24,7 +23,7 @@ const collapsibleNavbar = ( props ) => {
       <NavItem className={`my-auto mx-auto navItemBorder`} style={{paddingTop: '8px'}}>
         <NavLink to="/Profile">
           <Media left className="waves-light my-2 justify-content-center mx-auto">
-              <img style={{borderRadius: '20px', maxHeight: '40px', maxWidth: '40px'}} src={userImage} alt="User" />
+              <img style={{borderRadius: '20px', maxHeight: '40px', maxWidth: '40px'}} src={props.imageUrl} alt="User" />
           </Media>
         </NavLink>
       </NavItem>

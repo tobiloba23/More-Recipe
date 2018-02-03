@@ -114,6 +114,7 @@ class Layout extends Component {
           dropdownOpen={this.state.dropdownOpen}
           isAuthenticated={this.props.isAuthenticated}
           userName={this.props.userName}
+          imageUrl={this.props.imageUrl}
           logout={this.props.onLogout}
         />
         <main>
@@ -128,7 +129,8 @@ class Layout extends Component {
 const mapReduxStateToCompProps = state => {
   return {
     isAuthenticated: state.auth.token !== null,
-    userName: state.auth.userName
+    userName: state.auth.userName,
+    imageUrl: state.auth.imageUrl
   };
 };
 

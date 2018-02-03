@@ -14,6 +14,10 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.TEXT,
       required: true
     },
+    imageUrl: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
     instructions: {
       type: DataTypes.TEXT,
       required: true

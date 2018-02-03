@@ -4,6 +4,7 @@ import bodyParser from 'body-parser';
 import path from 'path';
 import dotenv from 'dotenv';
 import cors from 'cors';
+import multiparty from 'connect-multiparty';
 
 // import tokenValid from './auth/local';
 import apiRoutesv1 from './routes/api/v1';
@@ -30,8 +31,8 @@ app.use((req, res, next) => {
 // middle-ware that sets client folder as the default directory
 app.use(express.static(path.join(__dirname, '/client')));
 
-// // middle-ware that
-// app.use(tokenValid);
+// middle-ware for file management
+app.use(multiparty());
 
 
 // Set other static directories before defining routes
@@ -39,8 +40,8 @@ app.use(express.static(path.join(__dirname, '/client')));
 // app.use('/fonts', express.static(path.join(__dirname, '/template')));
 
 // Enable parsing of posted forms
-app.use(bodyParser.urlencoded({ extended: false })); //
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
 
 // Use Cors to enable pre-flight on http request methods to convert from Options to appropriate verb
 app.options('*', cors());

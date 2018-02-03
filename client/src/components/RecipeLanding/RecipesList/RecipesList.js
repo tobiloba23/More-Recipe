@@ -10,7 +10,11 @@ const recipesList = (props) => {
       <SectionTitle id="recipesList" destination="favourites" title="Latest Recipe Uploads" />
       {
         props.items ? 
-          <RecipeCards items={props.items} upvote={props.upvote} downvote={props.downvote}/>
+          <RecipeCards
+            isAuthenticated={props.isAuthenticated}
+            items={props.items}
+            vote={props.vote}
+          />
         : <Spinner />
       }
     </div>

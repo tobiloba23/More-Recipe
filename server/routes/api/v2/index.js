@@ -22,7 +22,7 @@ router.route('/get-token').get((req, res) => {
 
 // Recipe actions
 router.route('/recipes')
-  .get(recipesController.list)
+  .get(jwt, recipesController.list)
   .post(jwt, recipesController.create);
 router.route('/recipes/:recipeId/')
   .get(jwt, recipesController.listOne)
@@ -35,7 +35,7 @@ router.route('/recipes/:recipeId/reviews')
 router.route('/recipes/:recipeId/reviews/:reviewId')
   .get(recipesReviewsController.listOne)
   .put(jwt, recipesReviewsController.update)
-  .delete(jwt, recipesReviewsController.delete);
+  .delete(jwt, recipesReviewsController.deleteReview);
 
 
 // Authentication

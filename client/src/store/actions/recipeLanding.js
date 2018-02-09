@@ -34,9 +34,9 @@ export const fetchLatestRecipes = () => {
       .then(response => {
         let latestRecipes = [];
         console.log(response);
-        for (let key in response.data) {
+        for (let key in response.data.data) {
           latestRecipes.push({
-              ...response.data[key],
+              ...response.data.data[key],
               id: key
           })
         }

@@ -9,7 +9,6 @@ import multiparty from 'connect-multiparty';
 // import tokenValid from './auth/local';
 import apiRoutesv1 from './routes/api/v1';
 import apiRoutesv2 from './routes/api/v2';
-import pageLoaderRoutes from './routes/pageLoader';
 
 dotenv.config();
 
@@ -52,8 +51,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Call to server /routes
-app.use('/', pageLoaderRoutes);
 // Call to server /routes/api/v1
 app.use('/api/v1', apiRoutesv1);
 // Call to server /routes/api/v2

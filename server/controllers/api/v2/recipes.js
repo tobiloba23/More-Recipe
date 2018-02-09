@@ -2,140 +2,96 @@ import validator from 'validatorjs';
 import path from 'path';
 import fs from 'fs';
 import S3FS from 's3fs';
+import dotenv from 'dotenv';
 
 import models from '../../../models/';
+import reqQueryUtility from '../../utility/reqQuery';
+
+dotenv.config();
 
 const { Recipe } = models;
-const dberror = 'Something went wrong querying the database. Failure occured while attempting to ';
-const s3Bucket = 'tobiloba23testbucket123';
-console.log(
-  process.env.S3_BUCKET,
-  process.env.AWS_ACCESS_KEY_ID,
-  process.env.AWS_SECRET_ACCESS_KEY
-);
+const dberror = process.env.DB_ERROR;
+const s3Bucket = process.env.S3_BUCKET;
 const s3fsImpl = new S3FS(s3Bucket, {
-  accessKeyId: 'AKIAILN74RXPEYLD6J6Q',
-  secretAccessKey: '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',
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
 });
 
 export default {
   list(req, res) {
-    let returnData;
-    let offset = 0;
-    let count = 9;
+    let returnData, promisedData = null;
 
-    Recipe
-      .findAll()
+    promisedData = req.params.userId ?
+      Recipe.find({
+        where: {
+          userName: req.params.userName,
+        }
+      }) : Recipe.findAll();
+
+    promisedData
       .then(async (recipes) => {
         if (!recipes) {
           res.status(204).json({
             message: 'No Recipe Found, why don\'t you be the first to explore our wonderful world. Thank you.',
           });
         } else {
-          if (req.query && req.query.offset) {
-            offset = parseInt(req.query.offset, 10);
-          }
-
-          if (req.query && req.query.count) {
-            count = parseInt(req.query.count, 10);
-          }
-
-          returnData = recipes.slice(offset, offset + count);
-          await Promise.all(returnData.map(async (element) => {
-            await models.User.findById(element.userId)
-              .then((owner) => {
-                element.dataValues.owner = owner.userName;
-                element.dataValues.ownerImage = owner.imageUrl;
-              })
-              .catch(() => {
-                res.status(500).json({
-                  error: {
-                    message: `${dberror}the image url for one of the recipes`
-                  }
-                });
-              });
-            if (req.decoded) {
-              await models.RecipeReview.find({
-                where: {
-                  recipeId: element.dataValues.recipeId,
-                  userId: req.decoded.id,
-                  vote: {
-                    $ne: null
-                  }
-                }
-              })
-                .then((userHasOpinion) => {
-                  if (userHasOpinion) {
-                    element.dataValues.currentUserHasUpVoted =
-                    userHasOpinion.vote ? userHasOpinion.vote : null;
-                    element.dataValues.currentUserHasDownVoted =
-                      userHasOpinion.vote === false ? !userHasOpinion.vote : null;
-                  } else {
-                    element.dataValues.currentUserHasUpVoted = null;
-                    element.dataValues.currentUserHasDownVoted = null;
-                  }
+          returnData = reqQueryUtility(
+            res, recipes, req.query.sort, req.query.order,
+            req.query.offset, req.query.count
+          );
+          if (returnData) {
+            await Promise.all(returnData.map(async (element) => {
+              await models.User.findById(element.userId)
+                .then((owner) => {
+                  element.dataValues.owner = owner.userName;
+                  element.dataValues.ownerImage = owner.imageUrl;
                 })
                 .catch(() => {
                   res.status(500).json({
                     error: {
-                      message: `${dberror}check if current user has voted on one of the recipes`
+                      message: `${dberror} the image url for one of the recipes`
                     }
                   });
                 });
-            }
-          }));
-          if (req.query && req.query.sort) {
-            if (req.query.sort === 'upvotes') {
-              if (req.query.order && req.query.order === 'asc') {
-                returnData.sort((a, b) => a.upvotes - b.upvotes);
-                res.status(200).json(returnData);
-              } else if (req.query.order && req.query.order === 'desc') {
-                returnData.sort((a, b) => b.upvotes - a.upvotes);
-                res.status(200).json(returnData);
-              } else {
-                res.status(404).json({
-                  error: {
-                    message: 'Not Found: Order of sorting does not exist.'
+              if (req.decoded) {
+                await models.RecipeReview.find({
+                  where: {
+                    recipeId: element.dataValues.recipeId,
+                    userId: req.decoded.id,
+                    vote: {
+                      $ne: null
+                    }
                   }
-                });
+                })
+                  .then((userHasOpinion) => {
+                    if (userHasOpinion) {
+                      element.dataValues.currentUserHasUpVoted =
+                      userHasOpinion.vote ? userHasOpinion.vote : null;
+                      element.dataValues.currentUserHasDownVoted =
+                        userHasOpinion.vote === false ? !userHasOpinion.vote : null;
+                    } else {
+                      element.dataValues.currentUserHasUpVoted = null;
+                      element.dataValues.currentUserHasDownVoted = null;
+                    }
+                  })
+                  .catch(() => {
+                    res.status(500).json({
+                      error: {
+                        message: `${dberror} check if current user has voted on one of the recipes`
+                      }
+                    });
+                  });
               }
-            } else if (req.query.sort === 'downvotes') {
-              if (req.query.order && req.query.order === 'asc') {
-                returnData.sort((a, b) => a.downvotes - b.downvotes);
-                res.status(200).json(returnData);
-              } else if (req.query.order && req.query.order === 'desc') {
-                returnData.sort((a, b) => b.downvotes - a.downvotes);
-                res.status(200).json(returnData);
-              } else {
-                res.status(404).json({
-                  error: {
-                    message: 'Not Found: Order of sorting does not exist.'
-                  }
-                });
-              }
-            } else if (req.query.sort === 'createdAt') {
-              if (req.query.order && req.query.order === 'asc') {
-                returnData.sort((a, b) => a.createdAt - b.createdAt);
-                res.status(200).json(returnData);
-              } else if (req.query.order && req.query.order === 'desc') {
-                returnData.sort((a, b) => b.createdAt - a.createdAt);
-                res.status(200).json(returnData);
-              } else {
-                res.status(404).json({
-                  error: {
-                    message: 'Not Found: Order of sorting does not exist.'
-                  }
-                });
-              }
-            }
-          } else {
-            res.status(200).json(returnData);
+            }));
+            res.status(200).json({
+              data: returnData
+            });
           }
         }
       })
       .catch(() => res.status(500).json({
         error: {
-          message: `${dberror}fetch the recipes from the database`
+          message: `${dberror} fetch the recipes from the database`
         }
       }));
   },
@@ -148,25 +104,27 @@ export default {
       }))
       .catch(() => res.status(500).json({
         error: {
-          message: `${dberror}fetch the recipe from the database`
+          message: `${dberror} fetch the recipe from the database`
         }
       }));
   },
 
   create(req, res) {
     const rules = {
-      title: 'required|string'
+      title: 'required|string',
+      description: 'required|string'
     };
     const isValid = new validator(req.body, rules);
 
     if (isValid.fails()) {
-      res.status(401).json({
+      res.status(400).json({
         error: {
           message: isValid.errors.all()
         }
       });
     } else {
       let imageUrl, keyName;
+      const s3error = [];
 
       if (req.files.recipeImage) {
         const file = req.files.recipeImage;
@@ -179,45 +137,41 @@ export default {
 
         s3fsImpl.writeFile(keyName, stream, s3Params)
           .catch((error) => {
-            res.status(401).json({
-              error: {
-                message: error
-              }
-            });
+            s3error[0] = error;
           });
         imageUrl = `https://${s3Bucket}.s3.amazonaws.com/${keyName}`.replace(/ /g, '+');
-      } else {
-        Recipe
-          .create({
-            title: req.body.title,
-            description: req.body.description,
-            imageUrl,
-            instructions: req.body.instructions,
-            userId: req.decoded.id,
-          })
-          .then(recipe => res.status(201).json({
-            data: recipe
-          }))
-          .catch(() => {
-            const params = {
-              Bucket: s3Bucket,
-              Key: keyName
-            };
-            let s3err;
-
-            s3fsImpl.s3.deleteObject(params, (err) => {
-              if (err) s3err = err;
-            });
-            res.status(500).json({
-              error: {
-                message: {
-                  dbError: `${dberror}create the recipe on the database`,
-                  s3err
-                }
-              }
-            });
-          });
       }
+      Recipe
+        .create({
+          title: req.body.title,
+          description: req.body.description,
+          imageUrl,
+          instructions: req.body.instructions,
+          userId: req.decoded.id,
+        })
+        .then(recipe => res.status(201).json({
+          message: `The ${recipe.title} recipe has successfully been uploaded.`,
+          data: recipe,
+          s3error
+        }))
+        .catch(() => {
+          const params = {
+            Bucket: s3Bucket,
+            Key: keyName
+          };
+
+          s3fsImpl.s3.deleteObject(params, (err) => {
+            if (err) s3error[1] = err;
+          });
+          res.status(500).json({
+            error: {
+              message: {
+                dbError: `${dberror} create the recipe on the database`,
+                s3error
+              }
+            }
+          });
+        });
     }
   },
 
@@ -228,7 +182,7 @@ export default {
     const isValid = new validator(req.body, rules);
 
     if (isValid.fails()) {
-      res.json({
+      res.status(400).json({
         error: {
           message: isValid.errors.all()
         }
@@ -244,7 +198,7 @@ export default {
               }
             });
           } else if (recipe.userId !== req.decoded.id) {
-            res.status(401).json({
+            res.status(403).json({
               error: {
                 message: 'You are not authorized to edit this recipe',
               }
@@ -257,14 +211,14 @@ export default {
               }))
               .catch(() => res.status(500).json({
                 error: {
-                  message: `${dberror}update the recipe on the datadase`
+                  message: `${dberror} update the recipe on the datadase`
                 }
               }));
           }
         })
         .catch(() => res.status(500).json({
           error: {
-            message: `${dberror}find the recipe on the datadase`
+            message: `${dberror} find the recipe on the datadase`
           }
         }));
     }
@@ -285,7 +239,7 @@ export default {
             }
           });
         } else if (recipe.userId !== req.decoded.id) {
-          res.status(401).json({
+          res.status(403).json({
             error: {
               message: 'You are not authorized to delete this recipe',
             }
@@ -301,14 +255,14 @@ export default {
             }))
             .catch(() => res.status(500).json({
               error: {
-                message: `${dberror}delete the recipe from the datadase`
+                message: `${dberror} delete the recipe from the datadase`
               }
             }));
         }
       })
       .catch(() => res.status(500).json({
         error: {
-          message: `${dberror}find the recipe on the datadase`
+          message: `${dberror} find the recipe on the datadase`
         }
       }));
   }

@@ -1,8 +1,11 @@
+import dotenv from 'dotenv';
 import models from '../../../models/';
+
+dotenv.config();
 
 const { Recipe, RecipeReview } = models;
 
-const dberror = 'Something went wrong querying the database. Failure occured while attempting to ';
+const dberror = process.env.DB_ERROR;
 
 const list = (req, res) => Recipe
   .find({
@@ -29,7 +32,7 @@ const list = (req, res) => Recipe
   })
   .catch(() => res.status(500).json({
     error: {
-      message: `${dberror}find the reviews for the recipe on the datadase`
+      message: `${dberror} find the reviews for the recipe on the datadase`
     }
   }));
 
@@ -40,7 +43,7 @@ const listOne = (req, res) => RecipeReview
   }))
   .catch(() => res.status(500).json({
     error: {
-      message: `${dberror}find the review on the datadase`
+      message: `${dberror} find the review on the datadase`
     }
   }));
 
@@ -62,7 +65,7 @@ const update = (req, res) => {
             }
           });
         } else if ((req.body.vote || req.body.vote === false) && recipe.userId === req.decoded.id) {
-          res.status(401).json({
+          res.status(403).json({
             error: {
               message: 'You cannot vote on your own recipe',
             }
@@ -74,81 +77,66 @@ const update = (req, res) => {
                 recipeReviewId: req.params.reviewId
               },
             })
-            .then((recipeReview) => {
+            .then(async (recipeReview) => {
               if (!req.params.reviewId) {
-                RecipeReview
+                await RecipeReview
                   .find({
                     where: {
                       recipeId: req.params.recipeId,
                       userId: req.decoded.id,
                     },
                   }).then((recipeRev) => {
-                    let upvotes, downvotes, { vote } = req.body;
-                    if (recipeRev.vote === true) {
-                      upvotes = recipe.upvotes - 1;
-                      vote = (req.body.vote === 'true' || req.body.vote === true) ? null : vote;
-                    } else upvotes = (req.body.vote === 'true' || req.body.vote === true) ? recipe.upvotes + 1 : recipe.upvotes;
-
-                    if (recipeRev.vote === false) {
-                      downvotes = recipe.downvotes - 1;
-                      vote = (req.body.vote === 'false' || req.body.vote === false) ? null : vote;
-                    } else downvotes = (req.body.vote === 'false' || req.body.vote === false) ? recipe.downvotes + 1 : recipe.downvotes;
-
-                    recipe.update({ upvotes, downvotes })
-                      .catch(() => res.status(500).json({
-                        error: {
-                          message: `${dberror}update the recipe on the datadase`
-                        }
-                      }));
-                    recipeRev
-                      .update({
-                        vote,
-                      })
-                      .then((updatedRecipeReview) => {
-                        res.status(200).json({
-                          data: updatedRecipeReview
-                        });
-                      })
-                      .catch(() => res.status(500).json({
-                        error: {
-                          message: `${dberror}update the review on the datadase`
-                        }
-                      }));
-                  });
-              } else if (!recipeReview) {
-                res.status(404).json({
-                  error: {
-                    message: 'The review does not exist.',
-                  }
-                });
-              } else {
-                recipeReview
-                  .update({
-                    comment: req.body.comment || recipeReview.comment,
-                    vote: req.body.vote || recipeReview.vote,
-                  })
-                  .then((updatedRecipeReview) => {
-                    res.status(200).json({
-                      data: updatedRecipeReview
-                    });
+                    recipeReview = recipeRev;
                   })
                   .catch(() => res.status(500).json({
                     error: {
-                      message: `${dberror}update the review on the datadase`
+                      message: `${dberror} find the existing vote on the datadase`
                     }
                   }));
               }
+              let upvotes, downvotes, { vote } = req.body;
+              if (recipeReview.vote === true) {
+                upvotes = recipe.upvotes - 1;
+                vote = (req.body.vote === 'true' || req.body.vote === true) ? null : vote;
+              } else upvotes = (req.body.vote === 'true' || req.body.vote === true) ? recipe.upvotes + 1 : recipe.upvotes;
+
+              if (recipeReview.vote === false) {
+                downvotes = recipe.downvotes - 1;
+                vote = (req.body.vote === 'false' || req.body.vote === false) ? null : vote;
+              } else downvotes = (req.body.vote === 'false' || req.body.vote === false) ? recipe.downvotes + 1 : recipe.downvotes;
+
+              recipe.update({ upvotes, downvotes })
+                .catch(() => res.status(500).json({
+                  error: {
+                    message: `${dberror} update the recipe on the datadase`
+                  }
+                }));
+              recipeReview
+                .update({
+                  comment: req.body.comment || recipeReview.comment,
+                  vote,
+                })
+                .then((updatedRecipeReview) => {
+                  res.status(202).json({
+                    data: updatedRecipeReview
+                  });
+                })
+                .catch(() => res.status(500).json({
+                  error: {
+                    message: `${dberror} update the review on the datadase`
+                  }
+                }));
             })
             .catch(() => res.status(500).json({
               error: {
-                message: `${dberror}find the review on the datadase`
+                message: `${dberror} find the review on the datadase`
               }
             }));
         }
       })
       .catch(() => res.status(500).json({
         error: {
-          message: `${dberror}find the recipe on the datadase`
+          message: `${dberror} find the recipe on the datadase`
         }
       }));
   }
@@ -208,7 +196,7 @@ const create = (req, res) => {
                   }))
                   .catch(() => res.status(500).json({
                     error: {
-                      message: `${dberror}create the review on the datadase`
+                      message: `${dberror} create the review on the datadase`
                     }
                   }));
               }
@@ -219,7 +207,7 @@ const create = (req, res) => {
       })
       .catch(() => res.status(500).json({
         error: {
-          message: `${dberror}check if the user has reviewed the recipe in the past`
+          message: `${dberror} check if the user has reviewed the recipe in the past`
         }
       }));
   }
@@ -240,7 +228,7 @@ const deleteReview = (req, res) =>
           }
         });
       } else if (req.decoded.id !== recipeReview.userId) {
-        res.status(401).json({
+        res.status(403).json({
           error: {
             message: 'You are not authorized to delete this review',
           }
@@ -256,7 +244,7 @@ const deleteReview = (req, res) =>
     })
     .catch(() => res.status(500).json({
       error: {
-        message: `${dberror}find the review on the datadase`
+        message: `${dberror} find the review on the datadase`
       }
     }));
 

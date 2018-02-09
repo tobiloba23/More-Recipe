@@ -25,10 +25,22 @@ const recipeCards = (props) => {
                 <div className="d-flex justify-content-end">
                   <small className="text-muted mr-auto" style={{fontSize: '0.8rem'}}>{item.createdAt ? Math.round((Date.now() - new Date(item.createdAt.replace(' ', 'T')))/86400000).toLocaleString() : 0} days ago</small>
                   <a style={{fontSize: '0.8rem'}} className="fa fa-eye text-muted mr-1 my-auto" aria-hidden="true">{item.views ? item.views.toLocaleString() : 0}</a>
-                  { props.isAuthenticated ?
+                  { props.isAuthenticated && item.owner !== localStorage.getItem('userName') ?
                       <Aux>
-                        <a style={{fontSize: '0.8rem'}} className={`fa fa-thumbs-up text-muted mr-1 my-auto ${item.currentUserHasUpVoted ? 'highlightIcon' : null}`} aria-hidden="true" onClick={() => props.vote(idx, true)}>{item.upvotes ? item.upvotes.toLocaleString() : 0}</a>
-                        <a style={{fontSize: '0.8rem'}} className={`fa fa-thumbs-down text-muted mr-1 my-auto ${item.currentUserHasDownVoted ? 'highlightIcon' : null}`} aria-hidden="true" onClick={() => props.vote(idx, false)}>{item.downvotes ? item.downvotes.toLocaleString() : 0}</a>
+                        <a 
+                          style={{fontSize: '0.8rem'}}
+                          className={`fa fa-thumbs-up text-muted mr-1 my-auto ${item.currentUserHasUpVoted ? 'highlightIcon' : null}`}
+                          aria-hidden="true" onClick={() => props.vote(idx, true)}
+                        >
+                          {item.upvotes ? item.upvotes.toLocaleString() : 0}
+                        </a>
+                        <a 
+                          style={{fontSize: '0.8rem'}} 
+                          className={`fa fa-thumbs-down text-muted mr-1 my-auto ${item.currentUserHasDownVoted ? 'highlightIcon' : null}`}
+                          aria-hidden="true" onClick={() => props.vote(idx, false)}
+                        >
+                          {item.downvotes ? item.downvotes.toLocaleString() : 0}
+                        </a>
                       </Aux>
                       : null
                   }

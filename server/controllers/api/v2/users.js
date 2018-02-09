@@ -1,29 +1,31 @@
 import bcrypt from 'bcrypt-nodejs';
 import jwt from 'jsonwebtoken';
 import validator from 'validatorjs';
+import dotenv from 'dotenv';
 import models from '../../../models/';
+
+dotenv.config();
 
 const { User } = models;
 let token;
-const dberror = 'Something went wrong querying the database. Failure occured while attempting to ';
+const dberror = process.env.DB_ERROR;
 
 export default {
   list(req, res) {
     User
       .findAll({
-        attributes: ['userId', 'userName'],
+        attributes: ['userName', 'imageUrl'],
       })
-      .then((user) => {
-        if (!user) {
+      .then((users) => {
+        if (!users) {
           res.status(404).json({
             error: {
-              message: 'User Not Found',
+              message: 'No Users Found',
             }
           });
         } else {
           res.status(200).json({
-            message: 'All users',
-            data: user
+            data: users
           });
         }
       })
@@ -35,27 +37,23 @@ export default {
   },
 
   listOne(req, res) {
-    if (req.params.userId !== req.decoded.id) {
-      res.status(401).json({
-        error: {
-          message: 'You do not have access to view other users detailed information.',
+    User
+      .findById(
+        req.decoded.id,
+        {
+          attributes: ['userName', 'email', 'firstName', 'lastName', 'imageUrl'],
         }
-      });
-    } else {
-      User
-        .findById(req.decoded.id)
-        .then((user) => {
-          res.status(200).json({
-            message: 'User',
-            data: user
-          });
-        })
-        .catch(() => res.status(500).json({
-          error: {
-            message: `${dberror}find the user on the datadase`
-          }
-        }));
-    }
+      )
+      .then((user) => {
+        res.status(200).json({
+          data: user
+        });
+      })
+      .catch(() => res.status(500).json({
+        error: {
+          message: `${dberror} find the user on the datadase`
+        }
+      }));
   },
 
   async signup(req, res) {
@@ -89,7 +87,7 @@ export default {
           if (user) {
             response = {
               error: {
-                message: user.userName.concat(' has already been taken'),
+                message: `${user.userName} has already been taken`,
               }
             };
           }
@@ -104,7 +102,7 @@ export default {
           if (user) {
             response = {
               error: {
-                message: 'An account has already been created for '.concat(user.email),
+                message: `An account has already been created for ${user.email}`,
               }
             };
           }
@@ -133,7 +131,7 @@ export default {
             );
 
             res.status(201).json({
-              message: 'User '.concat(user.userName, '\' account has successfully been created.'),
+              message: `User ${user.userName}'s has successfully been created.`,
               userName: user.userName,
               token,
               expiresIn: day
@@ -141,7 +139,7 @@ export default {
           })
           .catch(() => res.status(500).json({
             error: {
-              message: `${dberror}create the user on the datadase`
+              message: `${dberror} create the user on the datadase`
             }
           }));
       }
@@ -206,48 +204,109 @@ export default {
         })
         .catch(() => res.status(500).json({
           error: {
-            message: `${dberror}find the user on the datadase`
+            message: `${dberror} find the user on the datadase`
           }
         }));
     }
   },
 
   update(req, res) {
-    if (req.params.userId !== req.decoded.id) {
-      res.status(401).json({
-        error: {
-          message: 'You cannot alter records that do not belong to you.',
+    User
+      .find({
+        where: {
+          userName: req.body.userName
+        }
+      })
+      .then((userWithSameUserName) => {
+        if (userWithSameUserName) {
+          res.status(409).json({
+            error: {
+              message: `${userWithSameUserName.userName} has already been taken`,
+            }
+          });
+        } else {
+          User
+            .findById(req.decoded.id)
+            .then((user) => {
+              if (!user) {
+                res.status(404).json({
+                  error: {
+                    message: 'User Not Found',
+                  }
+                });
+              } else {
+                const updateData = {
+                  userName: req.body.userName || user.userName,
+                  firstName: req.body.firstName || user.firstName,
+                  lastName: req.body.lastName || user.lastName,
+                  imageUrl: req.body.imageUrl || user.imageUrl
+                };
+                if (req.body.password) updateData.password = req.body.password;
+                user
+                  .update(updateData, { fields: Object.keys(updateData) })
+                  .then(() => {
+                    delete updateData.password;
+                    updateData.email = user.email;
+                    res.status(202).json({
+                      message: `${user.email}'s account has successfully been updated.`,
+                      data: updateData
+                    });
+                  })
+                  .catch(() => {
+                    res.status(500).json({
+                      error: {
+                        message: `${dberror} update the user details on the datadase`
+                      }
+                    });
+                  });
+              }
+            })
+            .catch(() => res.status(500).json({
+              error: {
+                message: `${dberror} find the user on the datadase`
+              }
+            }));
         }
       });
-    } else {
-      User
-        .findById(req.decoded.id)
-        .then((user) => {
-          if (!user) {
-            res.status(404).json({
+  },
+
+  delete(req, res) {
+    User
+      .find({
+        where: {
+          userId: req.decoded.id,
+        }
+      })
+      .then((user) => {
+        if (!user) {
+          res.status(404).json({
+            error: {
+              message: 'User Not Found',
+            }
+          });
+        } else {
+          const deletedUser = {
+            userName: user.userName,
+            firstName: user.firstName,
+            lastName: user.lastName
+          };
+          user
+            .destroy()
+            .then(() => res.status(200).json({
+              message: 'The user listed below has just been deleted',
+              data: deletedUser
+            }))
+            .catch(() => res.status(500).json({
               error: {
-                message: 'User Not Found',
+                message: `${dberror} delete the user from the datadase`
               }
-            });
-          } else {
-            user
-              .update({ fields: Object.keys(req.body) })
-              .then(() => res.status(202).json({
-                message: user.userName.concat('\'s account has successfully been updated.'),
-                data: user
-              }))
-              .catch(() => res.status(500).json({
-                error: {
-                  message: `${dberror}update the user details on the datadase`
-                }
-              }));
-          }
-        })
-        .catch(() => res.status(500).json({
-          error: {
-            message: `${dberror}find the user on the datadase`
-          }
-        }));
-    }
+            }));
+        }
+      })
+      .catch(() => res.status(500).json({
+        error: {
+          message: `${dberror} find the user on the datadase`
+        }
+      }));
   }
 };

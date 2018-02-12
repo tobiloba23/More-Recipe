@@ -193,11 +193,28 @@
 }
 
 .highlightIcon {
-  Color: #003bfc !important
+  Color: #f54e31 !important
 }
 
 #homeIntro{
   height: 100%;
   min-height: 100vh;
 }
-  
+
+p.card-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-height: 0.8rem;
+  -webkit-line-clamp: 5;
+  -webkit-box-orient: vertical;
+}
+
+h4.card-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-height: 1.2rem;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}

@@ -1,8 +1,9 @@
 import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
-  token: null,
-  userName: null,
+  token: localStorage.getItem('token'),
+  userName: localStorage.getItem('userName'),
+  imageUrl: localStorage.getItem('imageUrl'),
   error: null,
   loading: false,
   authRedirectPath: '/'
@@ -21,6 +22,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         token: action.idToken,
         userName: action.userName,
+        imageUrl: action.imageUrl,
         error: null,
         loading: false
       };
@@ -34,7 +36,8 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         token: null,
-        userName: null
+        userName: null,
+        imageUrl: null
       };
     case actionTypes.SET_AUTH_REDIRECT_PATH:
       return {

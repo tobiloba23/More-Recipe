@@ -1,4 +1,5 @@
 import express from 'express';
+import jwtCreate from 'jsonwebtoken';
 import jwt from '../../../middleware/auth/local';
 import Controller from '../../../controllers';
 
@@ -10,7 +11,7 @@ const userFavouritesController = Controller.userFavouritesApiv2;
 
 
 router.route('/get-token').get((req, res) => {
-  const token = jwt.sign(
+  const token = jwtCreate.sign(
     { foo: 'foo' },
     process.env.JWT_SEC_KEY, {
       expiresIn: 300 // expires 5mins
@@ -22,7 +23,7 @@ router.route('/get-token').get((req, res) => {
 
 // Recipe actions
 router.route('/recipes')
-  .get(recipesController.list)
+  .get(jwt, recipesController.list)
   .post(jwt, recipesController.create);
 router.route('/recipes/:recipeId/')
   .get(jwt, recipesController.listOne)
@@ -35,18 +36,20 @@ router.route('/recipes/:recipeId/reviews')
 router.route('/recipes/:recipeId/reviews/:reviewId')
   .get(recipesReviewsController.listOne)
   .put(jwt, recipesReviewsController.update)
-  .delete(jwt, recipesReviewsController.delete);
+  .delete(jwt, recipesReviewsController.deleteReview);
 
 
 // Authentication
 router.route('/users/signup').post(usersController.signup);
 router.route('/users/signin').post(usersController.signin);
 router.route('/users').get(jwt, usersController.list);
-router.route('/users/:userId').get(jwt, usersController.listOne);
+router.route('/users').put(jwt, usersController.update);
+router.route('/users').delete(jwt, usersController.delete);
 
-
-// User Favourites
-router.route('/users/:userId/recipes')
+// User Activities
+router.route('/user/profile').get(jwt, usersController.listOne);
+router.route('/user/recipes/:userName').get(jwt, recipesController.list);
+router.route('/user/favourites/:userName')
   .get(jwt, userFavouritesController.list)
   .post(jwt, userFavouritesController.create);
 

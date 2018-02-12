@@ -7,18 +7,20 @@ export const authStart = () => {
   };
 };
 
-export const authSuccess = (token, userName) => {
+export const authSuccess = (token, userName, imageUrl) => {
   return {
     type: actionTypes.AUTH_SUCCESS,
     idToken: token,
-    userName
+    userName,
+    imageUrl
   };
 };
 
 export const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('expirationDate');
-  localStorage.removeItem('userId');
+  localStorage.removeItem('userName');
+  localStorage.removeItem('imageUrl');
   return {
     type: actionTypes.AUTH_LOGOUT
   }
@@ -62,7 +64,8 @@ export const auth = (email, password, passwordConfirmation, userName, firstName,
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('expirationDate', expirationDate);
         localStorage.setItem('userName', response.data.userName);
-        dispatch(authSuccess(response.data.token, response.data.userName));
+        localStorage.setItem('imageUrl', response.data.imageUrl);
+        dispatch(authSuccess(response.data.token, response.data.userName, response.data.imageUrl));
         dispatch(checkAuthTimeout(response.data.expiresIn * 1000));
       })
       .catch(error => {
@@ -90,7 +93,8 @@ export const authCheckState = () => {
         dispatch(logout());
       } else {
         const userName = localStorage.getItem('userName');
-        dispatch(authSuccess(token, userName));
+        const imageUrl = localStorage.getItem('imageUrl');
+        dispatch(authSuccess(token, userName, imageUrl));
         dispatch(checkAuthTimeout((expirationDate.getTime() - new Date().getTime()) / 1000));
       }
     }

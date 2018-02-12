@@ -20,14 +20,30 @@ const s3fsImpl = new S3FS(s3Bucket, {
 export default {
   list(req, res) {
     let returnData, promisedData = null;
+    const getRecipes = withReviews =>
+      (withReviews === 'true' ?
+        Recipe.findAll({
+          include: [{
+            model: models.RecipeReview,
+            as: 'recipeReviews',
+            where: {
+              comment: {
+                $ne: null
+              }
+            },
+            include: [{
+              model: models.User,
+              attributes: ['userName']
+            }]
+          }]
+        }) : Recipe.findAll());
 
     promisedData = req.params.userId ?
       Recipe.find({
         where: {
           userName: req.params.userName,
         }
-      }) : Recipe.findAll();
-
+      }) : getRecipes(req.query.withReviews);
     promisedData
       .then(async (recipes) => {
         if (!recipes) {
@@ -46,13 +62,12 @@ export default {
                   element.dataValues.owner = owner.userName;
                   element.dataValues.ownerImage = owner.imageUrl;
                 })
-                .catch(() => {
-                  res.status(500).json({
-                    error: {
-                      message: `${dberror} the image url for one of the recipes`
-                    }
-                  });
-                });
+                .catch(serverError => res.status(500).json({
+                  error: {
+                    message: `${dberror} the image url for one of the recipes`,
+                    serverError
+                  }
+                }));
               if (req.decoded) {
                 await models.RecipeReview.find({
                   where: {
@@ -74,13 +89,12 @@ export default {
                       element.dataValues.currentUserHasDownVoted = null;
                     }
                   })
-                  .catch(() => {
-                    res.status(500).json({
-                      error: {
-                        message: `${dberror} check if current user has voted on one of the recipes`
-                      }
-                    });
-                  });
+                  .catch(serverError => res.status(500).json({
+                    error: {
+                      message: `${dberror} check if current user has voted on one of the recipes`,
+                      serverError
+                    }
+                  }));
               }
             }));
             res.status(200).json({
@@ -89,9 +103,10 @@ export default {
           }
         }
       })
-      .catch(() => res.status(500).json({
+      .catch(serverError => res.status(500).json({
         error: {
-          message: `${dberror} fetch the recipes from the database`
+          message: `${dberror} fetch the recipes from the database`,
+          serverError
         }
       }));
   },
@@ -102,9 +117,10 @@ export default {
       .then(recipe => res.status(200).json({
         data: recipe
       }))
-      .catch(() => res.status(500).json({
+      .catch(serverError => res.status(500).json({
         error: {
-          message: `${dberror} fetch the recipe from the database`
+          message: `${dberror} fetch the recipe from the database`,
+          serverError
         }
       }));
   },
@@ -209,16 +225,18 @@ export default {
               .then(updatedRecipe => res.status(202).json({
                 data: updatedRecipe
               }))
-              .catch(() => res.status(500).json({
+              .catch(serverError => res.status(500).json({
                 error: {
-                  message: `${dberror} update the recipe on the datadase`
+                  message: `${dberror} update the recipe on the datadase`,
+                  serverError
                 }
               }));
           }
         })
-        .catch(() => res.status(500).json({
+        .catch(serverError => res.status(500).json({
           error: {
-            message: `${dberror} find the recipe on the datadase`
+            message: `${dberror} find the recipe on the datadase`,
+            serverError
           }
         }));
     }
@@ -253,16 +271,18 @@ export default {
               message: 'The recipe listed below has just been deleted',
               data: deletedRecipe
             }))
-            .catch(() => res.status(500).json({
+            .catch(serverError => res.status(500).json({
               error: {
-                message: `${dberror} delete the recipe from the datadase`
+                message: `${dberror} delete the recipe from the datadase`,
+                serverError
               }
             }));
         }
       })
-      .catch(() => res.status(500).json({
+      .catch(serverError => res.status(500).json({
         error: {
-          message: `${dberror} find the recipe on the datadase`
+          message: `${dberror} find the recipe on the datadase`,
+          serverError
         }
       }));
   }

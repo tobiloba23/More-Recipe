@@ -4,7 +4,9 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
   latestRecipes: null,
-  loading: false,
+  carouselRecipes: null,
+  loadingLatest: false,
+  loadingPopular: false,
   error: false,
   isAuthenticated: false
 };
@@ -37,7 +39,7 @@ const reducer = (state = initialState, action) => {
           }
         }
       };
-      case actionTypes.DISPLAY_VOTE_ON_ACTIVE_RECIPE:
+    case actionTypes.DISPLAY_VOTE_ON_ACTIVE_RECIPE:
         return update(state, {
           latestRecipes: {
             [action.activeRecipe]: {
@@ -88,21 +90,131 @@ const reducer = (state = initialState, action) => {
     case actionTypes.FETCH_LATEST_RECIPES_START:
       return {
         ...state,
-        loading: true
+        loadingLatest: true
       };
     case actionTypes.FETCH_LATEST_RECIPES_SUCCESS:
       return {
         ...state,
         latestRecipes: action.latestRecipes,
-        loading: false,
+        loadingLatest: false,
         isAuthenticated: action.isAuthenticated
       };
     case actionTypes.FETCH_LATEST_RECIPES_FAILED:
       return {
         ...state,
-        loading: false,
+        loadingLatest: false,
         error: true
       };
+    case actionTypes.FETCH_POPULAR_RECIPES_START:
+      return {
+        ...state,
+        loadingPopular: true
+      };
+    case actionTypes.FETCH_POPULAR_RECIPES_SUCCESS:
+      return {
+        ...state,
+        carouselRecipes: {
+          maxLength: 3,
+          activeRecipe: 0,
+          popularRecipes: [
+            {
+              id: 0,
+              activeReview: 0,
+              maxLength: action.popularRecipes[0].recipeReviews.length,
+              altText: 'Slide 1',
+              caption: 'Slide 1',
+              title: action.popularRecipes[0].title,
+              descriptionSumm: action.popularRecipes[0].description,
+              image: action.popularRecipes[0].imageUrl,
+              recipeReviews: action.popularRecipes[0].recipeReviews
+            },
+            {
+              id: 1,
+              activeReview: 0,
+              maxLength: action.popularRecipes[1].recipeReviews.length,
+              altText: 'Slide 2',
+              caption: 'Slide 2',
+              title: action.popularRecipes[1].title,
+              descriptionSumm: action.popularRecipes[1].description,
+              image: action.popularRecipes[1].imageUrl,
+              recipeReviews: action.popularRecipes[1].recipeReviews
+            },
+            {
+              id: 2,
+              activeReview: 0,
+              maxLength: action.popularRecipes[2].recipeReviews.length,
+              altText: 'Slide 3',
+              caption: 'Slide 3',
+              title: action.popularRecipes[2].title,
+              descriptionSumm: action.popularRecipes[2].description,
+              image: action.popularRecipes[2].imageUrl,
+              recipeReviews: action.popularRecipes[2].recipeReviews
+            }
+          ]
+        },
+        loadingPopular: false
+      };
+    case actionTypes.FETCH_POPULAR_RECIPES_FAILED:
+      return {
+        ...state,
+        loadingPopular: false,
+        error: true
+      };
+    case actionTypes.NEXT_OUTER_CAROUSEL:
+      return {
+        ...state,
+        carouselRecipes: {
+          ...state.carouselRecipes,
+          activeRecipe:
+            (state.carouselRecipes.activeRecipe + 1 > state.carouselRecipes.maxLength - 1) ? 
+            0 : state.carouselRecipes.activeRecipe + 1
+        }
+      }
+    case actionTypes.PREV_OUTER_CAROUSEL:
+      return {
+        ...state,
+        carouselRecipes: {
+          ...state.carouselRecipes,
+          activeRecipe:
+            (state.carouselRecipes.activeRecipe - 1 < 0) ? 
+            state.carouselRecipes.maxLength - 1 : state.carouselRecipes.activeRecipe - 1
+        }
+      }
+    case actionTypes.NEXT_INNER_CAROUSEL:
+      return update(state, {
+        carouselRecipes: {
+          popularRecipes: {
+            [state.carouselRecipes.activeRecipe]: {
+              activeReview: {
+                $set: (state.carouselRecipes.popularRecipes[state.carouselRecipes.activeRecipe].activeReview > state.carouselRecipes.popularRecipes[state.carouselRecipes.activeRecipe].maxLength - 2)
+                  ? 0 : state.carouselRecipes.popularRecipes[state.carouselRecipes.activeRecipe].activeReview + 1}
+            }
+          }
+        }
+      });
+    case actionTypes.PREV_INNER_CAROUSEL:
+      return update(state, {
+        carouselRecipes: {
+          popularRecipes: {
+            [state.carouselRecipes.activeRecipe]: {
+              activeReview: {
+                $set: (state.carouselRecipes.popularRecipes[state.carouselRecipes.activeRecipe].activeReview < 0)
+                  ? state.carouselRecipes.popularRecipes[state.carouselRecipes.activeRecipe].maxLength - 1 
+                  : state.carouselRecipes.popularRecipes[state.carouselRecipes.activeRecipe].activeReview - 1}
+            }
+          }
+        }
+      });
+    case actionTypes.GOTO_CAROUSEL_INDEX:
+      return {
+        ...state,
+        carouselRecipes: {
+          ...state.carouselRecipes,
+          popularRecipes: {
+            
+          }
+        }
+      }
     default:
       return state;
   }

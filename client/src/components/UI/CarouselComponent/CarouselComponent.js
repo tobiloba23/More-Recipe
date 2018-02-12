@@ -17,7 +17,7 @@ const carouselComponent = (props) => {
                 props.title :
                 item.title : 
               props.arrayDepth === 2 ?
-                  item.review :
+                  item.comment :
                 null
             }
           </h4>
@@ -27,7 +27,7 @@ const carouselComponent = (props) => {
                 props.descriptionSumm :
                 item.descriptionSumm : 
               props.arrayDepth === 2 ?
-                  item.reviewer :
+                  `- ${item.User.userName}` :
                 null
             }
           </p>

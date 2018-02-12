@@ -22,5 +22,14 @@ export {
   fetchLatestRecipes,
   fetchLatestRecipesStart,
   fetchLatestRecipesSuccess,
-  fetchLatestRecipesFailed
+  fetchLatestRecipesFailed,
+  fetchPopularRecipes,
+  fetchPopularRecipesStart,
+  fetchPopularRecipesSuccess,
+  fetchPopularRecipesFailed,
+  nextOuterCarousel,
+  prevOuterCarousel,
+  nextInnerCarousel,
+  prevInnerCarousel,
+  goToCarouselIndex
 } from './recipeLanding.js';

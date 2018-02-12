@@ -30,9 +30,10 @@ const list = (req, res) => Recipe
       });
     }
   })
-  .catch(() => res.status(500).json({
+  .catch(serverError => res.status(500).json({
     error: {
-      message: `${dberror} find the reviews for the recipe on the datadase`
+      message: `${dberror} find the reviews for the recipe on the datadase`,
+      serverError
     }
   }));
 
@@ -41,9 +42,10 @@ const listOne = (req, res) => RecipeReview
   .then(recipe => res.status(201).json({
     data: recipe
   }))
-  .catch(() => res.status(500).json({
+  .catch(serverError => res.status(500).json({
     error: {
-      message: `${dberror} find the review on the datadase`
+      message: `${dberror} find the review on the datadase`,
+      serverError
     }
   }));
 
@@ -88,9 +90,10 @@ const update = (req, res) => {
                   }).then((recipeRev) => {
                     recipeReview = recipeRev;
                   })
-                  .catch(() => res.status(500).json({
+                  .catch(serverError => res.status(500).json({
                     error: {
-                      message: `${dberror} find the existing vote on the datadase`
+                      message: `${dberror} find the existing vote on the datadase`,
+                      serverError
                     }
                   }));
               }
@@ -106,9 +109,10 @@ const update = (req, res) => {
               } else downvotes = (req.body.vote === 'false' || req.body.vote === false) ? recipe.downvotes + 1 : recipe.downvotes;
 
               recipe.update({ upvotes, downvotes })
-                .catch(() => res.status(500).json({
+                .catch(serverError => res.status(500).json({
                   error: {
-                    message: `${dberror} update the recipe on the datadase`
+                    message: `${dberror} update the recipe on the datadase`,
+                    serverError
                   }
                 }));
               recipeReview
@@ -121,22 +125,25 @@ const update = (req, res) => {
                     data: updatedRecipeReview
                   });
                 })
-                .catch(() => res.status(500).json({
+                .catch(serverError => res.status(500).json({
                   error: {
-                    message: `${dberror} update the review on the datadase`
+                    message: `${dberror} update the review on the datadase`,
+                    serverError
                   }
                 }));
             })
-            .catch(() => res.status(500).json({
+            .catch(serverError => res.status(500).json({
               error: {
-                message: `${dberror} find the review on the datadase`
+                message: `${dberror} find the review on the datadase`,
+                serverError
               }
             }));
         }
       })
-      .catch(() => res.status(500).json({
+      .catch(serverError => res.status(500).json({
         error: {
-          message: `${dberror} find the recipe on the datadase`
+          message: `${dberror} find the recipe on the datadase`,
+          serverError
         }
       }));
   }
@@ -194,9 +201,10 @@ const create = (req, res) => {
                   .then(createdRecipeRev => res.status(201).json({
                     data: createdRecipeRev
                   }))
-                  .catch(() => res.status(500).json({
+                  .catch(serverError => res.status(500).json({
                     error: {
-                      message: `${dberror} create the review on the datadase`
+                      message: `${dberror} create the review on the datadase`,
+                      serverError
                     }
                   }));
               }
@@ -205,9 +213,10 @@ const create = (req, res) => {
           update(req, res);
         }
       })
-      .catch(() => res.status(500).json({
+      .catch(serverError => res.status(500).json({
         error: {
-          message: `${dberror} check if the user has reviewed the recipe in the past`
+          message: `${dberror} check if the user has reviewed the recipe in the past`,
+          serverError
         }
       }));
   }
@@ -242,9 +251,10 @@ const deleteReview = (req, res) =>
           }));
       }
     })
-    .catch(() => res.status(500).json({
+    .catch(serverError => res.status(500).json({
       error: {
-        message: `${dberror} find the review on the datadase`
+        message: `${dberror} find the review on the datadase`,
+        serverError
       }
     }));
 

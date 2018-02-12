@@ -35,9 +35,10 @@ export default {
           });
         }
       })
-      .catch(() => res.status(500).json({
+      .catch(serverError => res.status(500).json({
         error: {
-          message: `${dberror} find the user on the datadase`
+          message: `${dberror} find the user on the datadase`,
+          serverError
         }
       }));
   },
@@ -52,9 +53,10 @@ export default {
         message: 'The recipe listed below has been added to your favourites',
         data: userFavourite
       }))
-      .catch(() => res.status(500).json({
+      .catch(serverError => res.status(500).json({
         error: {
-          message: `${dberror} create a favourite recipe on the datadase`
+          message: `${dberror} create a favourite recipe on the datadase`,
+          serverError
         }
       }));
   },
@@ -83,16 +85,18 @@ export default {
               message: 'Your changes were accepted and your favourite recipe changed.',
               data: updatedUserFavourite
             }))
-            .catch(() => res.status(500).json({
+            .catch(serverError => res.status(500).json({
               error: {
-                message: `${dberror} update the user's favourites on the datadase`
+                message: `${dberror} update the user's favourites on the datadase`,
+                serverError
               }
             }));
         }
       })
-      .catch(() => res.status(500).json({
+      .catch(serverError => res.status(500).json({
         error: {
-          message: `${dberror} find the user's favourites on the datadase`
+          message: `${dberror} find the user's favourites on the datadase`,
+          serverError
         }
       }));
   },
@@ -119,16 +123,18 @@ export default {
               message: 'The recipe listed below has been removed from your favourites',
               data: deletedUserFavourite
             }))
-            .catch(() => res.status(500).json({
+            .catch(serverError => res.status(500).json({
               error: {
-                message: `${dberror} delete the recipe from the user's favourite on the datadase`
+                message: `${dberror} delete the recipe from the user's favourites on the datadase`,
+                serverError
               }
             }));
         }
       })
-      .catch(() => res.status(500).json({
+      .catch(serverError => res.status(500).json({
         error: {
-          message: `${dberror} update the user's favourites on the datadase`
+          message: `${dberror} update the user's favourites on the datadase`,
+          serverError
         }
       }));
   },

@@ -29,9 +29,10 @@ export default {
           });
         }
       })
-      .catch(error => res.status(500).json({
+      .catch(serverError => res.status(500).json({
         error: {
-          message: error
+          message: `${dberror} find the user on the datadase`,
+          serverError
         }
       }));
   },
@@ -49,9 +50,10 @@ export default {
           data: user
         });
       })
-      .catch(() => res.status(500).json({
+      .catch(serverError => res.status(500).json({
         error: {
-          message: `${dberror} find the user on the datadase`
+          message: `${dberror} find the user on the datadase`,
+          serverError
         }
       }));
   },
@@ -137,9 +139,10 @@ export default {
               expiresIn: day
             });
           })
-          .catch(() => res.status(500).json({
+          .catch(serverError => res.status(500).json({
             error: {
-              message: `${dberror} create the user on the datadase`
+              message: `${dberror} create the user on the datadase`,
+              serverError
             }
           }));
       }
@@ -202,9 +205,10 @@ export default {
             });
           }
         })
-        .catch(() => res.status(500).json({
+        .catch(serverError => res.status(500).json({
           error: {
-            message: `${dberror} find the user on the datadase`
+            message: `${dberror} find the user on the datadase`,
+            serverError
           }
         }));
     }
@@ -252,18 +256,18 @@ export default {
                       data: updateData
                     });
                   })
-                  .catch(() => {
-                    res.status(500).json({
-                      error: {
-                        message: `${dberror} update the user details on the datadase`
-                      }
-                    });
-                  });
+                  .catch(serverError => res.status(500).json({
+                    error: {
+                      message: `${dberror} update the user details on the datadase`,
+                      serverError
+                    }
+                  }));
               }
             })
-            .catch(() => res.status(500).json({
+            .catch(serverError => res.status(500).json({
               error: {
-                message: `${dberror} find the user on the datadase`
+                message: `${dberror} find the user on the datadase`,
+                serverError
               }
             }));
         }
@@ -296,16 +300,18 @@ export default {
               message: 'The user listed below has just been deleted',
               data: deletedUser
             }))
-            .catch(() => res.status(500).json({
+            .catch(serverError => res.status(500).json({
               error: {
-                message: `${dberror} delete the user from the datadase`
+                message: `${dberror} delete the user from the datadase`,
+                serverError
               }
             }));
         }
       })
-      .catch(() => res.status(500).json({
+      .catch(serverError => res.status(500).json({
         error: {
-          message: `${dberror} find the user on the datadase`
+          message: `${dberror} find the user on the datadase`,
+          serverError
         }
       }));
   }

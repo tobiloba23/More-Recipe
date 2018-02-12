@@ -50,6 +50,85 @@ export const fetchLatestRecipes = () => {
   };
 };
 
+export const nextOuterCarousel = () => {
+  return {
+    type: actionTypes.NEXT_OUTER_CAROUSEL
+  };
+};
+
+export const prevOuterCarousel = () => {
+  return {
+    type: actionTypes.PREV_OUTER_CAROUSEL
+  };
+};
+
+export const nextInnerCarousel = () => {
+  return {
+    type: actionTypes.NEXT_INNER_CAROUSEL
+  };
+};
+
+export const prevInnerCarousel = () => {
+  return {
+    type: actionTypes.PREV_INNER_CAROUSEL
+  };
+};
+
+export const goToCarouselIndex = () => {
+  return {
+    type: actionTypes.GOTO_CAROUSEL_INDEX
+  };
+};
+
+export const fetchPopularRecipesStart = () => {
+  return {
+    type: actionTypes.FETCH_POPULAR_RECIPES_START
+  };
+};
+
+export const fetchPopularRecipesSuccess = (popularRecipes, isAuthenticated) => {
+  return {
+    type: actionTypes.FETCH_POPULAR_RECIPES_SUCCESS,
+    popularRecipes,
+    isAuthenticated
+  };
+};
+
+export const fetchPopularRecipesFailed = (error) => {
+  return {
+    type: actionTypes.FETCH_POPULAR_RECIPES_FAILED,
+    error
+  };
+};
+
+export const fetchPopularRecipes = () => {
+  return dispatch => {
+    dispatch(fetchPopularRecipesStart());
+    const options = localStorage.getItem('token') ? {
+      headers: {
+        "x-access-token": localStorage.getItem('token')
+      }
+    } : {};
+    axios.get('/recipes?sort=upvotes&order=desc&count=3&withReviews=true', options)
+      .then(response => {
+        let popularRecipes = [];
+        console.log(response);
+        for (let key in response.data.data) {
+          popularRecipes.push({
+              ...response.data.data[key],
+              id: key
+          })
+        }
+        const isAuthenticated = localStorage.getItem('token') ? true : false;
+        dispatch(fetchPopularRecipesSuccess(popularRecipes, isAuthenticated));
+      })
+      .catch(error => {
+        console.log(error);
+        dispatch(fetchPopularRecipesFailed(error.response ? error.response.data.error : error));
+      });
+  };
+};
+
 export const displayVoteOnActiveRecipe = (recipeIndex, votedUp) => {
   return {
     type: actionTypes.DISPLAY_VOTE_ON_ACTIVE_RECIPE,

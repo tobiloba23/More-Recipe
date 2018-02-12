@@ -5,7 +5,6 @@ const reqQuery = (response, data, sort = 'createdAt', order = 'desc', offset = 0
   if (count) {
     count = parseInt(count, 10);
   }
-  data = data.slice(offset, offset + count);
 
   if (sort) {
     if (order === 'asc') {
@@ -14,6 +13,7 @@ const reqQuery = (response, data, sort = 'createdAt', order = 'desc', offset = 0
       } else {
         data.sort((a, b) => a[`${sort}`] - b[`${sort}`]);
       }
+      if (!Number.isNaN(count) && !Number.isNaN(offset)) data = data.slice(offset, offset + count);
       return data;
     } else if (order === 'desc') {
       if (typeof (data[0][`${sort}`]) === 'string') {
@@ -21,6 +21,7 @@ const reqQuery = (response, data, sort = 'createdAt', order = 'desc', offset = 0
       } else {
         data.sort((a, b) => b[`${sort}`] - a[`${sort}`]);
       }
+      if (!Number.isNaN(count) && !Number.isNaN(offset)) data = data.slice(offset, offset + count);
       return data;
     }
     response.status(404).json({

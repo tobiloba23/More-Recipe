@@ -1,11 +1,12 @@
-node_modules
-.env
-.npm/_logs
+.gitignore
+server/node_modules
+server/.env
+server/.npm/_logs
 .vscode
-.coveralls.yml
-.nyc_output
-server.pass.key
-server.key
-server.csr
-server.crt
-.create\ a\ .crt\ file.txt
+server/.coveralls.yml
+server/.nyc_output
+server/server.pass.key
+server/server.key
+server/server.csr
+server/server.crt
+server/.create\ a\ .crt\ file.txt

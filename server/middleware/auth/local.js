@@ -7,22 +7,24 @@ export default (req, res, next) => {
     // verifies secret and checks exp
     jwt.verify(token, process.env.JWT_SEC_KEY, (err, decoded) => {
       if (err) {
-        return res.status(403).json({
-          statusCode: 403,
-          error: true,
-          message: 'Failed to authenticate token.'
+        return res.status(401).json({
+          error: {
+            message: 'Failed to authenticate token.'
+          }
         });
       }
       req.decoded = decoded;
       next();
     });
+  } else if (req.method === 'GET' && req.url.split('?')[0].split('/')[1] === 'recipes' && req.url.split('/').length === 2) {
+    next();
   } else {
     // if there is no token
     // return an error
     return res.status(401).json({
-      statusCode: 401,
-      error: true,
-      message: 'No token provided.'
+      error: {
+        message: 'No token provided.'
+      }
     });
   }
 };

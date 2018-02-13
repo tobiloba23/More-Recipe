@@ -1,59 +1,60 @@
 import bcrypt from 'bcrypt-nodejs';
 import jwt from 'jsonwebtoken';
 import validator from 'validatorjs';
+import dotenv from 'dotenv';
 import models from '../../../models/';
+
+dotenv.config();
 
 const { User } = models;
 let token;
+const dberror = process.env.DB_ERROR;
 
 export default {
   list(req, res) {
-    return User
+    User
       .findAll({
-        attributes: ['userId', 'userName'],
+        attributes: ['userName', 'imageUrl'],
       })
-      .then((user) => {
-        if (!user) {
-          return res.status(404).json({
-            statusCode: 404,
-            error: true,
-            message: 'User Not Found',
+      .then((users) => {
+        if (!users) {
+          res.status(404).json({
+            error: {
+              message: 'No Users Found',
+            }
+          });
+        } else {
+          res.status(200).json({
+            data: users
           });
         }
-        return res.status(200).json({
-          statusCode: 200,
-          message: 'All users',
-          data: user
-        });
       })
-      .catch(error => res.status(400).json({
-        statusCode: 400,
-        error: true,
-        message: error
+      .catch(serverError => res.status(500).json({
+        error: {
+          message: `${dberror} find the user on the datadase`,
+          serverError
+        }
       }));
   },
 
   listOne(req, res) {
-    return User
-      .findById(req.params.userId)
-      .then((user) => {
-        if (user.userId !== req.decoded.id) {
-          return res.status(401).json({
-            statusCode: 401,
-            error: true,
-            message: 'You do not have access to view other users detailed information.',
-          });
+    User
+      .findById(
+        req.decoded.id,
+        {
+          attributes: ['userName', 'email', 'firstName', 'lastName', 'imageUrl'],
         }
+      )
+      .then((user) => {
         res.status(200).json({
-          statusCode: 200,
-          message: 'User',
           data: user
         });
       })
-      .catch(error => res.status(400).json({
-        statusCode: 400,
-        error: true,
-        message: error
+      .catch(serverError => res.status(500).json({
+        error: {
+          message: `${dberror} find the user on the datadase`,
+          serverError
+        }
       }));
   },
 
@@ -71,78 +72,81 @@ export default {
 
     const isValid = new validator(req.body, rules);
     if (isValid.fails()) {
-      return res.status(400).json({
-        statusCode: 400,
-        error: true,
-        message: isValid.errors.all()
-      });
-    }
-
-    let response;
-    await User
-      .find({
-        where: {
-          userName: req.body.userName
-        }
-      })
-      .then((user) => {
-        if (user) {
-          response = {
-            statusCode: 409,
-            error: true,
-            message: user.userName.concat(' has already been taken'),
-          };
+      res.status(400).json({
+        error: {
+          message: isValid.errors.all()
         }
       });
-    if (response) return res.status(response.statusCode).json(response);
-
-    await User
-      .find({
-        where: {
-          email: req.body.email
-        }
-      })
-      .then((user) => {
-        if (user) {
-          response = {
-            statusCode: 409,
-            error: true,
-            message: 'An account has already been created for '.concat(user.email),
-          };
-        }
-      });
-    if (response) return res.status(response.statusCode).json(response);
-
-    return User
-      .create({
-        userName: req.body.userName,
-        email: req.body.email,
-        password: bcrypt.hashSync(req.body.password.trim(), bcrypt.genSaltSync(8)),
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-      })
-      .then((user) => {
-        // create a token with only our given payload
-        token = jwt.sign(
-          { id: user.userId },
-          process.env.JWT_SEC_KEY,
-          {
-            expiresIn: 1440 // expires in 24 hours
+    } else {
+      let response;
+      await User
+        .find({
+          where: {
+            userName: req.body.userName
           }
-        );
-
-        res.status(201).json({
-          statusCode: 201,
-          message: 'User '.concat(user.userName, '\' account has successfully been created.'),
-          data: user,
-          token
+        })
+        .then((user) => {
+          if (user) {
+            response = {
+              error: {
+                message: `${user.userName} has already been taken`,
+              }
+            };
+          }
         });
-      })
-      .catch(error => res.status(400).json({
-        statusCode: 400,
-        error: true,
-        message: error
-      }));
+      await User
+        .find({
+          where: {
+            email: req.body.email
+          }
+        })
+        .then((user) => {
+          if (user) {
+            response = {
+              error: {
+                message: `An account has already been created for ${user.email}`,
+              }
+            };
+          }
+        });
+      if (response) {
+        res.status(409).json(response);
+      } else {
+        User
+          .create({
+            userName: req.body.userName,
+            email: req.body.email,
+            password: bcrypt.hashSync(req.body.password.trim(), bcrypt.genSaltSync(8)),
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+          })
+          .then((user) => {
+            const day = 60 * 60 * 24; // expires in 24 hours
+
+            // create a token with only our given payload
+            token = jwt.sign(
+              { id: user.userId },
+              process.env.JWT_SEC_KEY,
+              {
+                expiresIn: day
+              }
+            );
+
+            res.status(201).json({
+              message: `User ${user.userName}'s has successfully been created.`,
+              userName: user.userName,
+              token,
+              expiresIn: day
+            });
+          })
+          .catch(serverError => res.status(500).json({
+            error: {
+              message: `${dberror} create the user on the datadase`,
+              serverError
+            }
+          }));
+      }
+    }
   },
 
   signin(req, res) {
@@ -153,88 +157,162 @@ export default {
 
     const isValid = new validator(req.body, rules);
     if (isValid.fails()) {
-      return res.json({ error: isValid.errors.all() });
-    }
+      res.status(400).json({
+        error: {
+          message: isValid.errors.all()
+        }
+      });
+    } else {
+      User
+        .find({
+          where: {
+            userName: req.body.userName
+          }
+        })
+        .then((user) => {
+          if (!user) {
+            res.status(404).json({
+              error: {
+                message: 'User Not Found',
+              }
+            });
+          } else if (!bcrypt.compareSync(req.body.password.trim(), user.password)) {
+            res.status(404).json({
+              error: {
+                message: 'The username and password do not match our records.'
+              }
+            });
+          } else {
+            const day = 60 * 60 * 24; // expires in 24 hours
 
-    return User
+            // create a token with only our given payload
+            token = jwt.sign(
+              { id: user.userId },
+              process.env.JWT_SEC_KEY,
+              {
+                expiresIn: day
+              }
+            );
+
+            res.status(200).json({
+              success: {
+                message: 'User authenticated',
+              },
+              userName: user.userName,
+              imageUrl: user.imageUrl,
+              token,
+              expiresIn: day
+            });
+          }
+        })
+        .catch(serverError => res.status(500).json({
+          error: {
+            message: `${dberror} find the user on the datadase`,
+            serverError
+          }
+        }));
+    }
+  },
+
+  update(req, res) {
+    User
       .find({
         where: {
           userName: req.body.userName
         }
       })
-      .then((user) => {
-        if (!user) {
-          return res.status(404).json({
-            statusCode: 404,
-            error: true,
-            message: 'User Not Found',
+      .then((userWithSameUserName) => {
+        if (userWithSameUserName) {
+          res.status(409).json({
+            error: {
+              message: `${userWithSameUserName.userName} has already been taken`,
+            }
           });
+        } else {
+          User
+            .findById(req.decoded.id)
+            .then((user) => {
+              if (!user) {
+                res.status(404).json({
+                  error: {
+                    message: 'User Not Found',
+                  }
+                });
+              } else {
+                const updateData = {
+                  userName: req.body.userName || user.userName,
+                  firstName: req.body.firstName || user.firstName,
+                  lastName: req.body.lastName || user.lastName,
+                  imageUrl: req.body.imageUrl || user.imageUrl
+                };
+                if (req.body.password) updateData.password = req.body.password;
+                user
+                  .update(updateData, { fields: Object.keys(updateData) })
+                  .then(() => {
+                    delete updateData.password;
+                    updateData.email = user.email;
+                    res.status(202).json({
+                      message: `${user.email}'s account has successfully been updated.`,
+                      data: updateData
+                    });
+                  })
+                  .catch(serverError => res.status(500).json({
+                    error: {
+                      message: `${dberror} update the user details on the datadase`,
+                      serverError
+                    }
+                  }));
+              }
+            })
+            .catch(serverError => res.status(500).json({
+              error: {
+                message: `${dberror} find the user on the datadase`,
+                serverError
+              }
+            }));
         }
-        // password check
-        if (!bcrypt.compareSync(req.body.password.trim(), user.password)) {
-          return res.status(404).json({
-            statusCode: 404,
-            error: true,
-            message: 'The username and password do not match our records.'
-          });
-        }
-        // create a token with only our given payload
-        token = jwt.sign(
-          { id: user.userId },
-          process.env.JWT_SEC_KEY,
-          {
-            expiresIn: 1440 // expires in 24 hours
-          }
-        );
-
-        // return the information including token as JSON
-
-        return res.json({
-          statusCode: 200,
-          success: true,
-          message: 'User authenticated',
-          token
-        }).status(200);
-      })
-      .catch(error => res.status(400).json({
-        statusCode: 400,
-        error: true,
-        message: error
-      }));
+      });
   },
 
-  update(req, res) {
-    return User
-      .findById(req.params.userId)
+  delete(req, res) {
+    User
+      .find({
+        where: {
+          userId: req.decoded.id,
+        }
+      })
       .then((user) => {
         if (!user) {
-          return res.status(404).json({
-            statusCode: 404,
-            error: true,
-            message: 'User Not Found',
+          res.status(404).json({
+            error: {
+              message: 'User Not Found',
+            }
           });
+        } else {
+          const deletedUser = {
+            userName: user.userName,
+            firstName: user.firstName,
+            lastName: user.lastName
+          };
+          user
+            .destroy()
+            .then(() => res.status(200).json({
+              message: 'The user listed below has just been deleted',
+              data: deletedUser
+            }))
+            .catch(serverError => res.status(500).json({
+              error: {
+                message: `${dberror} delete the user from the datadase`,
+                serverError
+              }
+            }));
         }
-        if (user.userId !== req.decoded.id) {
-          return res.status(403).json({
-            statusCode: 403,
-            error: true,
-            message: 'You cannot alter records that do not belong to you.',
-          });
-        }
-
-        return user
-          .update({ fields: Object.keys(req.body) })
-          .then(() => res.status(202).json({
-            statusCode: 202,
-            message: user.userName.concat('\'s account has successfully been updated.'),
-            data: user
-          }));
       })
-      .catch(error => res.status(400).json({
-        statusCode: 400,
-        error: true,
-        message: error
+      .catch(serverError => res.status(500).json({
+        error: {
+          message: `${dberror} find the user on the datadase`,
+          serverError
+        }
       }));
   }
 };
-

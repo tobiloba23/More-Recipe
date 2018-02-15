@@ -1,3 +1,4 @@
+/* eslint no-nested-ternary: "off" */
 import update from 'react-addons-update';
 
 import * as actionTypes from '../actions/actionTypes';
@@ -8,7 +9,7 @@ const initialState = {
   loadingLatest: false,
   loadingPopular: false,
   error: false,
-  isAuthenticated: false
+  isAuthenticated: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -21,10 +22,10 @@ const reducer = (state = initialState, action) => {
           [action.recipeName]: {
             ...state.latestRecipes[action.recipeName],
             recipeReviews: {
-              [action.numOfReviews]: action.review
-            }
-          }
-        }
+              [action.numOfReviews]: action.review,
+            },
+          },
+        },
       };
     case actionTypes.REMOVE_REVIEW:
       return {
@@ -34,81 +35,101 @@ const reducer = (state = initialState, action) => {
           [action.recipeName]: {
             ...state.latestRecipes[action.recipeName],
             recipeReviews: {
-              [action.numOfReviews]: null
-            }
-          }
-        }
+              [action.numOfReviews]: null,
+            },
+          },
+        },
       };
     case actionTypes.DISPLAY_VOTE_ON_ACTIVE_RECIPE:
-        return update(state, {
-          latestRecipes: {
-            [action.activeRecipe]: {
-              upvotes: {$set: 
+      return update(state, {
+        latestRecipes: {
+          [action.activeRecipe]: {
+            upvotes: {
+              $set:
                 action.votedUp && !state.latestRecipes[action.activeRecipe].currentUserHasUpVoted
-                ? state.latestRecipes[action.activeRecipe].upvotes + 1 : 
-                  (!action.votedUp && state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
-                  || (action.votedUp && state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
-                  ? state.latestRecipes[action.activeRecipe].upvotes - 1 : 
-                    state.latestRecipes[action.activeRecipe].upvotes
-              },
-              currentUserHasUpVoted: {$set:
+                  ? state.latestRecipes[action.activeRecipe].upvotes + 1
+                  : (
+                    (!action.votedUp &&
+                    state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
+                    || (action.votedUp
+                    && state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
+                      ? state.latestRecipes[action.activeRecipe].upvotes - 1 :
+                      state.latestRecipes[action.activeRecipe].upvotes
+                  ),
+            },
+            currentUserHasUpVoted: {
+              $set:
                 action.votedUp && !state.latestRecipes[action.activeRecipe].currentUserHasUpVoted
-                ? true : 
-                  (!action.votedUp && state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
-                  || (action.votedUp && state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
-                  ? false : 
-                    state.latestRecipes[action.activeRecipe].currentUserHasUpVoted
-              },
-              downvotes: {$set:
+                  ? true
+                  : (
+                    (!action.votedUp
+                    && state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
+                    || (action.votedUp
+                    && state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
+                      ? false
+                      : state.latestRecipes[action.activeRecipe].currentUserHasUpVoted
+                  ),
+            },
+            downvotes: {
+              $set:
                 !action.votedUp && !state.latestRecipes[action.activeRecipe].currentUserHasDownVoted
-                ? state.latestRecipes[action.activeRecipe].downvotes + 1 : 
-                  (action.votedUp && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
-                  || (!action.votedUp && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
-                  ? state.latestRecipes[action.activeRecipe].downvotes - 1 : 
-                    state.latestRecipes[action.activeRecipe].downvotes
-              },
-              currentUserHasDownVoted: {$set:
+                  ? state.latestRecipes[action.activeRecipe].downvotes + 1
+                  : (
+                    (action.votedUp
+                    && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
+                    || (!action.votedUp
+                    && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
+                      ? state.latestRecipes[action.activeRecipe].downvotes - 1
+                      : state.latestRecipes[action.activeRecipe].downvotes
+                  ),
+            },
+            currentUserHasDownVoted: {
+              $set:
                 !action.votedUp && !state.latestRecipes[action.activeRecipe].currentUserHasDownVoted
-                ? true : 
-                  (action.votedUp && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
-                  || (!action.votedUp && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
-                  ? false : 
-                    state.latestRecipes[action.activeRecipe].currentUserHasDownVoted
-              },
-            }
-          }
-        });
+                  ? true
+                  : (
+                    (action.votedUp
+                    && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
+                    || (!action.votedUp
+                    && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
+                      ? false :
+                      state.latestRecipes[action.activeRecipe].currentUserHasDownVoted
+                  ),
+            },
+          },
+        },
+      });
     case actionTypes.REGISTER_VOTE_ON_SERVER_SUCCESS:
       return {
-        ...state
+        ...state,
       };
     case actionTypes.REGISTER_VOTE_ON_SERVER_FAILED:
       return {
         ...state,
-        error: true
+        error: true,
       };
     case actionTypes.FETCH_LATEST_RECIPES_START:
       return {
         ...state,
-        loadingLatest: true
+        loadingLatest: true,
       };
     case actionTypes.FETCH_LATEST_RECIPES_SUCCESS:
       return {
         ...state,
         latestRecipes: action.latestRecipes,
         loadingLatest: false,
-        isAuthenticated: action.isAuthenticated
+        isAuthenticated: action.isAuthenticated,
       };
     case actionTypes.FETCH_LATEST_RECIPES_FAILED:
       return {
         ...state,
         loadingLatest: false,
-        error: true
+        error: true,
       };
     case actionTypes.FETCH_POPULAR_RECIPES_START:
       return {
         ...state,
-        loadingPopular: true
+        loadingPopular: true,
       };
     case actionTypes.FETCH_POPULAR_RECIPES_SUCCESS:
       return {
@@ -126,7 +147,7 @@ const reducer = (state = initialState, action) => {
               title: action.popularRecipes[0].title,
               descriptionSumm: action.popularRecipes[0].description,
               image: action.popularRecipes[0].imageUrl,
-              recipeReviews: action.popularRecipes[0].recipeReviews
+              recipeReviews: action.popularRecipes[0].recipeReviews,
             },
             {
               id: 1,
@@ -137,7 +158,7 @@ const reducer = (state = initialState, action) => {
               title: action.popularRecipes[1].title,
               descriptionSumm: action.popularRecipes[1].description,
               image: action.popularRecipes[1].imageUrl,
-              recipeReviews: action.popularRecipes[1].recipeReviews
+              recipeReviews: action.popularRecipes[1].recipeReviews,
             },
             {
               id: 2,
@@ -148,73 +169,103 @@ const reducer = (state = initialState, action) => {
               title: action.popularRecipes[2].title,
               descriptionSumm: action.popularRecipes[2].description,
               image: action.popularRecipes[2].imageUrl,
-              recipeReviews: action.popularRecipes[2].recipeReviews
-            }
-          ]
+              recipeReviews: action.popularRecipes[2].recipeReviews,
+            },
+          ],
         },
-        loadingPopular: false
+        loadingPopular: false,
       };
     case actionTypes.FETCH_POPULAR_RECIPES_FAILED:
       return {
         ...state,
         loadingPopular: false,
-        error: true
+        error: true,
       };
     case actionTypes.NEXT_OUTER_CAROUSEL:
       return {
         ...state,
-        carouselRecipes: {
-          ...state.carouselRecipes,
-          activeRecipe:
-            (state.carouselRecipes.activeRecipe + 1 > state.carouselRecipes.maxLength - 1) ? 
-            0 : state.carouselRecipes.activeRecipe + 1
-        }
-      }
+        carouselRecipes: state.carouselRecipes
+          ? {
+            ...state.carouselRecipes,
+            activeRecipe:
+              (state.carouselRecipes.activeRecipe + 1 > state.carouselRecipes.maxLength - 1) ?
+                0 : state.carouselRecipes.activeRecipe + 1,
+          }
+          : null,
+      };
     case actionTypes.PREV_OUTER_CAROUSEL:
       return {
         ...state,
-        carouselRecipes: {
-          ...state.carouselRecipes,
-          activeRecipe:
-            (state.carouselRecipes.activeRecipe - 1 < 0) ? 
-            state.carouselRecipes.maxLength - 1 : state.carouselRecipes.activeRecipe - 1
-        }
-      }
+        carouselRecipes: state.carouselRecipes
+          ? {
+            ...state.carouselRecipes,
+            activeRecipe:
+              (state.carouselRecipes.activeRecipe - 1 < 0) ?
+                state.carouselRecipes.maxLength - 1 : state.carouselRecipes.activeRecipe - 1,
+          }
+          : null,
+      };
     case actionTypes.NEXT_INNER_CAROUSEL:
       return update(state, {
-        carouselRecipes: {
-          popularRecipes: {
-            [state.carouselRecipes.activeRecipe]: {
-              activeReview: {
-                $set: (state.carouselRecipes.popularRecipes[state.carouselRecipes.activeRecipe].activeReview > state.carouselRecipes.popularRecipes[state.carouselRecipes.activeRecipe].maxLength - 2)
-                  ? 0 : state.carouselRecipes.popularRecipes[state.carouselRecipes.activeRecipe].activeReview + 1}
-            }
+        carouselRecipes: state.carouselRecipes
+          ? {
+            popularRecipes: {
+              [state.carouselRecipes.activeRecipe]: {
+                activeReview: {
+                  $set: (
+                    state.carouselRecipes.popularRecipes[
+                      state.carouselRecipes.activeRecipe
+                    ].activeReview
+                    >
+                    state.carouselRecipes.popularRecipes[
+                      state.carouselRecipes.activeRecipe
+                    ].maxLength - 2)
+                    ? 0 :
+                    state.carouselRecipes.popularRecipes[
+                      state.carouselRecipes.activeRecipe
+                    ].activeReview + 1,
+                },
+              },
+            },
           }
-        }
+          : null,
       });
     case actionTypes.PREV_INNER_CAROUSEL:
       return update(state, {
-        carouselRecipes: {
-          popularRecipes: {
-            [state.carouselRecipes.activeRecipe]: {
-              activeReview: {
-                $set: (state.carouselRecipes.popularRecipes[state.carouselRecipes.activeRecipe].activeReview < 0)
-                  ? state.carouselRecipes.popularRecipes[state.carouselRecipes.activeRecipe].maxLength - 1 
-                  : state.carouselRecipes.popularRecipes[state.carouselRecipes.activeRecipe].activeReview - 1}
-            }
+        carouselRecipes: state.carouselRecipes
+          ? {
+            popularRecipes: {
+              [state.carouselRecipes.activeRecipe]: {
+                activeReview: {
+                  $set: (
+                    state.carouselRecipes.popularRecipes[
+                      state.carouselRecipes.activeRecipe
+                    ].activeReview < 0)
+                    ?
+                    state.carouselRecipes.popularRecipes[
+                      state.carouselRecipes.activeRecipe
+                    ].maxLength - 1
+                    :
+                    state.carouselRecipes.popularRecipes[
+                      state.carouselRecipes.activeRecipe
+                    ].activeReview - 1,
+                },
+              },
+            },
           }
-        }
+          : null,
       });
     case actionTypes.GOTO_CAROUSEL_INDEX:
       return {
         ...state,
-        carouselRecipes: {
-          ...state.carouselRecipes,
-          popularRecipes: {
-            
+        carouselRecipes: state.carouselRecipes
+          ? {
+            ...state.carouselRecipes,
+            popularRecipes: {
+            },
           }
-        }
-      }
+          : null,
+      };
     default:
       return state;
   }

@@ -1,5 +1,6 @@
 export {
   auth,
+  authInit,
   logout,
   logoutSucceed,
   setAuthRedirectPath,
@@ -8,7 +9,7 @@ export {
   authFail,
   authCheckState,
   checkAuthTimeout,
-  toggleRegisterSignin
+  toggleRegisterSignin,
 } from './auth.js';
 
 export {
@@ -31,5 +32,6 @@ export {
   prevOuterCarousel,
   nextInnerCarousel,
   prevInnerCarousel,
-  goToCarouselIndex
+  goToCarouselIndex,
+  unmountCarousel,
 } from './recipeLanding.js';

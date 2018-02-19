@@ -24,7 +24,7 @@ class Auth extends Component {
       controls: {
         email: {
           elementType: 'input',
-          symbol: 'fa fa-envelope',
+          symbol: 'fas fa-envelope',
           elementConfig: {
             type: 'email',
             placeholder: 'Mail Address',
@@ -39,7 +39,7 @@ class Auth extends Component {
         },
         password: {
           elementType: 'input',
-          symbol: 'fa fa-lock',
+          symbol: 'fas fa-lock',
           elementConfig: {
             type: 'password',
             placeholder: 'Password',
@@ -54,7 +54,7 @@ class Auth extends Component {
         },
         passwordConfirmation: {
           elementType: 'input',
-          symbol: 'fa fa-key',
+          symbol: 'fas fa-key',
           elementConfig: {
             type: 'password',
             placeholder: 'Confirm Password',
@@ -69,7 +69,7 @@ class Auth extends Component {
         },
         userName: {
           elementType: 'input',
-          symbol: 'fa fa-user',
+          symbol: 'fas fa-user',
           elementConfig: {
             type: 'text',
             placeholder: 'User Name',
@@ -84,7 +84,7 @@ class Auth extends Component {
         },
         firstName: {
           elementType: 'input',
-          symbol: 'fa fa-user-circle',
+          symbol: 'fas fa-user-circle',
           elementConfig: {
             type: 'text',
             placeholder: 'First Name',
@@ -99,7 +99,7 @@ class Auth extends Component {
         },
         lastName: {
           elementType: 'input',
-          symbol: 'fa fa-user-circle',
+          symbol: 'fas fa-user-circle',
           elementConfig: {
             type: 'text',
             placeholder: 'Last Name',
@@ -114,7 +114,7 @@ class Auth extends Component {
         },
         phoneNumber: {
           elementType: 'input',
-          symbol: 'fa fa-phone',
+          symbol: 'fas fa-phone',
           elementConfig: {
             type: 'text',
             placeholder: 'Phone Number',

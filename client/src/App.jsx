@@ -17,7 +17,6 @@ const Routes = props => (
     <Route path="/register" exact>
       <Auth setPage={props.setPage} register />
     </Route>
-    <Redirect to="/" />
   </Switch>
 );
 

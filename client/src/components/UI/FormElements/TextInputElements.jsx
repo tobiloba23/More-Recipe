@@ -28,8 +28,8 @@ const textInputElements = (props) => {
     return (
       <Aux key={formElement.id}>
         {errorMessage}
-        <div className="md-form">
-          <i className={`${formElement.config.symbol} prefix grey-text`} />
+        <div className="md-form d-flex align-items-center">
+          <i className={`${formElement.config.symbol} prefix grey-text my-auto`} />
           <input
             id={formElement.id}
             type={formElement.config.elementConfig.type}

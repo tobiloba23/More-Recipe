@@ -43,7 +43,7 @@ const signin = (props) => {
             {errorMessage}
             <button type="submit" className="btn btn-outline-white buttonsColor">
               Sign in
-              <i className="fa fa-sign-in ml-2" />
+              <i className="fas fa-sign-in-alt ml-2" />
             </button>
           </Col>
         </Row>

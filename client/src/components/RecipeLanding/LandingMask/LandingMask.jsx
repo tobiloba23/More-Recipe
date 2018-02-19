@@ -15,7 +15,7 @@ const landingMask = () => (
           <path id="curve" style={{ visibility: 'hidden' }} d="M73.2,148.6c4-6.1,65.5-96.8,178.6-95.6c111.3,1.2,170.8,90.3,175.1,97" />
           <text>
             <textPath alignmentBaseline="top" xlinkHref="#curve" className="maxFontXXS2" style={{ fontSize: '3.8rem', fontFamily: 'Cookie, cursive' }}>
-              { 'More than just Recipes!...' }
+              {'More than just Recipes!...'}
             </textPath>
           </text>
         </svg>
@@ -37,16 +37,33 @@ const landingMask = () => (
         </Container>
       </Row>
       <a className="btn btn-outline-white buttonsColor">Catalogues
-        <i className="fa fa-book ml-1" />
+        <i className="fas fa-book ml-1" />
       </a>
       <Row>
         {/* <!-- Social Icon  --> */}
         <Col md="4" className="icon-bar mx-auto">
-          <MaskLink faIconName="fa-facebook" linkto="facebook.com" color="rgb(4, 157, 228)" />
-          <MaskLink faIconName="fa-twitter" linkto="twitter.com" color="rgb(4, 101, 228)" />
-          <MaskLink faIconName="fa-pinterest" linkto="pinterest.com" color="hsl(2, 94%, 50%)" />
-          <MaskLink faIconName="fa-instagram" linkto="instagram.com" color="#8D1F73" />
-          <MaskLink faIconName="fa-envelope" mailto="contact@more-recipes.com" color="#ffffff" />
+          {/*
+          <MaskLink faIconName="fab fa-facebook" linkto="facebook.com" color="rgb(4, 157, 228)" />
+          <MaskLink faIconName="fab fa-twitter" linkto="twitter.com" color="rgb(4, 101, 228)" />
+          <MaskLink faIconName="fab fa-pinterest" linkto="pinterest.com" color="hsl(2, 94%, 50%)" />
+          <MaskLink faIconName="fab fa-instagram" linkto="instagram.com" color="#8D1F73" />
+      <MaskLink faIconName="fas fa-envelope" mailto="contact@more-recipes.com" color="#ffffff" />
+          */}
+          <a href="https://facebook.com">
+            <i className="fab fa-facebook p-2" style={{ fontSize: '2em', color: 'rgb(4, 157, 228)' }} />
+          </a>
+          <a href="https://twitter.com">
+            <i className="fab fa-twitter p-2" style={{ fontSize: '2em', color: 'rgb(4, 101, 228)' }} />
+          </a>
+          <a href="https://pinterest.com">
+            <i className="fab fa-pinterest p-2" style={{ fontSize: '2em', color: 'hsl(2, 94%, 50%)' }} />
+          </a>
+          <a href="https://instagram.com">
+            <i className="fab fa-instagram p-2" style={{ fontSize: '2em', color: '#8D1F73' }} />
+          </a>
+          <a href="mailto:contact@more-recipes.com">
+            <i className="fas fa-envelope p-2" style={{ fontSize: '2em', color: '#ffffff' }} />
+          </a>
         </Col>
         <br />
         <br />

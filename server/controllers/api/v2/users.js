@@ -72,7 +72,7 @@ export default {
 
     const isValid = new validator(req.body, rules);
     if (isValid.fails()) {
-      res.status(400).json({
+      res.status(422).json({
         error: {
           message: isValid.errors.all()
         }
@@ -157,7 +157,7 @@ export default {
 
     const isValid = new validator(req.body, rules);
     if (isValid.fails()) {
-      res.status(400).json({
+      res.status(422).json({
         error: {
           message: isValid.errors.all()
         }

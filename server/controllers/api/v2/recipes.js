@@ -64,7 +64,7 @@ export default {
                 })
                 .catch(serverError => res.status(500).json({
                   error: {
-                    message: `${dberror} the image url for one of the recipes`,
+                    message: `${dberror} retrieve the image url for one of the recipes`,
                     serverError
                   }
                 }));
@@ -133,9 +133,21 @@ export default {
     const isValid = new validator(req.body, rules);
 
     if (isValid.fails()) {
-      res.status(400).json({
+      res.status(422).json({
         error: {
           message: isValid.errors.all()
+        }
+      });
+    } else if (Recipe.find({
+      where: {
+        userId: req.decoded.id,
+        title: req.body.title
+      }
+    })
+    ) {
+      res.status(422).json({
+        error: {
+          message: 'User has already created a recipe with the same title'
         }
       });
     } else {
@@ -198,7 +210,7 @@ export default {
     const isValid = new validator(req.body, rules);
 
     if (isValid.fails()) {
-      res.status(400).json({
+      res.status(422).json({
         error: {
           message: isValid.errors.all()
         }

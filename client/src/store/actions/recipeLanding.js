@@ -16,16 +16,16 @@ export const fetchLatestRecipesFailed = error => ({
   error,
 });
 
-export const fetchLatestRecipes = () => (dispatch) => {
+export const fetchLatestRecipes = (offset = 0, recipes = null) => (dispatch) => {
   dispatch(fetchLatestRecipesStart());
   const options = localStorage.getItem('token') ? {
     headers: {
       'x-access-token': localStorage.getItem('token'),
     },
   } : {};
-  axios.get('/recipes?sort=createdAt&order=desc', options)
+  axios.get(`/recipes?sort=createdAt&order=desc&offset=${offset}`, options)
     .then((response) => {
-      const latestRecipes = [];
+      const latestRecipes = recipes || [];
       console.log(response);
       Object.keys(response.data.data).forEach((key) => {
         latestRecipes.push({
@@ -40,6 +40,49 @@ export const fetchLatestRecipes = () => (dispatch) => {
       console.log(error);
       dispatch(fetchLatestRecipesFailed(error.response ? error.response.data.error : error));
     });
+};
+
+export const fetctRecipDetailssStart = () => ({
+  type: actionTypes.FETCH_RECIPE_DETAILS_START,
+});
+
+export const fetchRecipeDetailsSuccess = (recipe, isAuthenticated) => ({
+  type: actionTypes.FETCH_RECIPE_DETAILS_SUCCESS,
+  recipe,
+  isAuthenticated,
+});
+
+export const fetchRecipeDetailsFailed = error => ({
+  type: actionTypes.FETCH_RECIPE_DETAILS_FAILED,
+  error,
+});
+
+export const closeModal = () => ({
+  type: actionTypes.CLOSE_DETAILS_MODAL,
+});
+
+export const fetchRecipeDetails = (prevModalRecipe, recipeId) => (dispatch) => {
+  dispatch(fetctRecipDetailssStart());
+  const isAuthenticated = !!localStorage.getItem('token');
+  if (!(prevModalRecipe && prevModalRecipe.recipeId === recipeId)) {
+    const options = localStorage.getItem('token') ? {
+      headers: {
+        'x-access-token': localStorage.getItem('token'),
+      },
+    } : {};
+    axios.get(`/recipes/${recipeId}/reviews`, options)
+      .then((response) => {
+        console.log(response);
+        const recipe = response.data.data;
+        dispatch(fetchRecipeDetailsSuccess(recipe, isAuthenticated));
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch(fetchRecipeDetailsFailed(error.response ? error.response.data.error : error));
+      });
+  } else {
+    dispatch(fetchRecipeDetailsSuccess(prevModalRecipe, isAuthenticated));
+  }
 };
 
 export const nextOuterCarousel = () => ({

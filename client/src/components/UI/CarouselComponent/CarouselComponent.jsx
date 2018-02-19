@@ -1,4 +1,3 @@
-/* eslint no-nested-ternary: "off" */
 import React from 'react';
 import { Carousel, CarouselItem, CarouselControl, CarouselCaption, CarouselInner, Col } from 'mdbreact';
 import PropTypes from 'prop-types';
@@ -11,7 +10,7 @@ const carouselComponent = (props) => {
         <div className="mask" />
       </div>
       <CarouselCaption className="centerElementYInRelative" >
-        <h4 className="h4-responsive">
+        <h4 className={`h4-responsive ${props.arrayDepth === 1 ? 'single' : 'multi'}`}>
           {
             props.arrayDepth === 1
             ? props.title
@@ -22,7 +21,7 @@ const carouselComponent = (props) => {
               : null
           }
         </h4>
-        <p>
+        <p className={`h4-responsive ${props.arrayDepth === 1 ? 'multi' : 'single'}`}>
           {
             props.arrayDepth === 1
             ? props.descriptionSumm

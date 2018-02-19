@@ -36,25 +36,20 @@ const checkValidity = (value, rules) => {
   return isValid;
 };
 
-const recipeCarouselPropType = {
-  altText: PropTypes.string,
-  title: PropTypes.string,
-  descriptionSumm: PropTypes.string,
-  image: PropTypes.string,
-};
-
-const recipeCardPropType = {
-  title: PropTypes.string,
-  description: PropTypes.string,
-  ownerImage: PropTypes.string,
-  owner: PropTypes.string,
-  upvotes: PropTypes.number,
-  downvotes: PropTypes.number,
-  instructions: PropTypes.string,
+const timeSince = (createdAt) => {
+  const time = createdAt ? (Date.now() - new Date(createdAt.replace(' ', 'T'))) / 86400000 : 0;
+  return time < (1 / 24) && time >= 0
+    ? `${Math.floor(time * 24 * 60)} mins ago`
+    : time >= (1 / 24) && time < (2 / 24)
+      ? `${Math.floor(time * 24)} hour ago`
+      : time >= (2 / 24) && time < 1
+        ? `${Math.floor(time * 24)} hours ago`
+        : time >= 1 && time < 2
+          ? `${Math.floor(time)} day ago`
+          : `${Math.floor(time)} days ago`;
 };
 
 export {
   checkValidity,
-  recipeCarouselPropType,
-  recipeCardPropType,
+  timeSince,
 };

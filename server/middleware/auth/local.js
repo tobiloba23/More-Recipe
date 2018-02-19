@@ -16,7 +16,7 @@ export default (req, res, next) => {
       req.decoded = decoded;
       next();
     });
-  } else if (req.method === 'GET' && req.url.split('?')[0].split('/')[1] === 'recipes' && req.url.split('/').length === 2) {
+  } else if (req.method === 'GET' && req.url.includes('recipes')) {
     next();
   } else {
     // if there is no token

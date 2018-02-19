@@ -15,7 +15,7 @@ const collapsibleNavbar = (props) => {
         style={{ minWidth: '165px', padding: '13px' }}
       >
         {props.isAuthenticated ? 'Log-out' : 'Sign-in/Register'}
-        <i className={`fa fa-${props.isAuthenticated ? 'sign-out' : 'sign-in'} ml-2`} />
+        <i className={`fas fa-${props.isAuthenticated ? 'sign-out-alt' : 'sign-in-alt'} ml-2`} />
       </NavLink>
     </NavItem>
   );
@@ -24,7 +24,7 @@ const collapsibleNavbar = (props) => {
       <NavItem className="my-auto mx-auto navItemBorder" style={{ paddingTop: '8px' }}>
         <NavLink to="/Profile">
           <Media left className="waves-light my-2 justify-content-center mx-auto">
-            <img style={{ borderRadius: '20px', maxHeight: '40px', maxWidth: '40px' }} src={props.imageUrl} alt="User" />
+            <img className="rounded-circle" style={{ maxHeight: '40px' }} src={props.imageUrl} alt="User" />
           </Media>
         </NavLink>
       </NavItem>
@@ -52,7 +52,7 @@ const collapsibleNavbar = (props) => {
               </NavItem>
               <Dropdown isOpen={props.dropdownOpen} toggle={props.toggleDDclicked}>
                 {/* <DropdownToggle caret className={`z-depth-0`}>
-                  <i className="fa fa-user mr-1" aria-hidden="true"></i>
+                  <i className="fas fa-user mr-1" aria-hidden="true"></i>
                 </DropdownToggle> */}
                 <DropdownMenu>
                   <DropdownItem href="#">View personal info</DropdownItem>

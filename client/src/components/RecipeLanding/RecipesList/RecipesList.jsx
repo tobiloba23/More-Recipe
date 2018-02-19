@@ -14,6 +14,7 @@ const recipesList = props => (
         isAuthenticated={props.isAuthenticated}
         items={props.items}
         vote={props.vote}
+        showDetail={props.showDetail}
       />
       : <Spinner />
     }
@@ -22,6 +23,7 @@ const recipesList = props => (
 
 recipesList.propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
+  showDetail: PropTypes.func.isRequired,
   vote: PropTypes.func.isRequired,
   items: PropTypes.arrayOf(PropTypes.object),
 };

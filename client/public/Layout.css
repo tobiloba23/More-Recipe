@@ -205,16 +205,30 @@ p.card-text {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  line-height: 0.8rem;
+  line-height: 1rem;
   -webkit-line-clamp: 5;
   -webkit-box-orient: vertical;
 }
 
-h4.card-title {
+h4.card-title, .carousel-caption .single  {
+  font-size: 1.5rem;
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  line-height: 1.2rem;
+  line-height: 1.5rem;
   -webkit-line-clamp: 1;
   -webkit-box-orient: vertical;
+}
+
+.carousel-caption .multi {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-height: 1.5rem;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+}
+
+textarea.md-textarea {
+  overflow-y: scroll;
 }

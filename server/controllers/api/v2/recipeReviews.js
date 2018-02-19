@@ -17,7 +17,7 @@ const list = (req, res) => Recipe
       as: 'recipeReviews',
     }],
   })
-  .then((recipe) => {
+  .then(async (recipe) => {
     if (!recipe) {
       res.status(404).json({
         error: {
@@ -25,6 +25,34 @@ const list = (req, res) => Recipe
         }
       });
     } else {
+      if (req.decoded) {
+        await models.RecipeReview.find({
+          where: {
+            recipeId: recipe.dataValues.recipeId,
+            userId: req.decoded.id,
+            vote: {
+              $ne: null
+            }
+          }
+        })
+          .then((userHasOpinion) => {
+            if (userHasOpinion) {
+              recipe.dataValues.currentUserHasUpVoted =
+              userHasOpinion.vote ? userHasOpinion.vote : null;
+              recipe.dataValues.currentUserHasDownVoted =
+                userHasOpinion.vote === false ? !userHasOpinion.vote : null;
+            } else {
+              recipe.dataValues.currentUserHasUpVoted = null;
+              recipe.dataValues.currentUserHasDownVoted = null;
+            }
+          })
+          .catch(serverError => res.status(500).json({
+            error: {
+              message: `${dberror} check if current user has voted on one of the recipes`,
+              serverError
+            }
+          }));
+      }
       res.status(200).json({
         data: recipe
       });

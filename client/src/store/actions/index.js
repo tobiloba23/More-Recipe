@@ -1,5 +1,6 @@
 export {
   auth,
+  authInit,
   logout,
   logoutSucceed,
   setAuthRedirectPath,
@@ -8,21 +9,25 @@ export {
   authFail,
   authCheckState,
   checkAuthTimeout,
-  toggleRegisterSignin
+  toggleRegisterSignin,
 } from './auth.js';
 
 export {
-  addReview,
-  editReview,
+  updateRecipeReview,
   removeReview,
   vote,
   displayVoteOnActiveRecipe,
-  registerVoteOnServerSuccess,
-  registerVoteOnServerFailed,
+  registerReviewOnServerSuccess,
+  registerReviewOnServerFailed,
   fetchLatestRecipes,
   fetchLatestRecipesStart,
   fetchLatestRecipesSuccess,
   fetchLatestRecipesFailed,
+  fetchRecipeDetails,
+  fetchRecipeDetailsStart,
+  fetchRecipeDetailsSuccess,
+  fetchRecipeDetailsFailed,
+  closeModal,
   fetchPopularRecipes,
   fetchPopularRecipesStart,
   fetchPopularRecipesSuccess,
@@ -31,5 +36,6 @@ export {
   prevOuterCarousel,
   nextInnerCarousel,
   prevInnerCarousel,
-  goToCarouselIndex
+  goToCarouselIndex,
+  unmountCarousel,
 } from './recipeLanding.js';

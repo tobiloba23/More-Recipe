@@ -152,17 +152,25 @@ export const displayVoteOnActiveRecipe = (recipeIndex, votedUp) => ({
   votedUp,
 });
 
-export const registerVoteOnServerSuccess = () => ({
-  type: actionTypes.REGISTER_VOTE_ON_SERVER_SUCCESS,
+export const registerReviewOnServerSuccess = () => ({
+  type: actionTypes.REGISTER_REVIEW_ON_SERVER_SUCCESS,
 });
 
-export const registerVoteOnServerFailed = error => ({
-  type: actionTypes.REGISTER_VOTE_ON_SERVER_FAILED,
+export const updateRecipeReview = (recipeIndex, recipeReview) => ({
+  type: actionTypes.UPDATE_RECIPE_REVIEW,
+  activeRecipe: recipeIndex,
+  recipeReview,
+});
+
+export const registerReviewOnServerFailed = error => ({
+  type: actionTypes.REGISTER_REVIEW_ON_SERVER_FAILED,
   error,
 });
 
-export const vote = (recipeId, recipeIndex, votedUp) => (dispatch) => {
-  dispatch(displayVoteOnActiveRecipe(recipeIndex, votedUp));
+export const vote = (recipeId, recipeIndex, votedUp, comment) => (dispatch) => {
+  if (votedUp === true || votedUp === false) {
+    dispatch(displayVoteOnActiveRecipe(recipeIndex, votedUp));
+  }
   const options = localStorage.getItem('token') ? {
     headers: {
       'x-access-token': localStorage.getItem('token'),
@@ -170,14 +178,16 @@ export const vote = (recipeId, recipeIndex, votedUp) => (dispatch) => {
   } : {};
   const review = {
     vote: votedUp,
+    comment,
   };
   axios.post(`/recipes/${recipeId}/reviews`, review, options)
     .then((response) => {
       console.log(response);
-      dispatch(registerVoteOnServerSuccess());
+      dispatch(registerReviewOnServerSuccess());
+      if (comment) dispatch(updateRecipeReview(recipeIndex, response.data.data));
     })
     .catch((error) => {
       console.log(error);
-      dispatch(registerVoteOnServerFailed(error.response ? error.response.data.error : error));
+      dispatch(registerReviewOnServerFailed(error.response ? error.response.data.error : error));
     });
 };

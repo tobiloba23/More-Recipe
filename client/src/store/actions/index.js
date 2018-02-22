@@ -13,13 +13,12 @@ export {
 } from './auth.js';
 
 export {
-  addReview,
-  editReview,
+  updateRecipeReview,
   removeReview,
   vote,
   displayVoteOnActiveRecipe,
-  registerVoteOnServerSuccess,
-  registerVoteOnServerFailed,
+  registerReviewOnServerSuccess,
+  registerReviewOnServerFailed,
   fetchLatestRecipes,
   fetchLatestRecipesStart,
   fetchLatestRecipesSuccess,

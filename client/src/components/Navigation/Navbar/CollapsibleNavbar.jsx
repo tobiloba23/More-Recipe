@@ -63,7 +63,7 @@ const collapsibleNavbar = (props) => {
               </Dropdown>
               <NavItem className="my-auto resizableElement">
                 {/* <!-- Search form --> */}
-                <FormInline action="/recipes">
+                <FormInline action="/recipes" method="get">
                   <input
                     className="form-control"
                     type="text"

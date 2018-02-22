@@ -22,7 +22,40 @@ import Aux from '../../../hoc/Aux/Aux';
 import { timeSince } from '../../../shared/utility';
 
 const recipeDetail = (props) => {
-  const created = timeSince(props.recipe.createdAt);
+  const reviews = props.recipe.recipeReviews.map((item, idx) => {
+    const created = timeSince(item.createdAt);
+    return (
+      <Aux>
+        <Media>
+          <Media left className="waves-light">
+            <img style={{ borderRadius: '20px', maxHeight: '40px', maxWidth: '40px' }} src={item.User.imageUrl} alt="Owner" />
+          </Media>
+          <Media body>
+            <small style={{ fontSize: '1rem', color: 'black' }}>{item.User.userName}</small>
+            <div className="d-flex justify-content-end">
+              <small className="text-muted mr-auto" style={{ fontSize: '0.8rem' }}>{created}</small>
+              <a
+                style={{ fontSize: '0.8rem' }}
+                className={`${
+                  (item.vote === true || item.vote === false)
+                  ? item.vote
+                    ? 'fas fa-thumbs-up'
+                    : 'fas fa-thumbs-down'
+                  : null
+                } text-muted mr-1 my-auto`}
+                aria-hidden="true"
+              />
+            </div>
+          </Media>
+        </Media>
+        <Aux>
+          <Media body>{item.comment}</Media>
+        </Aux>
+        <br />
+      </Aux>
+    );
+  });
+
   return (
     <Aux>
       <Row className="d-flex justify-content-between">
@@ -57,25 +90,11 @@ const recipeDetail = (props) => {
           <li>Add Spices</li>
           <li>Wrap in leaves</li>
         </ol>
-        {/* <!--First review--> */}
-        <Media className="mb-1">
-          <Media left className="waves-light">
-            <img className="rounded-circle" style={{ maxHeight: '40px' }} src="https://mdbootstrap.com/img/Photos/Avatars/avatar-13.jpg" alt="No Photo" />
-          </Media>
-          <div className="d-flex w-100 justify-content-between">
-
-            <Media heading className="layerText">John Doe</Media>
-            <small className="text-muted">3 days ago</small>
-          </div>
-          <p className="layerText">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nisi cupiditate
-                          temporibus iure soluta. Quasi mollitia maxime nemo quam accusamus
-                          possimus, voluptatum expedita assumenda. Earum sit id ullam eum vel
-                          delectus!
-          </p>
-        </Media>
+        <Media heading className="layerText">Reviews</Media>
+        {reviews}
       </ModalBody>
       <ModalFooter className="row">
-        <Col md="12">
+        <div className="col-12">
           {/* <!--Comment--> */}
           <Media className="mb-1 col-12">
             <Media body>
@@ -89,7 +108,8 @@ const recipeDetail = (props) => {
                   >{props.recipe.views ? props.recipe.views.toLocaleString() : 0}
                   </a>
                   { props.isAuthenticated && props.recipe.owner
-                    !== localStorage.getItem('userName') ?
+                    !== localStorage.getItem('userName')
+                    ? (
                       <Aux>
                         <a
                           style={{ fontSize: '0.8rem' }}
@@ -110,18 +130,26 @@ const recipeDetail = (props) => {
                           {props.recipe.downvotes ? props.recipe.downvotes.toLocaleString() : 0}
                         </a>
                       </Aux>
-                        : null
+                    )
+                    : null
                     }
                 </div>
               </Media>
-              <div className="md-form">
-                <textarea type="text" id="comment" className="md-textarea" placeholder="Leave a review..." />
-              </div>
-              {/* <textarea className="span6" rows="6" placeholder="Leave a review..." /> */}
+              <FormInline>
+                <div className="md-form mb-0 resizableElement">
+                  <textarea
+                    type="text"
+                    className="md-textarea"
+                    placeholder="Leave a review..."
+                    value={props.comment}
+                    onChange={event => props.commentChanged(event)}
+                  />
+                </div>
+              </FormInline>
             </Media>
           </Media>
-        </Col>
-        <NavLink to="/register1" className="btn btn-success">Comment</NavLink>{' '}
+        </div>
+        <NavLink onClick={() => props.vote(null, props.recipe.recipeId, null)} className="btn btn-success">Comment</NavLink>{' '}
         <Button color="danger" onClick={props.toggle}>Close</Button>
       </ModalFooter>
     </Aux>
@@ -132,11 +160,14 @@ recipeDetail.propTypes = {
   recipe: PropTypes.objectOf(PropTypes.any),
   toggle: PropTypes.func.isRequired,
   vote: PropTypes.func.isRequired,
+  comment: PropTypes.string,
+  commentChanged: PropTypes.func.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
 };
 
 recipeDetail.defaultProps = {
   recipe: null,
+  comment: undefined,
 };
 
 export default recipeDetail;

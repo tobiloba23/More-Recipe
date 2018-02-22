@@ -30,9 +30,14 @@ class RecipeLanding extends Component {
     this.nextInnerCarousel = this.nextInnerCarousel.bind(this);
     this.prevInnerCarousel = this.prevInnerCarousel.bind(this);
     this.vote = this.vote.bind(this);
+    this.commentChangedHandler = this.commentChangedHandler.bind(this);
     this.seeMoreLatestRecipes = this.seeMoreLatestRecipes.bind(this);
     this.showRecipeDetailHandler = this.showRecipeDetailHandler.bind(this);
     this.modalCloseHandler = this.modalCloseHandler.bind(this);
+
+    this.state = {
+      comment: undefined,
+    };
   }
 
   componentDidMount() {
@@ -79,7 +84,7 @@ class RecipeLanding extends Component {
     if (carousel) this.props.onGoToIndex(item);
   }
 
-  vote(index = null, recipeId = null, upVote) {
+  vote(index = null, recipeId = null, upVote = null) {
     let idx = index;
     const id = recipeId || this.props.latestRecipes[index].recipeId;
     if (!index) {
@@ -87,7 +92,16 @@ class RecipeLanding extends Component {
         if (this.props.latestRecipes[key].recipeId === recipeId) idx = key;
       });
     }
-    this.props.onVoteRecipe(id, idx, upVote);
+    this.props.onVoteRecipe(id, idx, upVote, this.state.comment);
+    this.setState({
+      comment: '',
+    });
+  }
+
+  commentChangedHandler(event) {
+    this.setState({
+      comment: event.target.value,
+    });
   }
 
   render() {
@@ -109,6 +123,8 @@ class RecipeLanding extends Component {
           toggle={this.modalCloseHandler}
           isAuthenticated={this.props.isAuthenticated}
           vote={this.vote}
+          comment={this.state.comment}
+          commentChanged={this.commentChangedHandler}
         />
       )
       : null;
@@ -201,7 +217,8 @@ const mapDispatchToProps = dispatch => ({
     recipeId,
     recipeIndex,
     upVote,
-  ) => dispatch(actions.vote(recipeId, recipeIndex, upVote)),
+    comment,
+  ) => dispatch(actions.vote(recipeId, recipeIndex, upVote, comment)),
   onNext: () => dispatch(actions.nextOuterCarousel()),
   onPrev: () => dispatch(actions.prevOuterCarousel()),
   onNextInnerCarousel: () => dispatch(actions.nextInnerCarousel()),

@@ -104,7 +104,7 @@
   width: 100%!important;
 }
 
-.resizableElement input {
+.resizableElement input, .resizableElement textarea {
   width: 100%!important;
 }
 

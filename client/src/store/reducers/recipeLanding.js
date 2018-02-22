@@ -14,38 +14,82 @@ const initialState = {
   showRecipeDetail: false,
 };
 
+let updatedState = null;
+
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case actionTypes.ADD_REVIEW:
+    case actionTypes.UPDATE_RECIPE_REVIEW:
+      state.recipe.recipeReviews.push(action.recipeReview);
       return {
         ...state,
-        latestRecipes: {
-          ...state.latestRecipes,
-          [action.activeRecipe]: {
-            ...state.latestRecipes[action.activeRecipe],
-            recipeReviews: {
-              [action.numOfReviews]: action.review,
-            },
-          },
+        recipe: {
+          ...state.recipe,
+          recipeReviews: state.recipe.recipeReviews,
         },
-        recipe: state.latestRecipes[action.activeRecipe],
-      };
-    case actionTypes.REMOVE_REVIEW:
-      return {
-        ...state,
-        latestRecipes: {
-          ...state.latestRecipes,
-          [action.activeRecipe]: {
-            ...state.latestRecipes[action.activeRecipe],
-            recipeReviews: {
-              [action.numOfReviews]: null,
-            },
-          },
-        },
-        recipe: state.latestRecipes[action.activeRecipe],
       };
     case actionTypes.DISPLAY_VOTE_ON_ACTIVE_RECIPE:
-      return update(state, {
+      updatedState = state;
+      if (state.recipe
+        && state.recipe.recipeId === state.latestRecipes[action.activeRecipe].recipeId
+      ) {
+        updatedState = update(state, {
+          recipe: {
+            upvotes: {
+              $set:
+                action.votedUp && !state.latestRecipes[action.activeRecipe].currentUserHasUpVoted
+                  ? state.latestRecipes[action.activeRecipe].upvotes + 1
+                  : (
+                    (!action.votedUp &&
+                    state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
+                    || (action.votedUp
+                    && state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
+                      ? state.latestRecipes[action.activeRecipe].upvotes - 1 :
+                      state.latestRecipes[action.activeRecipe].upvotes
+                  ),
+            },
+            currentUserHasUpVoted: {
+              $set:
+                action.votedUp && !state.latestRecipes[action.activeRecipe].currentUserHasUpVoted
+                  ? true
+                  : (
+                    (!action.votedUp
+                    && state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
+                    || (action.votedUp
+                    && state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
+                      ? false
+                      : state.latestRecipes[action.activeRecipe].currentUserHasUpVoted
+                  ),
+            },
+            downvotes: {
+              $set:
+                !action.votedUp && !state.latestRecipes[action.activeRecipe].currentUserHasDownVoted
+                  ? state.latestRecipes[action.activeRecipe].downvotes + 1
+                  : (
+                    (action.votedUp
+                    && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
+                    || (!action.votedUp
+                    && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
+                      ? state.latestRecipes[action.activeRecipe].downvotes - 1
+                      : state.latestRecipes[action.activeRecipe].downvotes
+                  ),
+            },
+            currentUserHasDownVoted: {
+              $set:
+                !action.votedUp && !state.latestRecipes[action.activeRecipe].currentUserHasDownVoted
+                  ? true
+                  : (
+                    (action.votedUp
+                    && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
+                    || (!action.votedUp
+                    && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
+                      ? false :
+                      state.latestRecipes[action.activeRecipe].currentUserHasDownVoted
+                  ),
+            },
+          },
+        });
+      }
+      return update(updatedState, {
         latestRecipes: {
           [action.activeRecipe]: {
             upvotes: {
@@ -102,66 +146,12 @@ const reducer = (state = initialState, action) => {
             },
           },
         },
-        recipe: {
-          upvotes: {
-            $set:
-              action.votedUp && !state.latestRecipes[action.activeRecipe].currentUserHasUpVoted
-                ? state.latestRecipes[action.activeRecipe].upvotes + 1
-                : (
-                  (!action.votedUp &&
-                  state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
-                  || (action.votedUp
-                  && state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
-                    ? state.latestRecipes[action.activeRecipe].upvotes - 1 :
-                    state.latestRecipes[action.activeRecipe].upvotes
-                ),
-          },
-          currentUserHasUpVoted: {
-            $set:
-              action.votedUp && !state.latestRecipes[action.activeRecipe].currentUserHasUpVoted
-                ? true
-                : (
-                  (!action.votedUp
-                  && state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
-                  || (action.votedUp
-                  && state.latestRecipes[action.activeRecipe].currentUserHasUpVoted)
-                    ? false
-                    : state.latestRecipes[action.activeRecipe].currentUserHasUpVoted
-                ),
-          },
-          downvotes: {
-            $set:
-              !action.votedUp && !state.latestRecipes[action.activeRecipe].currentUserHasDownVoted
-                ? state.latestRecipes[action.activeRecipe].downvotes + 1
-                : (
-                  (action.votedUp
-                  && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
-                  || (!action.votedUp
-                  && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
-                    ? state.latestRecipes[action.activeRecipe].downvotes - 1
-                    : state.latestRecipes[action.activeRecipe].downvotes
-                ),
-          },
-          currentUserHasDownVoted: {
-            $set:
-              !action.votedUp && !state.latestRecipes[action.activeRecipe].currentUserHasDownVoted
-                ? true
-                : (
-                  (action.votedUp
-                  && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
-                  || (!action.votedUp
-                  && state.latestRecipes[action.activeRecipe].currentUserHasDownVoted)
-                    ? false :
-                    state.latestRecipes[action.activeRecipe].currentUserHasDownVoted
-                ),
-          },
-        },
       });
-    case actionTypes.REGISTER_VOTE_ON_SERVER_SUCCESS:
+    case actionTypes.REGISTER_REVIEW_ON_SERVER_SUCCESS:
       return {
         ...state,
       };
-    case actionTypes.REGISTER_VOTE_ON_SERVER_FAILED:
+    case actionTypes.REGISTER_REVIEW_ON_SERVER_FAILED:
       return {
         ...state,
         error: true,

@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle: "off" */
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -15,12 +16,10 @@ const composeEnhancers = process.env.NODE_ENV === 'development' ? window.__REDUX
 
 const rootReducer = combineReducers({
   auth: authReducer,
-  recipeLanding: recipeLandingReducer
+  recipeLanding: recipeLandingReducer,
 });
 
-const store = createStore(rootReducer, composeEnhancers(
-  applyMiddleware(thunk)
-));
+const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
 const app = (
   <Provider store={store} >

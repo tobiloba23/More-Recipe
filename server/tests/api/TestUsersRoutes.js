@@ -102,9 +102,9 @@ describe('/Users unit test', () => {
       .post('/api/v2/users/signup')
       .send()
       .expect('Content-type', /json/)
-      .expect(400)
+      .expect(422)
       .end((err, res) => {
-        res.status.should.equal(400);
+        res.status.should.equal(422);
         res.body.error.message.firstName.should.be.a('array');
         res.body.error.message.lastName.should.be.a('array');
         res.body.error.message.userName.should.be.a('array');
@@ -122,9 +122,9 @@ describe('/Users unit test', () => {
       .post('/api/v2/users/signup')
       .send(registerNotEmail)
       .expect('Content-type', /json/)
-      .expect(400)
+      .expect(422)
       .end((err, res) => {
-        res.status.should.equal(400);
+        res.status.should.equal(422);
         res.body.error.message.email.should.be.a('array');
         should.not.exist(res.body.token);
         done();
@@ -139,9 +139,9 @@ describe('/Users unit test', () => {
       .post('/api/v2/users/signup')
       .send(registerNotPassword)
       .expect('Content-type', /json/)
-      .expect(400)
+      .expect(422)
       .end((err, res) => {
-        res.status.should.equal(400);
+        res.status.should.equal(422);
         res.body.error.message.password.should.be.a('array');
         should.not.exist(res.body.token);
         done();

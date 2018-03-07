@@ -15,15 +15,46 @@ const list = (req, res) => Recipe
     include: [{
       model: RecipeReview,
       as: 'recipeReviews',
+      include: [{
+        model: models.User,
+        attributes: ['userName', 'imageUrl']
+      }]
     }],
   })
-  .then((recipe) => {
+  .then(async (recipe) => {
     if (!recipe) {
       res.status(404).json({
         error: {
           message: 'Recipe Not Found',
         }
       });
+    } else if (req.decoded) {
+      await models.RecipeReview.find({
+        where: {
+          recipeId: recipe.dataValues.recipeId,
+          userId: req.decoded.id,
+          vote: {
+            $ne: null
+          }
+        }
+      })
+        .then((userHasOpinion) => {
+          if (userHasOpinion) {
+            recipe.dataValues.currentUserHasUpVoted =
+              userHasOpinion.vote ? userHasOpinion.vote : null;
+            recipe.dataValues.currentUserHasDownVoted =
+                userHasOpinion.vote === false ? !userHasOpinion.vote : null;
+          } else {
+            recipe.dataValues.currentUserHasUpVoted = null;
+            recipe.dataValues.currentUserHasDownVoted = null;
+          }
+        })
+        .catch(serverError => res.status(500).json({
+          error: {
+            message: `${dberror} check if current user has voted on one of the recipes`,
+            serverError
+          }
+        }));
     } else {
       res.status(200).json({
         data: recipe
@@ -38,7 +69,12 @@ const list = (req, res) => Recipe
   }));
 
 const listOne = (req, res) => RecipeReview
-  .findById(req.params.recepeReviewId)
+  .findById(req.params.recepeReviewId, {
+    include: [{
+      model: models.User,
+      attributes: ['userName', 'imageUrl']
+    }]
+  })
   .then(recipe => res.status(201).json({
     data: recipe
   }))

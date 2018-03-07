@@ -6,16 +6,23 @@ const initialState = {
   imageUrl: localStorage.getItem('imageUrl'),
   error: null,
   loading: false,
-  authRedirectPath: '/'
+  authRedirectPath: '/',
+  isSignup: false,
 };
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
+    case actionTypes.AUTH_INIT:
+      return {
+        ...state,
+        error: null,
+        isSignup: false,
+      };
     case actionTypes.AUTH_START:
       return {
         ...state,
         error: null,
-        loading: true
+        loading: true,
       };
     case actionTypes.AUTH_SUCCESS:
       return {
@@ -24,30 +31,31 @@ const reducer = (state = initialState, action) => {
         userName: action.userName,
         imageUrl: action.imageUrl,
         error: null,
-        loading: false
+        loading: false,
       };
     case actionTypes.AUTH_FAIL:
       return {
         ...state,
         error: action.error,
-        loading: false
+        loading: false,
       };
     case actionTypes.AUTH_LOGOUT:
       return {
         ...state,
         token: null,
         userName: null,
-        imageUrl: null
+        imageUrl: null,
       };
     case actionTypes.SET_AUTH_REDIRECT_PATH:
       return {
         ...state,
-        authRedirectPath: action.path
+        authRedirectPath: action.path,
       };
     case actionTypes.AUTH_TOGGLE_REGISTER_SIGNIN:
       return {
         ...state,
-        error: null
+        error: null,
+        isSignup: !state.isSignup,
       };
     default:
       return state;

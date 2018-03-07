@@ -25,13 +25,13 @@ router.route('/get-token').get((req, res) => {
 router.route('/recipes')
   .get(jwt, recipesController.list)
   .post(jwt, recipesController.create);
-router.route('/recipes/:recipeId/')
+router.route('/recipes/:recipeId')
   .get(jwt, recipesController.listOne)
   .put(jwt, recipesController.update)
   .delete(jwt, recipesController.delete);
 
 router.route('/recipes/:recipeId/reviews')
-  .get(recipesReviewsController.list)
+  .get(jwt, recipesReviewsController.list)
   .post(jwt, recipesReviewsController.create);
 router.route('/recipes/:recipeId/reviews/:reviewId')
   .get(recipesReviewsController.listOne)

@@ -94,9 +94,9 @@ describe('/Recipes unit test', () => {
       .send({ })
       .set({ 'x-access-token': userToken })
       .expect('Content-type', /json/)
-      .expect(400)
+      .expect(422)
       .end((err, res) => {
-        res.status.should.equal(400);
+        res.status.should.equal(422);
         res.body.error.message.title.should.be.a('array');
         res.body.error.message.description.should.be.a('array');
         done();

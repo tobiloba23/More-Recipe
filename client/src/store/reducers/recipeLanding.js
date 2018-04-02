@@ -19,13 +19,9 @@ let updatedState = null;
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case actionTypes.UPDATE_RECIPE_REVIEW:
-      state.recipe.recipeReviews.push(action.recipeReview);
       return {
         ...state,
-        recipe: {
-          ...state.recipe,
-          recipeReviews: state.recipe.recipeReviews,
-        },
+        recipe: action.recipe,
       };
     case actionTypes.DISPLAY_VOTE_ON_ACTIVE_RECIPE:
       updatedState = state;

@@ -70,7 +70,7 @@ export const fetchRecipeDetails = (prevModalRecipe, recipeId) => (dispatch) => {
         'x-access-token': localStorage.getItem('token'),
       },
     } : {};
-    axios.get(`/recipes/${recipeId}/reviews`, options)
+    axios.get(`/recipes/${recipeId}/reviews?sort=createdAt&order=desc`, options)
       .then((response) => {
         console.log(response);
         const recipe = response.data.data;
@@ -156,10 +156,10 @@ export const registerReviewOnServerSuccess = () => ({
   type: actionTypes.REGISTER_REVIEW_ON_SERVER_SUCCESS,
 });
 
-export const updateRecipeReview = (recipeIndex, recipeReview) => ({
+export const updateRecipeReview = (recipeIndex, recipe) => ({
   type: actionTypes.UPDATE_RECIPE_REVIEW,
   activeRecipe: recipeIndex,
-  recipeReview,
+  recipe,
 });
 
 export const registerReviewOnServerFailed = error => ({

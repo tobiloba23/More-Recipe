@@ -47,7 +47,7 @@ const landingMask = () => (
           <MaskLink faIconName="fab fa-twitter" linkto="twitter.com" color="rgb(4, 101, 228)" />
           <MaskLink faIconName="fab fa-pinterest" linkto="pinterest.com" color="hsl(2, 94%, 50%)" />
           <MaskLink faIconName="fab fa-instagram" linkto="instagram.com" color="#8D1F73" />
-      <MaskLink faIconName="fas fa-envelope" mailto="contact@more-recipes.com" color="#ffffff" />
+          <MaskLink faIconName="fas fa-envelope" mailto="contact@more-recipes.com" color="#ffffff"/>
           */}
           <a href="https://facebook.com">
             <i className="fab fa-facebook p-2" style={{ fontSize: '2em', color: 'rgb(4, 157, 228)' }} />

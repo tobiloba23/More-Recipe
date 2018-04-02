@@ -1,9 +1,10 @@
 import dotenv from 'dotenv';
 import models from '../../../models/';
+import reqQueryUtility from '../../utility/reqQuery';
 
 dotenv.config();
 
-const { Recipe, RecipeReview } = models;
+const { Recipe, RecipeReview, User } = models;
 
 const dberror = process.env.DB_ERROR;
 
@@ -16,9 +17,13 @@ const list = (req, res) => Recipe
       model: RecipeReview,
       as: 'recipeReviews',
       include: [{
-        model: models.User,
+        model: User,
         attributes: ['userName', 'imageUrl']
       }]
+    },
+    {
+      model: User,
+      attributes: ['userName', 'imageUrl']
     }],
   })
   .then(async (recipe) => {
@@ -28,34 +33,39 @@ const list = (req, res) => Recipe
           message: 'Recipe Not Found',
         }
       });
-    } else if (req.decoded) {
-      await models.RecipeReview.find({
-        where: {
-          recipeId: recipe.dataValues.recipeId,
-          userId: req.decoded.id,
-          vote: {
-            $ne: null
-          }
-        }
-      })
-        .then((userHasOpinion) => {
-          if (userHasOpinion) {
-            recipe.dataValues.currentUserHasUpVoted =
-              userHasOpinion.vote ? userHasOpinion.vote : null;
-            recipe.dataValues.currentUserHasDownVoted =
-                userHasOpinion.vote === false ? !userHasOpinion.vote : null;
-          } else {
-            recipe.dataValues.currentUserHasUpVoted = null;
-            recipe.dataValues.currentUserHasDownVoted = null;
+    } else {
+      if (req.decoded) {
+        await RecipeReview.find({
+          where: {
+            recipeId: recipe.dataValues.recipeId,
+            userId: req.decoded.id,
+            vote: {
+              $ne: null
+            }
           }
         })
-        .catch(serverError => res.status(500).json({
-          error: {
-            message: `${dberror} check if current user has voted on one of the recipes`,
-            serverError
-          }
-        }));
-    } else {
+          .then((userHasOpinion) => {
+            if (userHasOpinion) {
+              recipe.dataValues.currentUserHasUpVoted =
+                userHasOpinion.vote ? userHasOpinion.vote : null;
+              recipe.dataValues.currentUserHasDownVoted =
+                  userHasOpinion.vote === false ? !userHasOpinion.vote : null;
+            } else {
+              recipe.dataValues.currentUserHasUpVoted = null;
+              recipe.dataValues.currentUserHasDownVoted = null;
+            }
+          })
+          .catch(serverError => res.status(500).json({
+            error: {
+              message: `${dberror} check if current user has voted on the recipes`,
+              serverError
+            }
+          }));
+      }
+      recipe.recipeReviews = reqQueryUtility(
+        res, recipe.recipeReviews, req.query.sort, req.query.order,
+        req.query.offset, req.query.count
+      );
       res.status(200).json({
         data: recipe
       });
@@ -71,7 +81,7 @@ const list = (req, res) => Recipe
 const listOne = (req, res) => RecipeReview
   .findById(req.params.recepeReviewId, {
     include: [{
-      model: models.User,
+      model: User,
       attributes: ['userName', 'imageUrl']
     }]
   })
@@ -234,9 +244,7 @@ const create = (req, res) => {
                     recipeId: req.params.recipeId,
                     userId: req.decoded.id
                   })
-                  .then(createdRecipeRev => res.status(201).json({
-                    data: createdRecipeRev
-                  }))
+                  .then(() => list(req, res))
                   .catch(serverError => res.status(500).json({
                     error: {
                       message: `${dberror} create the review on the datadase`,

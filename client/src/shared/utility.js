@@ -38,15 +38,19 @@ const checkValidity = (value, rules) => {
 
 const timeSince = (createdAt) => {
   const time = createdAt ? (Date.now() - new Date(createdAt.replace(' ', 'T'))) / 86400000 : 0;
-  return time < (1 / 24) && time >= 0
-    ? `${Math.floor(time * 24 * 60)} mins ago`
-    : time >= (1 / 24) && time < (2 / 24)
-      ? `${Math.floor(time * 24)} hour ago`
-      : time >= (2 / 24) && time < 1
-        ? `${Math.floor(time * 24)} hours ago`
-        : time >= 1 && time < 2
-          ? `${Math.floor(time)} day ago`
-          : `${Math.floor(time)} days ago`;
+  return (1 / (24 * 60)) > time && time >= 0
+    ? `${Math.floor(time * 24 * 60 * 60)} secs ago`
+    : (2 / (24 * 60)) > time && time >= (1 / (24 * 60))
+      ? `${Math.floor(time * 24 * 60)} min ago`
+      : (1 / 24) > time && time >= (2 / (24 * 60))
+        ? `${Math.floor(time * 24 * 60)} mins ago`
+        : (1 / 24) <= time && time < (2 / 24)
+          ? `${Math.floor(time * 24)} hour ago`
+          : (2 / 24) <= time && time < 1
+            ? `${Math.floor(time * 24)} hours ago`
+            : time >= 1 && time < 2
+              ? `${Math.floor(time)} day ago`
+              : `${Math.floor(time)} days ago`;
 };
 
 export {

@@ -1,13 +1,8 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
-  Card,
-  CardBody,
-  CardTitle,
-  CardText,
-  Container,
   Row,
   Col,
-  View,
   Media,
   Button,
   ModalHeader,
@@ -22,39 +17,46 @@ import Aux from '../../../hoc/Aux/Aux';
 import { timeSince } from '../../../shared/utility';
 
 const recipeDetail = (props) => {
-  const reviews = props.recipe.recipeReviews.map((item, idx) => {
-    const created = timeSince(item.createdAt);
-    return (
-      <Aux>
-        <Media>
-          <Media left className="waves-light">
-            <img style={{ borderRadius: '20px', maxHeight: '40px', maxWidth: '40px' }} src={item.User.imageUrl} alt="Owner" />
-          </Media>
-          <Media body>
-            <small style={{ fontSize: '1rem', color: 'black' }}>{item.User.userName}</small>
-            <div className="d-flex justify-content-end">
-              <small className="text-muted mr-auto" style={{ fontSize: '0.8rem' }}>{created}</small>
-              <a
-                style={{ fontSize: '0.8rem' }}
-                className={`${
-                  (item.vote === true || item.vote === false)
-                  ? item.vote
-                    ? 'fas fa-thumbs-up'
-                    : 'fas fa-thumbs-down'
-                  : null
-                } text-muted mr-1 my-auto`}
-                aria-hidden="true"
-              />
-            </div>
-          </Media>
-        </Media>
+  const reviews = props.recipe.recipeReviews.length > 0
+    ? props.recipe.recipeReviews.map((item, idx) => {
+      const created = timeSince(item.createdAt);
+      return (
         <Aux>
-          <Media body>{item.comment}</Media>
+          <Media>
+            <Media left className="waves-light">
+              <img style={{ borderRadius: '20px', maxHeight: '40px', maxWidth: '40px' }} src={item.User.imageUrl} alt="Owner" />
+            </Media>
+            <Media body>
+              <small style={{ fontSize: '1rem', color: 'black' }}>{item.User.userName}</small>
+              <div className="d-flex justify-content-end">
+                <small className="text-muted mr-auto" style={{ fontSize: '0.8rem' }}>{created}</small>
+                <a
+                  style={{ fontSize: '0.8rem' }}
+                  className={`${
+                    (item.vote === true || item.vote === false)
+                    ? item.vote
+                      ? 'fas fa-thumbs-up'
+                      : 'fas fa-thumbs-down'
+                    : null
+                  } text-muted mr-1 my-auto`}
+                  aria-hidden="true"
+                />
+              </div>
+            </Media>
+          </Media>
+          <Aux>
+            <Media body>{item.comment}</Media>
+          </Aux>
+          <br />
         </Aux>
-        <br />
+      );
+    })
+    : (
+      <Aux>
+        {'There are no reviews on this recipe yet. Be the first to leave '}
+        {'a review in the comment section below.'}
       </Aux>
     );
-  });
 
   return (
     <Aux>
@@ -107,7 +109,7 @@ const recipeDetail = (props) => {
                     aria-hidden="true"
                   >{props.recipe.views ? props.recipe.views.toLocaleString() : 0}
                   </a>
-                  { props.isAuthenticated && props.recipe.owner
+                  { props.isAuthenticated && props.recipe.User.userName
                     !== localStorage.getItem('userName')
                     ? (
                       <Aux>
@@ -135,17 +137,24 @@ const recipeDetail = (props) => {
                     }
                 </div>
               </Media>
-              <FormInline>
-                <div className="md-form mb-0 resizableElement">
-                  <textarea
-                    type="text"
-                    className="md-textarea"
-                    placeholder="Leave a review..."
-                    value={props.comment}
-                    onChange={event => props.commentChanged(event)}
-                  />
-                </div>
-              </FormInline>
+              { !props.isAuthenticated
+                    ?
+                      <Aux>
+                        Kindly <Link to="/register">register/sign-in</Link> to leave a comment
+                      </Aux>
+                    :
+                      <FormInline>
+                        <div className="md-form mb-0 resizableElement">
+                          <textarea
+                            type="text"
+                            className="md-textarea"
+                            placeholder="Leave a review..."
+                            value={props.comment}
+                            onChange={event => props.commentChanged(event)}
+                          />
+                        </div>
+                      </FormInline>
+              }
             </Media>
           </Media>
         </div>
